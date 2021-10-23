@@ -114,8 +114,6 @@ bool App::Start()
 		item = item->next;
 	}
 
-	map->Load("level1.tmx");
-
 	return ret;
 }
 
