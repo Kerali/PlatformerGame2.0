@@ -8,6 +8,7 @@
 #include "Log.h"
 
 #include <math.h>
+#include <iostream>
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -17,6 +18,7 @@ Map::Map() : Module(), mapLoaded(false)
 // Destructor
 Map::~Map()
 {}
+
 
 // L06: TODO 7: Ask for the value of a custom property
 int Properties::GetProperty(const char* value, int defaultValue) const
@@ -41,7 +43,11 @@ bool Map::Awake(pugi::xml_node& config)
     LOG("Loading Map Parser");
     bool ret = true;
 
+	std::cout << config.child("folder").child_value() << std::endl;
+
     folder.Create(config.child("folder").child_value());
+
+	std::cout << folder.GetString() << std::endl;
 
     return ret;
 }
