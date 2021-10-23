@@ -33,10 +33,10 @@ bool Scene::Start()
 {
 	// L03: DONE: Load map
 	//app->map->Load("hello.tmx");
-	app->map->Load("iso_walk.tmx");
+	app->map->Load("level1.tmx");
 	
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	/*app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");*/
 
 	return true;
 }
