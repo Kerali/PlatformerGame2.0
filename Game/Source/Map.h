@@ -76,6 +76,7 @@ struct MapData
 	SDL_Color backgroundColor;
 	MapTypes type;
 	List<TileSet*> tilesets;
+	List<MapLayer*> maplayers;
 
 	// L04: TODO 2: Add a list/array of layers to the map
 };
@@ -113,6 +114,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool StoreID(pugi::xml_node& node, MapLayer* layer, int ID);
 
 public:
 

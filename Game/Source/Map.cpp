@@ -132,6 +132,16 @@ bool Map::Load(const char* filename)
 	}
 	// L04: TODO 4: Iterate all layers and load each of them
     
+	pugi::xml_node layerNode;
+
+	for (layerNode = mapFile.child("map").child("layer"); layerNode && ret; layerNode = layerNode.next_sibling("layer"))
+	{
+		MapLayer* layerSet = new MapLayer();
+
+		if (ret == true) ret = LoadLayer(layerNode, layerSet);
+
+		data.maplayers.add(layerSet);
+	}
 
     if(ret == true)
     {
@@ -256,6 +266,30 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	bool ret = true;
 	
 	// L04: TODO 3: Load a single layer
+
+	layer->name.create(node.attribute("name").as_string("Not Found"));
+	layer->width = node.attribute("width").as_int(0);
+	layer->height = node.attribute("height").as_int(0);
+	layer->data = new uint[(data.width * data.height * sizeof(uint))];
+	memset(layer->data, 0, size_t(data.width * data.height * sizeof(uint)));
+
+	pugi::xml_node nodeID;
+
+	int counter = 0;
+	for (nodeID = node.child("data").child("tile"); nodeID && ret; nodeID = nodeID.next_sibling("tile"))
+	{
+		if (ret == true) ret = StoreID(nodeID, layer, counter);
+		counter++;
+	}
+
+	return ret;
+}
+
+bool Map::StoreID(pugi::xml_node & node, MapLayer * layer, int ID)
+{
+	bool ret = true;
+
+	layer->data[ID] = node.attribute("gid").as_uint(0);
 
 	return ret;
 }
