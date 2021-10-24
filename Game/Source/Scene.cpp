@@ -30,8 +30,6 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	img = app->tex->Load("Assets/textures/test.png");
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 	return true;
 }
 
@@ -67,8 +65,6 @@ bool Scene::Update(float dt)
 		app->RequestSave();
 		LOG("SAVE REQUESTED");
 	}
-
-	app->render->DrawTexture(img, 380, 100);
 
 	return true;
 }

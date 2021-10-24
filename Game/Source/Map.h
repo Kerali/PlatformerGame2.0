@@ -71,6 +71,8 @@ struct MapData
 	int	height;
 	int	tileWidth;
 	int	tileHeight;
+	int nextObjectId;
+	int nextLayerId;
 	SDL_Color backgroundColor;
 	MapTypes type;
 	List<TileSet*> tilesets;
@@ -89,6 +91,8 @@ public:
 
     // Called before render is available
     bool Awake(pugi::xml_node& conf);
+
+	bool PostUpdate();
 
     // Called each loop iteration
     void Draw();
