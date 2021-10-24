@@ -58,6 +58,8 @@ void Map::Draw()
 {
 	if (mapLoaded == false) return;
 
+	app->render->DrawTexture(mapData.tilesets[0]->texture, 0, 0, NULL, 0, 0, 0, 0);
+
 	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
@@ -224,9 +226,6 @@ bool Map::Load(const char* filename)
     bool ret = true;
     SString tmp("%s%s", folder.GetString(), filename);
 
-	SString path = folder.GetString();
-	path += level1Load.GetString();
-	pugi::xml_node mapNode;
 	pugi::xml_document mapFile; 
     pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
@@ -260,7 +259,18 @@ bool Map::Load(const char* filename)
     if(ret == true)
     {
         // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
+		LOG("Successfully parsed map XML file: %s", filename);
+		LOG("width: %d height: %d", mapData.width, mapData.height);
+		LOG("tile_width: %d tile_height: %d", mapData.tileWidth, mapData.tileHeight);
 
+		for (int i = 0; i < mapData.tilesets.count(); i++)
+		{
+			TileSet* t = mapData.tilesets[i];
+			LOG("Tileset ----");
+			LOG("name: %s firstgid: %d", t->name.GetString(), t->firstgid);
+			LOG("tile width: %d tile height: %d", t->tileWidth, t->tileHeight);
+			LOG("spacing: %d margin: %d", t->spacing, t->margin);
+		}
 		// L04: TODO 4: LOG the info for each loaded layer
     }
 
