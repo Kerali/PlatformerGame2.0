@@ -1,8 +1,8 @@
-# {PLATFORMER GAME}
+# Platformer Game
 
 ## Description
 
-{This is my development project repository}
+This repository is used for the subject Game Development cursed in CITM TTC UPC
 
 ## Key Features
 
@@ -17,7 +17,7 @@
 
 ## Developers
 
- - {Víctor Jara} - {developer}
+ - Víctor Jara - {developer}
 
 
 ## License
