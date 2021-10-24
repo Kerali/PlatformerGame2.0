@@ -176,3 +176,17 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+void Audio::VolumeDown()
+{
+	Mix_VolumeMusic(Mix_Volume(-1, Mix_Volume(-1, -1) - volumeChange));
+
+	if (Mix_Volume(-1, -1) > 0 && Mix_Volume(-1, -1) < 2 * volumeChange)
+		Mix_VolumeMusic(0);
+}
+
+void Audio::VolumeUp()
+{
+	Mix_VolumeMusic(Mix_Volume(-1, Mix_Volume(-1, -1) + volumeChange));
+
+}

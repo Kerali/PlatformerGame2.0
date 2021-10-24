@@ -61,6 +61,8 @@ void Map::Draw()
 				int tilesetPosition = tileGid - tileset->firstgid;
 				SDL_Rect section = { tilesetPosition % tileset->numTilesWidth * tileset->tile_width, tilesetPosition / tileset->numTilesWidth * tileset->tile_height, tileset->tile_width, tileset->tile_height };
 				app->render->DrawTexture(tileset->texture, j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, &section);
+
+				break;
 			}
 		}
 	}
