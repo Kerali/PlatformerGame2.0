@@ -10,7 +10,7 @@
 
 Textures::Textures() : Module()
 {
-	name.Create("textures");
+	name.create("textures");
 }
 
 // Destructor

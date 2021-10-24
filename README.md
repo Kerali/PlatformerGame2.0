@@ -1,8 +1,8 @@
-# Kerali's adventure
+# {PLATFORMER GAME}
 
 ## Description
 
-{project description}
+{This is my development project repository}
 
 ## Key Features
 
@@ -17,10 +17,8 @@
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
+ - {Víctor Jara} - {developer}
+
 
 ## License
 

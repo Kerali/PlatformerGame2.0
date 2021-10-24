@@ -5,14 +5,13 @@
 #include "Render.h"
 #include "Window.h"
 #include "Scene.h"
-#include "Map.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 Scene::Scene() : Module()
 {
-	name.Create("scene");
+	name.create("scene");
 }
 
 // Destructor
@@ -31,14 +30,8 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	// L03: DONE: Load map
-	//app->map->Load("iso_nav.tmx");
-	//app->map->Load("level1.tmx");
-	app->map->Load(app->map->GetLevel1Load().GetString());
-	
-	// Load music
+	img = app->tex->Load("Assets/textures/test.png");
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
-
 	return true;
 }
 
@@ -51,12 +44,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-    // L02: DONE 3: Request Load / Save when pressing L/S
-	if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		app->LoadGameRequest();
-
-	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-		app->SaveGameRequest();
+    // L02: TODO 3: Request Load / Save when pressing L/S
 
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 1;
@@ -70,25 +58,17 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += 1;
 
-	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
+	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) {
+		app->RequestLoad();
+		LOG("LOAD REQUESTED");
+	}
 
-	if (app->render->camera.x > 0) app->render->camera.x = 0;
-	if (app->render->camera.x < -1600 * 6 / 5) app->render->camera.x = -1600 * 6 / 5;
-	if (app->render->camera.y > 0) app->render->camera.y = 0;
-	if (app->render->camera.y < -800 * 1.1) app->render->camera.y = -800 * 1.1;
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT){
+		app->RequestSave();
+		LOG("SAVE REQUESTED");
+	}
 
-	// Draw map
-	app->map->Draw();
-
-	//app->render->DrawTexture(img, 0, 0);
-
-	// L03: DONE 7: Set the window title with map/tileset info
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-				   app->map->mapData.width, app->map->mapData.height,
-				   app->map->mapData.tileWidth, app->map->mapData.tileHeight,
-				   app->map->mapData.tilesets.count());
-
-	app->win->SetTitle(title.GetString());
+	app->render->DrawTexture(img, 380, 100);
 
 	return true;
 }

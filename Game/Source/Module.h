@@ -56,16 +56,30 @@ public:
 		return true;
 	}
 
-    // L02: DONE 2: Create new virtual methods to Load / Save state
-	virtual bool LoadState(pugi::xml_node&)
+	// L02: TODO 2: Create new virtual methods to Load / Save
+
+	virtual bool Load(pugi::xml_node&)
+	{
+		return true;
+
+	}
+	virtual bool Save(pugi::xml_node&)
+	{
+		return true;
+
+	}
+
+	virtual bool RequestLoad()
 	{
 		return true;
 	}
 
-	virtual bool SaveState(pugi::xml_node&) const
+	virtual bool RequestSave()
 	{
 		return true;
 	}
+
+    
 
 public:
 
