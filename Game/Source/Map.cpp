@@ -46,6 +46,7 @@ bool Map::Awake(pugi::xml_node& config)
 	std::cout << config.child("folder").child_value() << std::endl;
 
     folder.Create(config.child("folder").child_value());
+	level1Load.Create(config.child("level").child_value());
 
 	std::cout << folder.GetString() << std::endl;
 
@@ -223,6 +224,9 @@ bool Map::Load(const char* filename)
     bool ret = true;
     SString tmp("%s%s", folder.GetString(), filename);
 
+	SString path = folder.GetString();
+	path += level1Load.GetString();
+	pugi::xml_node mapNode;
 	pugi::xml_document mapFile; 
     pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 

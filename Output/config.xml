@@ -21,5 +21,6 @@
   <!-- L03: Added maps folder as config option -->
   <map>
     <folder>Assets/maps/</folder>
+	<level>level1.tmx</level>
   </map>
 </config>

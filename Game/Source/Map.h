@@ -130,6 +130,11 @@ public:
 
     // Load new map
     bool Load(const char* path);
+	
+	inline SString GetLevel1Load() const
+	{
+		return level1Load;
+	}
 
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
@@ -164,6 +169,7 @@ private:
 
     SString folder;
     bool mapLoaded;
+	SString level1Load;
 };
 
 #endif // __MAP_H__
