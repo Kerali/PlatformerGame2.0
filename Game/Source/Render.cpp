@@ -10,10 +10,10 @@
 Render::Render() : Module()
 {
 	name.create("renderer");
-	background.r = 0;
-	background.g = 0;
-	background.b = 0;
-	background.a = 0;
+	background.r = 60;
+	background.g = 60;
+	background.b = 200;
+	background.a = 255;
 }
 
 // Destructor
@@ -45,7 +45,7 @@ bool Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = app->win->screenSurface->w;
 		camera.h = app->win->screenSurface->h;
-		camera.x = 0;
+		camera.x = -1500;
 		camera.y = 0;
 	}
 

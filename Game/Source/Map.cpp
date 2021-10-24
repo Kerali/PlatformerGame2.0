@@ -42,12 +42,28 @@ bool Map::PostUpdate()
 void Map::Draw()
 {
 	if (mapLoaded == false) return;
-
-	app->render->DrawTexture(data.tilesets[0]->texture, 0, 0, NULL, 0, 0, 0, 0);
 	// L04: TODO 5: Prepare the loop to draw all tilesets + DrawTexture()
 	
 	// L04: TODO 9: Complete the draw function
+	for (int i = 0; i < data.maplayers.count(); i++) {
+		int layerSize = data.maplayers[i]->width * data.maplayers[i]->height;
+		for (int j = 0; j < layerSize; j++) {
+			uint tileGid = data.maplayers[i]->data[j];
+			int layerWidth = data.maplayers[i]->width;
 
+			for (int k = 0; k < data.tilesets.count(); k++) {
+				TileSet* tileset = data.tilesets[k];
+
+				if (data.tilesets.count() > k + 1 && data.tilesets[k + 1]->firstgid <= tileGid) {
+					continue;
+				}
+
+				int tilesetPosition = tileGid - tileset->firstgid;
+				SDL_Rect section = { tilesetPosition % tileset->numTilesWidth * tileset->tile_width, tilesetPosition / tileset->numTilesWidth * tileset->tile_height, tileset->tile_width, tileset->tile_height };
+				app->render->DrawTexture(tileset->texture, j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, &section);
+			}
+		}
+	}
 }
 
 // L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
