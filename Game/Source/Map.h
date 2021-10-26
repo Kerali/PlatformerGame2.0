@@ -144,6 +144,7 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadProperties(pugi::xml_node& node, Properties* properties);
 	bool StoreID(pugi::xml_node& node, MapLayer* layer, int ID);
+	bool CreateColliders();
 
 public:
 

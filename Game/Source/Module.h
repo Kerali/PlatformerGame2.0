@@ -7,6 +7,8 @@
 
 class App;
 
+struct Collider;
+
 class Module
 {
 public:
@@ -61,12 +63,10 @@ public:
 	virtual bool Load(pugi::xml_node&)
 	{
 		return true;
-
 	}
 	virtual bool Save(pugi::xml_node&)
 	{
 		return true;
-
 	}
 
 	virtual bool RequestLoad()
@@ -79,7 +79,10 @@ public:
 		return true;
 	}
 
-    
+	virtual void OnCollision(Collider* a, Collider* b)
+	{
+
+	}
 
 public:
 

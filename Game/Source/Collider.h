@@ -11,29 +11,8 @@ struct Collider
 {
 	enum Type
 	{
-		NONE = -1,
-		WALL_A,
-		WALL_D,
-		FLOOR,
-		PLAYER,
-		BALL,
-		ROPE,
-		DROP,
-		TOP,
-		STAIRS,
-		CORNICE,
-		STRUCTT,
-		STRUCTD,
-		STRUCTR,
-		STRUCTL,
-		STRUCTT2,
-
-		MAX
-	};
-
-	enum Height
-	{
-		UNDEFINED
+		STATIC,
+		DYNAMIC
 	};
 
 	//Methods
@@ -47,9 +26,7 @@ struct Collider
 
 	//Variables
 	SDL_Rect rect;
-	bool pendingToDelete = false;
 	Type type;
-	Height height;
 	Module* listeners[MAX_LISTENERS] = { nullptr };
 };
 

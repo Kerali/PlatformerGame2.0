@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Map.h"
+#include "Collisions.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -204,6 +205,8 @@ bool Map::Load(const char* filename)
 		// L04: TODO 4: LOG the info for each loaded layer
     }
 
+	CreateColliders();
+
     mapLoaded = ret;
 
     return ret;
@@ -340,7 +343,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties* properties)
 		Properties::Property* prop = new Properties::Property();
 		prop->name.create(propertyNode.attribute("name").as_string("Not Found"));
 		prop->type.create(propertyNode.attribute("type").as_string("Not Found"));
-		prop->value = propertyNode.attribute("value").as_int(1);
+		prop->value = propertyNode.attribute("value").as_int(0);
 		properties->list.add(prop);
 	}
 
@@ -354,6 +357,22 @@ bool Map::StoreID(pugi::xml_node & node, MapLayer * layer, int ID)
 	bool ret = true;
 
 	layer->data[ID] = node.attribute("gid").as_uint(0);
+
+	return ret;
+}
+
+bool Map::CreateColliders() {
+	bool ret = true;
+
+	for (int i = 0; i < data.maplayers.count(); i++) {
+		if (data.maplayers[i]->properties.GetProperty("navigation", 0) == 0) continue;
+		int layerSize = data.maplayers[i]->width * data.maplayers[i]->height;
+		for (int j = 0; j < layerSize; j++) {
+			if (data.maplayers[i]->data[j] == 0) continue;
+			int layerWidth = data.maplayers[i]->width;
+			app->collisions->AddCollider(SDL_Rect({ j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, data.tileWidth, data.tileHeight }), Collider::Type::STATIC, this);
+		}
+	}
 
 	return ret;
 }

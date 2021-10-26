@@ -36,7 +36,7 @@ bool Debug::Update()
 {
 	bool ret = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
 		ShowColliders();
 	}
