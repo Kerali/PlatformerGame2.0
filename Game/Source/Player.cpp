@@ -1,11 +1,11 @@
 #include "Player.h"
 
-#include "../App.h"
-#include "../Input.h"
+#include "App.h"
+#include "Input.h"
 #include "Animation.h"
-#include "../Textures.h"
+#include "Textures.h"
 #include "SDL/include/SDL_scancode.h"
-#include "../Collisions.h"
+#include "Collisions.h"
 
 #include "../Defs.h"
 #include "../Log.h"
