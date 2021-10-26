@@ -2,6 +2,10 @@
 
 #include "Debug.h"
 
+#include "App.h"
+#include "Input.h"
+#include "Map.h"
+
 Debug::Debug(bool startEnabled)
 {
 

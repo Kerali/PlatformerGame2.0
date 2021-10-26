@@ -18,6 +18,8 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Source\Debug.cpp" />
+    <ClCompile Include="Source\Collisions.cpp" />
+    <ClCompile Include="Source\Collider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -56,6 +58,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Source\Debug.h" />
+    <ClInclude Include="Source\Collisions.h" />
+    <ClInclude Include="Source\Collider.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
