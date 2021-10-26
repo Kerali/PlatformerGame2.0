@@ -33,6 +33,17 @@ int Properties::GetProperty(const char* name, int defaultValue) const
 	return defaultValue;
 }
 
+void Properties::SetProperty(const char* name, int value)
+{
+	for (int i = 0; i < list.count(); i++)
+	{
+		if (list[i]->name == name)
+		{
+			list[i]->value = value;
+		}
+	}
+}
+
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {

@@ -90,6 +90,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Source\Debug.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
@@ -101,6 +102,7 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Source\Debug.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Audio.h" />

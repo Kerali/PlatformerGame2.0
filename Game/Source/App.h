@@ -14,6 +14,7 @@ class Textures;
 class Audio;
 class Scene;
 class Map;
+class Debug;
 
 class App
 {
@@ -81,6 +82,7 @@ public:
 	Audio* audio;
 	Scene* scene;
 	Map* map;
+	Debug* debug;
 
 	bool Load();
 	bool Save();

@@ -59,6 +59,7 @@ struct Properties
 	// L06: TODO 7: Method to ask for the value of a custom property
 	int GetProperty(const char* name, int default_value = 1) const;
 
+	void SetProperty(const char* name, int value);
 };
 
 // L04: DONE 1: Create a struct for the map layer
@@ -130,6 +131,8 @@ public:
 
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
+
+	bool showColliders = false;
 
 private:
 
