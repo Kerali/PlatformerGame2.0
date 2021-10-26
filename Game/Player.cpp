@@ -37,21 +37,20 @@ void Player::UpdateState()
 	{
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-				)
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
 				ChangeState(playerState, RUNNING);
+			}
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			ChangeState(playerState, JUMPING);
-
 		}
 
 		if (isDead == true) ChangeState(playerState, DYING);
 
 		break;
 	}
-
 	case RUNNING:
 	{
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -66,11 +65,8 @@ void Player::UpdateState()
 			ChangeState(playerState, JUMPING);
 		}
 
-
-
 		break;
 	}
-
 	case JUMPING:
 	{
 		//once animation is done change to falling
@@ -79,34 +75,20 @@ void Player::UpdateState()
 			)
 		{
 			ChangeState(playerState, DOUBLE_JUMPING);
-
 		}
-
-
 		break;
 	}
-
 	case DOUBLE_JUMPING:
 	{
-
-
-
-
 		break;
 	}
 
 	case FALLING:
 	{
-
-
-
-
 		break;
 	}
 	case DYING:
 	{
-
-
 		break;
 	}
 
@@ -120,20 +102,14 @@ void Player::UpdateLogic()
 	{
 	case(IDLE):
 	{
-
 		break;
 	}
 	case(RUNNING):
 	{
-
-
-
 		break;
 	}
 	case(JUMPING):
 	{
-
-
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
 			--position.y;
@@ -147,7 +123,6 @@ void Player::UpdateLogic()
 
 		break;
 	}
-
 	case(DOUBLE_JUMPING):
 	{
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
@@ -174,15 +149,12 @@ void Player::UpdateLogic()
 	}
 
 	}
-
-
 }
 
 
 
 void Player::ChangeState(PLAYER_STATE previousState, PLAYER_STATE newState)
 {
-
 	switch (newState)
 	{
 	case(IDLE):

@@ -8,7 +8,6 @@
 #include "Log.h"
 
 #include <math.h>
-#include <iostream>
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -40,9 +39,7 @@ bool Map::Awake(pugi::xml_node& config)
     LOG("Loading Map Parser");
     bool ret = true;
 
-	std::cout << config.child("folder").child_value() << std::endl;
     folder.create(config.child("folder").child_value());
-	std::cout << folder.GetString() << std::endl;
 
     return ret;
 }

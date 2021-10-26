@@ -11,9 +11,6 @@
 #include "Defs.h"
 #include "Log.h"
 
-#include <iostream>
-#include <sstream>
-
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -292,7 +289,7 @@ bool App::Load() {
 
 	bool ret = true;
 	
-	 pugi::xml_parse_result result = saveGame.load_file("savegame.xml");
+	pugi::xml_parse_result result = saveGame.load_file("savegame.xml");
 
 	if (result == NULL)
 	{
@@ -351,9 +348,12 @@ bool App::Load() {
 }
 
 bool App::Save() {
+	
+	bool ret = true;
+
 	requestSave = false;
 
-	return true;
+	return ret;
 }
 
 
