@@ -10,18 +10,18 @@
 #include "../Defs.h"
 #include "../Log.h"
 
-//bool Player::Start()
-//{
-//	bool ret = true;
-//
-//	app->collisions->AddCollider(SDL_Rect({ 15, 303, 16, 16 }), Collider::Type::DYNAMIC, this);
-//
-//	return ret;
-//}
-//
-//void Player::OnCollision(Collider* a, Collider* b) {
-//	LOG("Detected collision");
-//}
+bool Player::Start()
+{
+	bool ret = true;
+
+	app->collisions->AddCollider(SDL_Rect({ 15, 303, 16, 16 }), Collider::Type::DYNAMIC, this);
+
+	return ret;
+}
+
+void Player::OnCollision(Collider* a, Collider* b) {
+	LOG("Detected collision");
+}
 
 //bool Player::Awake()
 //{

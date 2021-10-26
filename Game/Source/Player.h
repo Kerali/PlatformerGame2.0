@@ -3,16 +3,13 @@
 
 #include "Module.h"
 #include "Animation.h"
+#include "Point.h"
 
 struct Animation;
 struct Collider;
 struct SDL_Texture;
-struct Position
-{
-	float x; float y;
-};
 
-enum PLAYER_STATE {
+enum PlayerState {
 
 	IDLE,
 	RUNNING,
@@ -24,39 +21,16 @@ enum PLAYER_STATE {
 
 class Player : public Module
 {
-private:
-	unsigned int speed = 10;
 public:
-	Position position;
-
-	bool isGoingRight = true;
-	bool jumpDone = false;
-	bool doubleJumpDone = false;
-	bool isDead = false;
-
-	PLAYER_STATE playerState = PLAYER_STATE::IDLE;
-
-	//Load the spritesheet
+	Point<int> position;
+	PlayerState playerState = PlayerState::IDLE;
 	SDL_Texture* texture = nullptr;
-
 	Animation* currentAnim = nullptr;
 
-	Animation idleRightAnim;
-	Animation idleLeftAnim;
-	Animation runnningRightAnim;
-	Animation runningLeftAnim;
-	Animation dyingAnim;
-	Animation shootRightAnim;
-	Animation shootLeftAnim;
-	Animation dead;
-	Animation jumpRightAnim;
-	Animation jumpLeftAnim;
-
-	bool Awake();
-	void UpdateState();
-	void UpdateLogic();
-	void ChangeState(PLAYER_STATE previous, PLAYER_STATE next);
-
+	bool Start();
+	void OnCollision(Collider* a, Collider* b);
+private:
+	unsigned int speed = 10;
 };
 
 
