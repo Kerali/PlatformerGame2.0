@@ -5,10 +5,11 @@
 #include "App.h"
 #include "Input.h"
 #include "Map.h"
+#include "Log.h"
 
-Debug::Debug()
+Debug::Debug() : Module()
 {
-
+	name.create("Debug");
 }
 
 
@@ -17,7 +18,7 @@ Debug::~Debug()
 
 }
 
-bool Debug::Init()
+bool Debug::Awake()
 {
 	return true;
 }
@@ -32,13 +33,13 @@ bool Debug::PreUpdate()
 	return true;
 }
 
-bool Debug::Update()
+bool Debug::Update(float dt)
 {
 	bool ret = true;
 
 	if (app->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
-		ShowColliders();
+		ToggleColliders();
 	}
 
 	return ret;
@@ -55,25 +56,7 @@ bool Debug::CleanUp()
 	return true;
 }
 
-void Debug::Enable()
-{
-	if (!isEnabled)
-	{
-		isEnabled = true;
-		Start();
-	}
-}
-
-void Debug::Disable()
-{
-	if (isEnabled)
-	{
-		isEnabled = false;
-		CleanUp();
-	}
-}
-
-void Debug::ShowColliders()
+void Debug::ToggleColliders()
 {
 	if (app->map->showColliders == false)
 	{
