@@ -19,6 +19,21 @@ Map::Map() : Module(), mapLoaded(false)
 Map::~Map()
 {}
 
+int Properties::GetProperty(const char* name, int defaultValue) const
+{
+
+
+	for (int i = 0; i < list.count(); i++)
+	{
+		if (list[i]->name == name)
+		{
+			return list[i]->value;
+		}
+	}
+
+	return defaultValue;
+}
+
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -46,6 +61,7 @@ void Map::Draw()
 	
 	// L04: TODO 9: Complete the draw function
 	for (int i = 0; i < data.maplayers.count(); i++) {
+		if (data.maplayers[i]->properties.GetProperty("draw", 1) == 0) continue;
 		int layerSize = data.maplayers[i]->width * data.maplayers[i]->height;
 		for (int j = 0; j < layerSize; j++) {
 			uint tileGid = data.maplayers[i]->data[j];
@@ -299,6 +315,28 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		if (ret == true) ret = StoreID(nodeID, layer, counter);
 		counter++;
 	}
+
+	LoadProperties(node.child("properties"), &layer->properties);
+
+	return ret;
+}
+
+bool Map::LoadProperties(pugi::xml_node& node, Properties* properties)
+{
+	bool ret = true;
+
+	pugi::xml_node propertyNode;
+
+	for (propertyNode = node.child("property"); propertyNode && ret; propertyNode = propertyNode.next_sibling("property"))
+	{
+		Properties::Property* prop = new Properties::Property();
+		prop->name.create(propertyNode.attribute("name").as_string("Not Found"));
+		prop->type.create(propertyNode.attribute("type").as_string("Not Found"));
+		prop->value = propertyNode.attribute("value").as_int(1);
+		properties->list.add(prop);
+	}
+
+
 
 	return ret;
 }

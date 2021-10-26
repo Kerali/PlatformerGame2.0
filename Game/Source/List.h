@@ -178,7 +178,7 @@ public:
 			p_item = p_item->next;
 		}
 
-		ASSERT(p_item);
+		//ASSERT(p_item);
 
 		return(p_item->data);
 	}
