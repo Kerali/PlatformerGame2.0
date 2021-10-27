@@ -4,7 +4,7 @@
 
 #include "App.h"
 #include "Input.h"
-#include "Map.h"
+#include "Collisions.h"
 #include "Log.h"
 
 Debug::Debug() : Module()
@@ -58,12 +58,12 @@ bool Debug::CleanUp()
 
 void Debug::ToggleColliders()
 {
-	if (app->map->showColliders == false)
+	if (app->collisions->showColliders == false)
 	{
-		app->map->showColliders = true;
+		app->collisions->showColliders = true;
 	}
-	else if (app->map->showColliders == true)
+	else if (app->collisions->showColliders == true) 
 	{
-		app->map->showColliders = false;
+		app->collisions->showColliders = false;
 	}
 }

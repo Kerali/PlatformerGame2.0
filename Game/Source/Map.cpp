@@ -370,7 +370,8 @@ bool Map::CreateColliders() {
 		for (int j = 0; j < layerSize; j++) {
 			if (data.maplayers[i]->data[j] == 0) continue;
 			int layerWidth = data.maplayers[i]->width;
-			app->collisions->AddCollider(SDL_Rect({ j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, data.tileWidth, data.tileHeight }), Collider::Type::STATIC, this);
+			SDL_Rect section = { j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, data.tileWidth, data.tileHeight };
+			app->collisions->AddCollider(section, Collider::Type::STATIC, this);
 		}
 	}
 

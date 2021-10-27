@@ -60,6 +60,16 @@ bool Collisions::Update(float dt)
 bool Collisions::PostUpdate()
 {
 	bool ret = true;
+
+	printf("%d", showColliders);
+	if (showColliders == true)
+	{
+		for (uint i = 0; i < staticColliders.count(); ++i)
+		{
+			DrawCollider(&staticColliders[i]->rect);
+		}
+	}
+
 	return ret;
 }
 
@@ -89,6 +99,10 @@ Collider* Collisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* li
 	return ret;
 }
 
+void Collisions::DrawCollider(const SDL_Rect* section)
+{
+	app->render->DrawRectangle(*section, 0, 255, 0, 128, true, true);
+}
 
 void Collisions::RemoveCollider(Collider* collider)
 {
