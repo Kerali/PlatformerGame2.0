@@ -21,16 +21,44 @@ enum PlayerState {
 
 class Player : public Module
 {
-public:
+private:
 	Point<int> position;
 	PlayerState playerState = PlayerState::IDLE;
 	SDL_Texture* texture = nullptr;
 	Animation* currentAnim = nullptr;
 
+	bool isGoingRight = false;
+	unsigned int jumpsLeft = 2;
+	bool isDead;
+public:
 	bool Start();
+	bool Update(float dt);
+	bool PostUpdate();
 	void OnCollision(Collider* a, Collider* b);
+
+	void UpdateState();
+	void UpdateLogic();
+	void ChangeState(PlayerState previous, PlayerState next);
+
+	Animation idleRightAnim;
+	Animation idleLeftAnim;
+	Animation runRightAnim;
+	Animation runLeftAnim;
+	Animation jumpRightAnim;
+	Animation jumpLeftAnim;
+	Animation fallRightAnim;
+	Animation fallLeftAnim;
+	Animation appearAnim;
+	Animation disappearRightAnim;
+	Animation disappearLeftAnim;
+
 private:
-	unsigned int speed = 10;
+	unsigned int speed = 15;
+	unsigned int jumpForce = 0;
+	unsigned int jumpForceValue = 45;
+
+	unsigned int gravityForce = 11;
+	unsigned int gravityForceValue = 11;
 };
 
 
