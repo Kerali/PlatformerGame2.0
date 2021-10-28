@@ -45,8 +45,8 @@ bool Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = app->win->screenSurface->w;
 		camera.h = app->win->screenSurface->h;
-		camera.x = -1500;
-		camera.y = -150;
+		camera.x = 0;
+		camera.y = 0;
 	}
 
 	return ret;
@@ -91,12 +91,18 @@ bool Render::CleanUp()
 // L02: TODO 6: Implement a method to load the state
 // for now load camera's x and y
 bool Render::Load(pugi::xml_node& savedGame) {
-	camera.x = savedGame.attribute("x").as_int();
-	camera.y = savedGame.attribute("y").as_int();
+	pugi::xml_node cameraNode = savedGame.child("camera");
+	camera.x = cameraNode.attribute("x").as_int();
+	camera.y = cameraNode.attribute("y").as_int();
 	return true;
 }
 
 bool Render::Save(pugi::xml_node& savedGame) {
+	pugi::xml_node cameraNode = savedGame.append_child("camera");
+	pugi::xml_attribute cameraX = cameraNode.append_attribute("x");
+	cameraX.set_value(camera.x);
+	pugi::xml_attribute cameraY = cameraNode.append_attribute("y");
+	cameraY.set_value(camera.y);
 	return true;
 }
 

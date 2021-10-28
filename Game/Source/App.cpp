@@ -298,7 +298,9 @@ bool App::Load() {
 
 	bool ret = true;
 	
-	pugi::xml_parse_result result = saveGame.load_file("savegame.xml");
+	pugi::xml_document saveGame;
+
+	pugi::xml_parse_result result = saveGame.load_file(saveFileName);
 
 	if (result == NULL)
 	{
@@ -306,50 +308,44 @@ bool App::Load() {
 		ret = false;
 	}
 	else
-	{
-		save_state = saveGame.child("save_state");
-		if (save_state == NULL) {
-			LOG("save_state not loading");
-		}
-		
+	{		
 		//renderer
-		rend = save_state.child("renderer");
+		pugi::xml_node rend = saveGame.child("renderer");
 		if (rend == NULL) {
 			LOG("Renderer not loading");
 		}
 
 		//input
-		inp = save_state.child("input");
+		pugi::xml_node inp = saveGame.child("input");
 		if (inp == NULL) {
 			LOG("Input not loading");
 		}
 
 		//audio
-		au = save_state.child("audio");
+		pugi::xml_node au = saveGame.child("audio");
 		if (au == NULL) {
 			LOG("Audio not loading");
 		}
 
 		//scene
-		sce = save_state.child("scene");
+		pugi::xml_node sce = saveGame.child("scene");
 		if (sce == NULL) {
 			LOG("Scene not loading");
 		}
 
 		//window
-		wi = save_state.child("window");
+		pugi::xml_node wi = saveGame.child("window");
 		if (wi == NULL) {
 			LOG("window not loading");
 		}
 
+		app->audio->Load(au);
+		app->input->Load(inp);
+		app->render->Load(rend);
+		app->scene->Load(sce);
+		app->win->Load(wi);
 
 	}
-
-	app->audio->Load(au);
-	app->input->Load(inp);
-	app->render->Load(rend);
-	app->scene->Load(sce);
-	app->win->Load(wi);
 
 	requestLoad = false;
 
@@ -361,6 +357,16 @@ bool App::Save() {
 	bool ret = true;
 
 	requestSave = false;
+
+	pugi::xml_document newSave;
+
+	pugi::xml_node rend = newSave.append_child("renderer");
+	app->render->Save(rend);
+
+	pugi::xml_node audio = newSave.append_child("audio");
+	app->audio->Save(audio);
+
+	newSave.save_file(saveFileName);
 
 	return ret;
 }

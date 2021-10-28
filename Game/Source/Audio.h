@@ -35,6 +35,9 @@ public:
 	void VolumeDown();
 	void VolumeUp();
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&);
+
 private:
 
 	int volumeChange = 8;

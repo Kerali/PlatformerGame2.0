@@ -188,5 +188,15 @@ void Audio::VolumeDown()
 void Audio::VolumeUp()
 {
 	Mix_VolumeMusic(Mix_Volume(-1, Mix_Volume(-1, -1) + volumeChange));
+}
 
+bool Audio::Load(pugi::xml_node& savedGame) {
+	Mix_VolumeMusic(Mix_Volume(-1, savedGame.attribute("audio").as_int()));
+	return true;
+}
+
+bool Audio::Save(pugi::xml_node& savedGame) {
+	pugi::xml_attribute volume = savedGame.append_attribute("volume");
+	volume.set_value(Mix_Volume(-1, -1));
+	return true;
 }
