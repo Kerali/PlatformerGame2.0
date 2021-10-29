@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Window.h"
 #include "Render.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -70,6 +71,18 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
+	int scale = app->win->GetScale();
+
+	camera.x = -app->player->position.x * scale + camera.w / 2;
+	camera.y = -app->player->position.y * scale + camera.h / 2;
+
+	//Camera limits ---> HARDCODED
+	if (camera.x > -160) camera.x = -160;
+	if (camera.x < -16 * 206 * 1.66) camera.x = -16 * 206 * 1.66;
+
+	if (camera.y > -160) camera.y = -160;
+	if (camera.y < -16 * 78 * 1.425) camera.y = -16 * 78 * 1.425;
+
 	return true;
 }
 

@@ -121,6 +121,12 @@ private:
 	bool requestLoad = false;
 	bool requestSave = false;
 
+	const int targetFPS = 60;
+	const int frameDelay = 1000 / targetFPS;
+
+	long long frameStart;
+	int frameTime;
+
 };
 
 extern App* app;

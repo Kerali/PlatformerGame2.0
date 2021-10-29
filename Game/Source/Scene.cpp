@@ -46,8 +46,6 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-    // L02: TODO 3: Request Load / Save when pressing L/S
-
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += 20;
 
@@ -59,13 +57,6 @@ bool Scene::Update(float dt)
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x -= 40;
-
-	//Camera limits ---> HARDCODED
-	if (app->render->camera.x > -160) app->render->camera.x = -160;
-	if (app->render->camera.x < -16 * 206 * 1.66)	app->render->camera.x = -16 * 206 * 1.66;
-
-	if (app->render->camera.y > -160) app->render->camera.y = -160;
-	if (app->render->camera.y < -16 * 78 * 1.425) app->render->camera.y = -16 * 78 * 1.425;
 
 	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) 
 	{

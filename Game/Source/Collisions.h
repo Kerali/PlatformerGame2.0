@@ -31,7 +31,7 @@ public:
 
 	// Adds a new collider to the list
 	Collider* AddCollider(SDL_Rect rect, Collider::Type type, Module* listener = nullptr);
-	void DrawCollider(const SDL_Rect* section);
+	void DrawCollider(const SDL_Rect* section, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
 	bool showColliders = false;
 

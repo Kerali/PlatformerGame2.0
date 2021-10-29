@@ -65,7 +65,12 @@ bool Collisions::PostUpdate()
 	{
 		for (uint i = 0; i < staticColliders.count(); ++i)
 		{
-			DrawCollider(&staticColliders[i]->rect);
+			DrawCollider(&staticColliders[i]->rect, 0, 255, 0, 80);
+		}
+
+		for (uint i = 0; i < dynamicColliders.count(); ++i)
+		{
+			DrawCollider(&dynamicColliders[i]->rect, 255, 0, 0, 80);
 		}
 	}
 
@@ -98,9 +103,9 @@ Collider* Collisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* li
 	return ret;
 }
 
-void Collisions::DrawCollider(const SDL_Rect* section)
+void Collisions::DrawCollider(const SDL_Rect* section, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-	app->render->DrawRectangle(*section, 0, 255, 0, 128, true, true);
+	app->render->DrawRectangle(*section, r, g, b, a, true, true);
 }
 
 void Collisions::RemoveCollider(Collider* collider)

@@ -22,7 +22,6 @@ enum PlayerState {
 class Player : public Module
 {
 private:
-	Point<int> position;
 	PlayerState playerState = PlayerState::IDLE;
 	SDL_Texture* texture = nullptr;
 	Animation* currentAnim = nullptr;
@@ -52,13 +51,22 @@ public:
 	Animation disappearRightAnim;
 	Animation disappearLeftAnim;
 
+	Point<int> position;
+
 private:
-	unsigned int speed = 15;
+	unsigned int speed = 9;
 	unsigned int jumpForce = 0;
 	unsigned int jumpForceValue = 45;
 
 	unsigned int gravityForce = 11;
 	unsigned int gravityForceValue = 11;
+
+	Collider* collider;
+
+	bool canMoveRight = true;
+	bool canMoveLeft = true;
+	bool canMoveUp = true;
+	bool canMoveDown = true;
 };
 
 
