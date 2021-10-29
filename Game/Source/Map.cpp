@@ -17,7 +17,13 @@ Map::Map() : Module(), mapLoaded(false)
 
 // Destructor
 Map::~Map()
-{}
+{
+	for (int i = 0; i < data.tilesets.count(); i++) {
+		delete data.tilesets[i]->texture;
+	}
+}
+
+
 
 int Properties::GetProperty(const char* name, int defaultValue) const
 {

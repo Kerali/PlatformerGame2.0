@@ -15,8 +15,8 @@ bool Player::Start()
 {
 	bool ret = true;
 
-	position.x = 30;
-	position.y = 840;
+	position.x = 140;
+	position.y = 967;
 
 	LOG("Loading Player textures");
 
@@ -122,6 +122,8 @@ bool Player::PostUpdate()
 {
 
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
+
+	LOG("%d, %d, %d, %d", rect.x, rect.y, rect.w, rect.h);
 
 	app->render->DrawTexture(texture, position.x, position.y, &rect);
 
