@@ -54,7 +54,7 @@ public:
 	Point<int> position;
 
 private:
-	unsigned int speed = 9;
+	unsigned int speed = 7;
 	unsigned int jumpForce = 0;
 	unsigned int jumpForceValue = 45;
 

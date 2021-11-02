@@ -10,6 +10,7 @@
 
 #include "../Defs.h"
 #include "../Log.h"
+#include <math.h>
 
 bool Player::Start()
 {
@@ -33,8 +34,8 @@ bool Player::Start()
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 
 	idleRightAnim.loop = idleLeftAnim.loop = runRightAnim.loop = runLeftAnim.loop = true;
-	idleRightAnim.speed = idleLeftAnim.speed = 0.8f;
-	runRightAnim.speed = runLeftAnim.speed = 1.0f;
+	idleRightAnim.speed = idleLeftAnim.speed = 0.6f;
+	runRightAnim.speed = runLeftAnim.speed = 0.7f;
 
 	idleRightAnim.PushBack({ 0,0,22,26 });
 	idleRightAnim.PushBack({ 32,0,22,26 });
@@ -128,17 +129,34 @@ bool Player::PostUpdate()
 	return true;
 }
 
-void Player::OnCollision(Collider* a, Collider* b) {
-	Collider* c;
+void Player::OnCollision(Collider* a, Collider* b)
+{
+	int diffPosX = a->rect.x + a->rect.w - b->rect.x;
+	int diffNegX = a->rect.x - (b->rect.x + b->rect.w);
+	int diffPosY = b->rect.y + b->rect.h - a->rect.y;
+	int diffNegY = b->rect.y - (a->rect.y + a->rect.h);
 
-	if (&a != &collider) {
-		c = a;
-		a = b;
-		b = c;
+	if (std::min(std::abs(diffPosX), std::abs(diffNegX)) < std::min(std::abs(diffPosY), std::abs(diffNegY)))
+	{
+		if (std::abs(diffPosX) < std::abs(diffNegX))
+		{
+			position.x -= diffPosX;
+		}
+		else
+		{
+			position.x -= diffNegX;
+		}
 	}
-
-	if (a->rect.x + a->rect.w > b->rect.x) {
-		position.x -= a->rect.x + a->rect.w - b->rect.x;
+	else
+	{
+		if (std::abs(diffPosY) < std::abs(diffNegY))
+		{
+			position.y -= diffPosY;
+		}
+		else
+		{
+			position.y -= diffNegY;
+		}
 	}
 }
 

@@ -29,8 +29,14 @@ bool Collisions::Start()
 }
 
 // Called each loop iteration
-bool Collisions::PreUpdate()
-{
+bool Collisions::PreUpdate() {
+	bool ret = true;
+
+	return ret;
+}
+
+bool Collisions::Update(float dt) {
+
 	bool ret = true;
 
 	for (int i = 0; i < dynamicColliders.count(); i++) {
@@ -40,7 +46,6 @@ bool Collisions::PreUpdate()
 					if (m == nullptr) break;
 					m->OnCollision(dynamicColliders[i], staticColliders[j]);
 				}
-
 				for each (Module * m in staticColliders[j]->listeners) {
 					if (m == nullptr) break;
 					m->OnCollision(staticColliders[j], dynamicColliders[i]);
@@ -48,12 +53,6 @@ bool Collisions::PreUpdate()
 			}
 		}
 	}
-	return ret;
-}
-
-bool Collisions::Update(float dt)
-{
-	bool ret = true;
 	return ret;
 }
 
