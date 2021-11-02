@@ -131,12 +131,12 @@ bool Player::PostUpdate()
 
 void Player::OnCollision(Collider* a, Collider* b)
 {
-	int diffPosX = a->rect.x + a->rect.w - b->rect.x;
-	int diffNegX = a->rect.x - (b->rect.x + b->rect.w);
-	int diffPosY = b->rect.y + b->rect.h - a->rect.y;
-	int diffNegY = b->rect.y - (a->rect.y + a->rect.h);
+	/*int diffPosX = a->rect.x + a->rect.w - b->rect.x;
+	int diffNegX = b->rect.x + b->rect.w - a->rect.x;
+	int diffPosY = a->rect.y + a->rect.h - b->rect.y;
+	int diffNegY = b->rect.y + b->rect.h - a->rect.y;*/
 
-	if (std::min(std::abs(diffPosX), std::abs(diffNegX)) < std::min(std::abs(diffPosY), std::abs(diffNegY)))
+	/*if (std::min(std::abs(diffPosX), std::abs(diffNegX)) < std::min(std::abs(diffPosY), std::abs(diffNegY)))
 	{
 		if (std::abs(diffPosX) < std::abs(diffNegX))
 		{
@@ -157,7 +157,35 @@ void Player::OnCollision(Collider* a, Collider* b)
 		{
 			position.y -= diffNegY;
 		}
+	}*/
+
+	int deltaX = a->rect.x - b->rect.x;
+	int deltaY = a->rect.y - b->rect.y;
+
+	if (std::abs(deltaX) > std::abs(deltaY))
+	{
+		if (deltaX > 0) {
+			position.x += b->rect.x + b->rect.w - a->rect.x;
+		}
+		else
+		{
+			position.x -= a->rect.x + a->rect.w - b->rect.x;
+		}
 	}
+	else
+	{
+		if (deltaY > 0)
+		{
+			position.y += b->rect.y + b->rect.h - a->rect.y;
+		}
+		else
+		{
+			position.y -= a->rect.y + a->rect.h - b->rect.y;
+		}
+
+		collider->SetPos(position.x, position.y);
+	}
+
 }
 
 //bool Player::Awake()
