@@ -118,8 +118,8 @@ bool Player::Start()
 
 bool Player::Update(float dt)
 {
-	app->player->UpdateState();
-	app->player->UpdateLogic();
+	app->player->UpdateState(dt);
+	app->player->UpdateLogic(dt);
 
 	return true;
 }
@@ -135,33 +135,6 @@ bool Player::PostUpdate()
 
 void Player::OnCollision(Collider* a, Collider* b)
 {
-	/*int diffPosX = a->rect.x + a->rect.w - b->rect.x;
-	int diffNegX = b->rect.x + b->rect.w - a->rect.x;
-	int diffPosY = a->rect.y + a->rect.h - b->rect.y;
-	int diffNegY = b->rect.y + b->rect.h - a->rect.y;*/
-
-	/*if (std::min(std::abs(diffPosX), std::abs(diffNegX)) < std::min(std::abs(diffPosY), std::abs(diffNegY)))
-	{
-		if (std::abs(diffPosX) < std::abs(diffNegX))
-		{
-			position.x -= diffPosX;
-		}
-		else
-		{
-			position.x -= diffNegX;
-		}
-	}
-	else
-	{
-		if (std::abs(diffPosY) < std::abs(diffNegY))
-		{
-			position.y -= diffPosY;
-		}
-		else
-		{
-			position.y -= diffNegY;
-		}
-	}*/
 
 	int deltaX = a->rect.x - b->rect.x;
 	int deltaY = a->rect.y - b->rect.y;
@@ -184,35 +157,17 @@ void Player::OnCollision(Collider* a, Collider* b)
 		}
 		else
 		{
+			verticalVelocity = 0.0f;
+			ChangeState(playerState, IDLE);
 			position.y -= a->rect.y + a->rect.h - b->rect.y;
-		}
-
-		collider->SetPos(position.x, position.y);
+		}		
 	}
+
+	collider->SetPos(position.x, position.y);
 
 }
 
-//bool Player::Awake()
-//{
-//	bool ret = true;
-//	position.x = 30;
-//	position.y = 30;
-//
-//	LOG("Loading Player textures");
-//
-//	texture = app->tex->Load("Assets/SpriteSheet.png");
-//	currentAnim = &idleRightAnim;
-//
-//	if (texture == nullptr)
-//	{
-//		LOG("Could't load player textures");
-//		ret = false;
-//	}
-//
-//	return ret;
-//}
-//
-void Player::UpdateState()
+void Player::UpdateState(float dt)
 {
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 		isGoingRight = false;
@@ -223,14 +178,24 @@ void Player::UpdateState()
 	{
 	case IDLE:
 	{
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT ||
-			app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			ChangeState(playerState, RUNNING);
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			ChangeState(playerState, JUMPING);
+			verticalVelocity += jumpForce;
 
+			if (verticalVelocity > maxVerticalVelocity)
+			{
+				verticalVelocity = maxVerticalVelocity;
+			}
+
+			if (verticalVelocity < -maxVerticalVelocity)
+			{
+				verticalVelocity = -maxVerticalVelocity;
+			}
+
+			ChangeState(playerState, JUMPING);
 		}
 
 		if (isDead == true) ChangeState(playerState, DYING);
@@ -239,15 +204,25 @@ void Player::UpdateState()
 	}
 	case RUNNING:
 	{
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		if (!(app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && !(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 		{
-
-		}
-		else
 			ChangeState(playerState, IDLE);
+		}
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
+			verticalVelocity += jumpForce;
+
+			if (verticalVelocity > maxVerticalVelocity)
+			{
+				verticalVelocity = maxVerticalVelocity;
+			}
+
+			if (verticalVelocity < -maxVerticalVelocity)
+			{
+				verticalVelocity = -maxVerticalVelocity;
+			}
+
 			ChangeState(playerState, JUMPING);
 		}
 
@@ -261,23 +236,7 @@ void Player::UpdateState()
 		{
 			ChangeState(playerState, DOUBLE_JUMPING);
 		}
-
-		break;
-	}
-	case DOUBLE_JUMPING:
-	{
-		break;
-	}
-	case FALLING:
-	{
-		/*if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		{
-			if (jumpsLeft == 2)
-				ChangeState(FALLING, JUMPING);
-			else if (jumpsLeft == 1)
-				ChangeState(FALLING, DOUBLE_JUMPING);
-		}*/
-
+		
 		break;
 	}
 	case DYING:
@@ -288,11 +247,21 @@ void Player::UpdateState()
 	}
 }
 
-void Player::UpdateLogic()
+void Player::UpdateLogic(float dt)
 {
-	position.y += gravityForce;
+	verticalVelocity -= gravity * dt;
 
-	position.y -= jumpForce;
+	if (verticalVelocity > maxVerticalVelocity)
+	{
+		verticalVelocity = maxVerticalVelocity;
+	}
+
+	if (verticalVelocity < -maxVerticalVelocity)
+	{
+		verticalVelocity = -maxVerticalVelocity;
+	}
+
+	position.y -= verticalVelocity;
 
 	switch (playerState)
 	{
@@ -319,75 +288,21 @@ void Player::UpdateLogic()
 			position.x -= speed;
 		}
 
-
-
 		break;
 	}
 	case(JUMPING):
 	{
-
-		if (jumpCounter > 0)
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
 		{
-			--jumpCounter;
-
-			jumpForce = jumpForceValue;
-			jumpsLeft--;
-
-			if (isGoingRight == true)
-				currentAnim = &jumpRightAnim;
-			else
-				currentAnim = &jumpLeftAnim;
-		}
-		else
-		{
-			jumpForce = 0;
-			ChangeState(JUMPING, FALLING);
-			jumpCounter = jumpCounterValue;
-		}
-
-		break;
-	}
-
-	case(FALLING):
-	{
-
-		if (isGoingRight == true)
-			currentAnim = &fallRightAnim;
-		else
-			currentAnim = &fallLeftAnim;
-
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		{
-			position.x += speed;
-
-		}
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		{
+			currentAnim = &runLeftAnim;
 			position.x -= speed;
-
 		}
-
-
-
-		ChangeState(FALLING, IDLE);
-	}
-
-	case(DOUBLE_JUMPING):
-	{
-		//jumpForce = jumpForceValue;
-
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
 		{
+			currentAnim = &runRightAnim;
 			position.x += speed;
-
 		}
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		{
-			position.x -= speed;
-
-		}
-
-
+		
 		break;
 	}
 	case(DYING):
@@ -400,7 +315,6 @@ void Player::UpdateLogic()
 		break;
 
 	}
-
 	}
 
 	collider->SetPos(position.x, position.y);
@@ -411,7 +325,7 @@ void Player::UpdateLogic()
 void Player::ChangeState(PlayerState previousState, PlayerState newState)
 {
 
-	switch (newState)
+	/*switch (newState)
 	{
 	case(IDLE):
 	{
@@ -450,7 +364,7 @@ void Player::ChangeState(PlayerState previousState, PlayerState newState)
 	{
 		break;
 	}
-	}
+	}*/
 
 	playerState = newState;
 }
