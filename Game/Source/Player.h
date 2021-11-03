@@ -50,12 +50,16 @@ public:
 	Animation appearAnim;
 	Animation disappearRightAnim;
 	Animation disappearLeftAnim;
+	Animation doubleJumpRightAnim;
+	Animation doubleJumpLeftAnim;
 
 	Point<int> position;
 
 private:
 	unsigned int speed = 7;
 	unsigned int jumpForce = 0;
+	unsigned int jumpCounter = 6;
+	unsigned int jumpCounterValue = 6;
 	unsigned int jumpForceValue = 45;
 
 	unsigned int gravityForce = 11;

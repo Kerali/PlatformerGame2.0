@@ -91,6 +91,10 @@ bool Player::Start()
 
 	jumpLeftAnim.PushBack({ 68,188,22,28 });
 
+	doubleJumpLeftAnim.PushBack({ 68,188,22,28 });
+
+	doubleJumpRightAnim.PushBack({ 0,188,22,28 });
+
 	fallRightAnim.PushBack({ 22,188,23,28 });
 
 	fallLeftAnim.PushBack({ 45,188,23,28 });
@@ -266,13 +270,13 @@ void Player::UpdateState()
 	}
 	case FALLING:
 	{
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		/*if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			if (jumpsLeft == 2)
 				ChangeState(FALLING, JUMPING);
 			else if (jumpsLeft == 1)
 				ChangeState(FALLING, DOUBLE_JUMPING);
-		}
+		}*/
 
 		break;
 	}
@@ -286,12 +290,7 @@ void Player::UpdateState()
 
 void Player::UpdateLogic()
 {
-	//change to collider
-	if (position.y < 130)
-	{
-		position.y += gravityForce;
-		//jumpForce = 0;
-	}
+	position.y += gravityForce;
 
 	position.y -= jumpForce;
 
@@ -327,22 +326,30 @@ void Player::UpdateLogic()
 	case(JUMPING):
 	{
 
-		jumpForce = jumpForceValue;
-		jumpsLeft--;
+		if (jumpCounter > 0)
+		{
+			--jumpCounter;
 
-		if (isGoingRight == true)
-			currentAnim = &jumpRightAnim;
+			jumpForce = jumpForceValue;
+			jumpsLeft--;
+
+			if (isGoingRight == true)
+				currentAnim = &jumpRightAnim;
+			else
+				currentAnim = &jumpLeftAnim;
+		}
 		else
-			currentAnim = &jumpLeftAnim;
-
-		ChangeState(JUMPING, FALLING);
+		{
+			jumpForce = 0;
+			ChangeState(JUMPING, FALLING);
+			jumpCounter = jumpCounterValue;
+		}
 
 		break;
 	}
 
 	case(FALLING):
 	{
-		jumpForce = 0;
 
 		if (isGoingRight == true)
 			currentAnim = &fallRightAnim;
@@ -367,7 +374,7 @@ void Player::UpdateLogic()
 
 	case(DOUBLE_JUMPING):
 	{
-		jumpForce = jumpForceValue;
+		//jumpForce = jumpForceValue;
 
 		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
@@ -408,7 +415,6 @@ void Player::ChangeState(PlayerState previousState, PlayerState newState)
 	{
 	case(IDLE):
 	{
-		//currentAnimation = &(goingRight == false ? idleLeftAnim : idleRightAnim);
 		break;
 	}
 	case(RUNNING):
@@ -419,7 +425,7 @@ void Player::ChangeState(PlayerState previousState, PlayerState newState)
 			isGoingRight = false;
 		else
 			isGoingRight = true;
-		//currentAnimation = &(goingRight == false ? leftAnim : rightAnim);
+
 		break;
 	}
 	case(JUMPING):
@@ -428,8 +434,7 @@ void Player::ChangeState(PlayerState previousState, PlayerState newState)
 			isGoingRight = false;
 		else
 			isGoingRight = true;
-		//currentAnimation = &climbAnim;
-		break;
+
 	}
 	case(DOUBLE_JUMPING):
 	{
