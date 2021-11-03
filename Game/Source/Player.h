@@ -35,8 +35,8 @@ public:
 	bool PostUpdate();
 	void OnCollision(Collider* a, Collider* b);
 
-	void UpdateState();
-	void UpdateLogic();
+	void UpdateState(float dt);
+	void UpdateLogic(float dt);
 	void ChangeState(PlayerState previous, PlayerState next);
 
 	Animation idleRightAnim;
@@ -57,13 +57,10 @@ public:
 
 private:
 	unsigned int speed = 7;
-	unsigned int jumpForce = 0;
-	unsigned int jumpCounter = 6;
-	unsigned int jumpCounterValue = 6;
-	unsigned int jumpForceValue = 45;
-
-	unsigned int gravityForce = 11;
-	unsigned int gravityForceValue = 11;
+	float gravity = 80.0f;
+	float verticalVelocity = 0.0f;
+	float maxVerticalVelocity = 30.0f;
+	float jumpForce = 15.0f;
 
 	Collider* collider;
 

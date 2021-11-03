@@ -17,7 +17,7 @@ bool Player::Start()
 	bool ret = true;
 
 	position.x = 160;
-	position.y = 966;
+	position.y = 760;
 
 	LOG("Loading Player textures");
 

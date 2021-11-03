@@ -114,7 +114,6 @@ private:
 	pugi::xml_node configApp;
 
 	uint frames;
-	float dt;
 
 	const char* saveFileName = "savegame.xml";
 
@@ -123,6 +122,7 @@ private:
 
 	const int targetFPS = 60;
 	const int frameDelay = 1000 / targetFPS;
+	float dt = frameDelay / 1000.0f;
 
 	long long frameStart;
 	int frameTime;
