@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="206" height="78" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#434563" nextlayerid="22" nextobjectid="8">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="206" height="78" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#434563" nextlayerid="22" nextobjectid="8">
  <editorsettings>
   <export target="../../../../../../level1..json" format="json"/>
  </editorsettings>
@@ -96471,7 +96471,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="7" name="groundColliders" width="206" height="78" visible="0">
+ <layer id="7" name="groundColliders" width="206" height="78">
   <properties>
    <property name="draw" type="int" value="0"/>
    <property name="navigation" type="int" value="1"/>
@@ -225081,7 +225081,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="18" name="secretMessageCollider" width="206" height="78" visible="0">
+ <layer id="18" name="secretMessageCollider" width="206" height="78">
   <properties>
    <property name="draw" type="int" value="0"/>
    <property name="navigation" type="int" value="1"/>
@@ -241158,7 +241158,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="15" name="checkpoint1Colliders" width="206" height="78" visible="0">
+ <layer id="15" name="checkpoint1Colliders" width="206" height="78">
   <properties>
    <property name="checkpoint" type="int" value="1"/>
    <property name="draw" type="int" value="0"/>
@@ -247635,8 +247635,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="355"/>
-   <tile gid="355"/>
    <tile/>
    <tile/>
    <tile/>
@@ -247841,8 +247839,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="355"/>
-   <tile gid="355"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -257235,7 +257235,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="16" name="checkpoint2Colliders" width="206" height="78" visible="0">
+ <layer id="16" name="checkpoint2Colliders" width="206" height="78">
   <properties>
    <property name="checkpoint" type="int" value="2"/>
    <property name="draw" type="int" value="0"/>
@@ -263777,8 +263777,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="355"/>
-   <tile gid="355"/>
    <tile/>
    <tile/>
    <tile/>
@@ -263983,8 +263981,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="355"/>
-   <tile gid="355"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
