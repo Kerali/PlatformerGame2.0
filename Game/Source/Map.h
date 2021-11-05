@@ -103,6 +103,7 @@ struct MapData
 	MapTypes type;
 	List<TileSet*> tilesets;
 	List<MapLayer*> maplayers;
+	Properties properties;
 
 	// L04: TODO 2: Add a list/array of layers to the map
 };

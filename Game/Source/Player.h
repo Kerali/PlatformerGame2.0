@@ -30,6 +30,8 @@ private:
 	unsigned int jumpsLeft = 2;
 	bool isDead;
 public:
+	Player();
+	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool Update(float dt);
 	bool PostUpdate();
@@ -38,6 +40,11 @@ public:
 	void UpdateState(float dt);
 	void UpdateLogic(float dt);
 	void ChangeState(PlayerState previous, PlayerState next);
+
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&);
+
+	void Reload();
 
 	Animation idleRightAnim;
 	Animation idleLeftAnim;
@@ -56,11 +63,14 @@ public:
 	Point<int> position;
 
 private:
-	unsigned int speed = 7;
-	float gravity = 80.0f;
+	unsigned int speed;
+	float gravity;
 	float verticalVelocity = 0.0f;
 	float maxVerticalVelocity = 30.0f;
-	float jumpForce = 15.0f;
+	float jumpForce;
+
+	int maxJumps = 2;
+	int availableJumps = 2;
 
 	Collider* collider;
 
@@ -68,6 +78,8 @@ private:
 	bool canMoveLeft = true;
 	bool canMoveUp = true;
 	bool canMoveDown = true;
+
+	const char* texturePath;
 };
 
 

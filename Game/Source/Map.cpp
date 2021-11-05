@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "Map.h"
 #include "Collisions.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -127,18 +128,16 @@ bool Map::CleanUp()
 
     // L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
     // Remove all tilesets
-	ListItem<TileSet*>* item;
-	item = data.tilesets.start;
 
-	while (item != NULL)
-	{
-		RELEASE(item->data);
-		item = item->next;
-	}
 	data.tilesets.clear();
 
 	// L04: TODO 2: clean up all layer data
 	// Remove all layers
+
+	data.maplayers.clear();
+	data.properties.list.clear();
+
+	app->collisions->CleanUp();
 
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -149,6 +148,8 @@ bool Map::CleanUp()
 // Load new map
 bool Map::Load(const char* filename)
 {
+	CleanUp();
+
     bool ret = true;
     SString tmp("%s%s", folder.GetString(), filename);
 
@@ -212,6 +213,8 @@ bool Map::Load(const char* filename)
     }
 
 	CreateColliders();
+	app->player->position.x = data.properties.GetProperty("playerX", 0) * data.tileWidth;
+	app->player->position.y = data.properties.GetProperty("playerY", 0) * data.tileHeight;
 
     mapLoaded = ret;
 
@@ -263,6 +266,7 @@ bool Map::LoadMap()
 		else {
 			data.type = MAPTYPE_UNKNOWN;
 		}
+		LoadProperties(map.child("properties"), &data.properties);
 	}
 
 	return ret;
@@ -377,7 +381,16 @@ bool Map::CreateColliders() {
 			if (data.maplayers[i]->data[j] == 0) continue;
 			int layerWidth = data.maplayers[i]->width;
 			SDL_Rect section = { j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, data.tileWidth, data.tileHeight };
-			app->collisions->AddCollider(section, Collider::Type::STATIC, this);
+			if (data.maplayers[i]->properties.GetProperty("nextLevel", 0) == 1) {
+				app->collisions->AddCollider(section, Collider::Type::ENDLEVEL, this);
+			}
+			else if (data.maplayers[i]->properties.GetProperty("death", 0) == 1) {
+				app->collisions->AddCollider(section, Collider::Type::DEATH, this);
+			}
+			else
+			{
+				app->collisions->AddCollider(section, Collider::Type::STATIC, this);
+			}
 		}
 	}
 

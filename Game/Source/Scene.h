@@ -32,6 +32,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void LoadLevel(SString name);
+
+public:
+
+	SString currentLevel;
+
 private:
 
 };

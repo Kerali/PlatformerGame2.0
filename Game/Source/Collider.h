@@ -12,7 +12,9 @@ struct Collider
 	enum Type
 	{
 		STATIC,
-		DYNAMIC
+		DYNAMIC,
+		ENDLEVEL,
+		DEATH
 	};
 
 	//Methods

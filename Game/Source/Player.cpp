@@ -7,31 +7,46 @@
 #include "SDL/include/SDL_scancode.h"
 #include "Collisions.h"
 #include "Render.h"
+#include "Scene.h"
 
 #include "../Defs.h"
 #include "../Log.h"
 #include <math.h>
 
+Player::Player() {
+	name.create("player");
+}
+
+bool Player::Awake(pugi::xml_node& config) {
+	LOG("Loading player config");
+	bool ret = true;
+
+	texturePath = config.child("texture").child_value();
+
+	pugi::xml_node movement = config.child("movement");
+
+	gravity = movement.attribute("gravity").as_float();
+	jumpForce = movement.attribute("jumpForce").as_float();
+	speed = movement.attribute("speed").as_int();
+	maxJumps = movement.attribute("maxJumps").as_int();
+
+	return ret;
+}
+
 bool Player::Start()
 {
 	bool ret = true;
-
-	position.x = 160;
-	position.y = 760;
 
 	LOG("Loading Player textures");
 
 	//texture = app->tex->Load("SpriteSheet.png");
 
 	//texture = app->tex->Load("Assets/textures/Main Characters/Virtual Guy/Idle (32x32).png");
-	texture = app->tex->Load("Assets/textures/Main Characters/Virtual Guy/SpriteSheet.png");
-
-	if (texture == nullptr)
-		LOG("Couldn't load player texture");
-
-	currentAnim = &idleRightAnim;
+	texture = app->tex->Load(texturePath);
 
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
+
+	currentAnim = &idleRightAnim;
 
 	idleRightAnim.loop = idleLeftAnim.loop = runRightAnim.loop = runLeftAnim.loop = true;
 	idleRightAnim.speed = idleLeftAnim.speed = 0.6f;
@@ -133,8 +148,28 @@ bool Player::PostUpdate()
 	return true;
 }
 
+bool Player::Load(pugi::xml_node&)
+{
+	return true;
+}
+
+bool Player::Save(pugi::xml_node&)
+{
+	return true;
+}
+
 void Player::OnCollision(Collider* a, Collider* b)
 {
+	if (b->type == Collider::Type::ENDLEVEL)
+	{
+		printf("Game Over");
+	}
+
+	if (b->type == Collider::Type::DEATH)
+	{
+		SDL_Delay(1500);
+		app->scene->LoadLevel(app->scene->currentLevel);
+	}
 
 	int deltaX = a->rect.x - b->rect.x;
 	int deltaY = a->rect.y - b->rect.y;
@@ -153,13 +188,18 @@ void Player::OnCollision(Collider* a, Collider* b)
 	{
 		if (deltaY > 0)
 		{
+			verticalVelocity = 0;
 			position.y += b->rect.y + b->rect.h - a->rect.y;
 		}
 		else
 		{
-			verticalVelocity = 0.0f;
-			ChangeState(playerState, IDLE);
-			position.y -= a->rect.y + a->rect.h - b->rect.y;
+			if (verticalVelocity < 0)
+			{
+				verticalVelocity = 0.0f;
+				ChangeState(playerState, IDLE);
+				position.y -= a->rect.y + a->rect.h - b->rect.y;
+				availableJumps = maxJumps;
+			}
 		}		
 	}
 
@@ -183,6 +223,11 @@ void Player::UpdateState(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
+			if (availableJumps > 0)
+			{
+				availableJumps--;
+			}
+
 			verticalVelocity += jumpForce;
 
 			if (verticalVelocity > maxVerticalVelocity)
@@ -211,6 +256,11 @@ void Player::UpdateState(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
+			if (availableJumps > 0)
+			{
+				availableJumps--;
+			}
+
 			verticalVelocity += jumpForce;
 
 			if (verticalVelocity > maxVerticalVelocity)
@@ -234,8 +284,23 @@ void Player::UpdateState(float dt)
 		// or simply add the falling sprite on jumping animations
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			ChangeState(playerState, DOUBLE_JUMPING);
-		}
+			if (availableJumps > 0)
+			{
+				availableJumps--;
+
+				verticalVelocity = jumpForce;
+
+				if (verticalVelocity > maxVerticalVelocity)
+				{
+					verticalVelocity = maxVerticalVelocity;
+				}
+
+				if (verticalVelocity < -maxVerticalVelocity)
+				{
+					verticalVelocity = -maxVerticalVelocity;
+				}
+			}
+		}		
 		
 		break;
 	}
@@ -324,47 +389,10 @@ void Player::UpdateLogic(float dt)
 
 void Player::ChangeState(PlayerState previousState, PlayerState newState)
 {
-
-	/*switch (newState)
-	{
-	case(IDLE):
-	{
-		break;
-	}
-	case(RUNNING):
-	{
-
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT
-			)
-			isGoingRight = false;
-		else
-			isGoingRight = true;
-
-		break;
-	}
-	case(JUMPING):
-	{
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			isGoingRight = false;
-		else
-			isGoingRight = true;
-
-	}
-	case(DOUBLE_JUMPING):
-	{
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-
-			isGoingRight = false;
-		else
-			isGoingRight = true;
-
-		break;
-	}
-	case(DYING):
-	{
-		break;
-	}
-	}*/
-
 	playerState = newState;
+}
+
+void Player::Reload()
+{
+	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 }

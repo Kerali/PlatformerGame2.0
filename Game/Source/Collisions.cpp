@@ -91,13 +91,13 @@ Collider* Collisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* li
 
 	ret = new Collider(rect, type, listener);
 
-	if (type == Collider::Type::STATIC)
-	{
-		staticColliders.add(ret);
-	}
-	else if (type == Collider::Type::DYNAMIC)
+	if (type == Collider::Type::DYNAMIC)
 	{
 		dynamicColliders.add(ret);
+	}
+	else
+	{
+		staticColliders.add(ret);
 	}
 	return ret;
 }

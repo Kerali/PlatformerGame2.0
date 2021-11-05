@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -31,7 +32,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-
+	currentLevel.create("level1.tmx");
 	app->map->Load("level1.tmx");
 
 	return true;
@@ -46,28 +47,21 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y += 20;
-
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y -= 20;
-
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x += 40;
-
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x -= 40;
-
-	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) 
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) 
 	{
 		app->RequestLoad();
 		LOG("LOAD REQUESTED");
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
 		app->RequestSave();
 		LOG("SAVE REQUESTED");
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		LoadLevel("level1.tmx");
 	}
 
 	// 8 to volume down and 9 to volume up
@@ -83,6 +77,13 @@ bool Scene::Update(float dt)
 	}
 
 	return true;
+}
+
+void Scene::LoadLevel(SString name)
+{
+	currentLevel = name;
+	app->map->Load(name.GetString());
+	app->player->Reload();
 }
 
 // Called each loop iteration
