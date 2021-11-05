@@ -1,8 +1,10 @@
-# Platformer Game
+# Tani: The Platformer
 
 ## Description
 
-This repository is used for the subject Game Development cursed in CITM TTC UPC
+Welcome to "Tani: The Platformer"! A new brand game developed by Víctor Jara for the subject Game Development cursed in CITM UPC (TTC-Barcelona).
+
+Prepare to get into a new world while you control Tani, an astronaut who is visiting different worlds to discover treasures. Will you help him to get them?
 
 ## Key Features
 
