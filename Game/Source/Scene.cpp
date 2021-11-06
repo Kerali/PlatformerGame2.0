@@ -32,7 +32,27 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	currentLevel.create("level1.tmx");
+	//screenTexture = app->tex->Load("title and end screen.png"); 
+
+	//screenTexture = app->tex->Load("Assets/title screen/title and end screen.png");
+	screenTexture = app->tex->Load("Assets/Textures/Screens/screens_finished.png");
+	if (screenTexture == nullptr)LOG("could'nt load title screen");
+
+	titleScreenAnim.PushBack({ 0,360,480,360 });
+	titleScreenAnim.PushBack({ 480,360,480,360 });
+
+	gameOverAnim.PushBack({ 0,720,480,360 });
+	gameOverAnim.PushBack({ 480,720,480,360 });
+
+	logoScreenAnim.PushBack({ 0,0,480,360 });
+	logoScreenAnim.PushBack({ 480,0,480,360 });
+
+	turnOffAnim.PushBack({ 0,0,0,0, });
+
+
+	titleScreenAnim.loop = gameOverAnim.loop = logoScreenAnim.loop = true;
+	titleScreenAnim.speed = gameOverAnim.speed = logoScreenAnim.speed = 0.5f;
+
 	app->map->Load("level1.tmx");
 
 	return true;
@@ -47,6 +67,25 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	switch (gameplayState)
+	{
+	case(LOGO_SCREEN):
+		screenDisplayAnim = &logoScreenAnim;
+		break;
+	case(TITLE_SCREEN):
+		screenDisplayAnim = &titleScreenAnim;
+		break;
+	case(PLAYING):
+		screenDisplayAnim = &turnOffAnim;
+		break;
+	case(GAME_OVER_SCREEN):
+		screenDisplayAnim = &gameOverAnim;
+		break;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && gameplayState == TITLE_SCREEN)
+		gameplayState = PLAYING;
+
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) 
 	{
 		app->RequestLoad();
@@ -99,6 +138,10 @@ bool Scene::PostUpdate()
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
+
+	SDL_Rect rect = screenDisplayAnim->GetCurrentFrame();
+
+	app->render->DrawTexture(screenTexture, 0, 800, &rect);
 
 	return ret;
 }
