@@ -64,7 +64,18 @@ bool Collisions::PostUpdate()
 	{
 		for (uint i = 0; i < staticColliders.count(); ++i)
 		{
-			DrawCollider(&staticColliders[i]->rect, 0, 255, 0, 80);
+			if (staticColliders[i]->type == Collider::Type::DEATH)
+			{
+				DrawCollider(&staticColliders[i]->rect, 255, 0, 0, 80);
+			}
+			else if (staticColliders[i]->type == Collider::Type::ENDLEVEL)
+			{
+				DrawCollider(&staticColliders[i]->rect, 0, 0, 255, 80);
+			}
+			else
+			{
+				DrawCollider(&staticColliders[i]->rect, 0, 255, 0, 80);
+			}
 		}
 
 		for (uint i = 0; i < dynamicColliders.count(); ++i)
