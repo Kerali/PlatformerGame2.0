@@ -122,7 +122,6 @@ bool Player::Start()
 	for (int i = 0; i < 390; i += 55)
 	{
 		appearAnim.PushBack({ i,227,55,55 });
-
 	}
 
 	for (int i = 0; i < 390; i += 55)
@@ -136,8 +135,10 @@ bool Player::Start()
 
 bool Player::Update(float dt)
 {
-	app->player->UpdateState(dt);
-	app->player->UpdateLogic(dt);
+	UpdateState(dt);
+	UpdateLogic(dt);
+
+	if (godMode)GodMovement();
 
 	return true;
 }
@@ -163,6 +164,8 @@ bool Player::Save(pugi::xml_node&)
 
 void Player::OnCollision(Collider* a, Collider* b)
 {
+	if (godMode) return;
+
 	if (b->type == Collider::Type::ENDLEVEL)
 	{
 		SDL_Delay(1000);
@@ -215,9 +218,9 @@ void Player::OnCollision(Collider* a, Collider* b)
 
 void Player::UpdateState(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		isGoingRight = false;
-	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		isGoingRight = true;
 
 	switch (playerState)
@@ -239,7 +242,7 @@ void Player::UpdateState(float dt)
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			ChangeState(playerState, RUNNING);
 
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !godMode)
 		{
 			if (availableJumps > 0)
 			{
@@ -330,7 +333,7 @@ void Player::UpdateState(float dt)
 
 void Player::UpdateLogic(float dt)
 {
-	verticalVelocity -= gravity * dt;
+	if (!godMode) verticalVelocity -= gravity * dt;
 
 	if (verticalVelocity > maxVerticalVelocity)
 	{
@@ -372,7 +375,6 @@ void Player::UpdateLogic(float dt)
 			currentAnim = &runRightAnim;
 			position.x += speed;
 		}
-
 		else
 		{
 			currentAnim = &runLeftAnim;
@@ -387,12 +389,12 @@ void Player::UpdateLogic(float dt)
 		{
 			if (availableJumps == 1)
 			{
-				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
 					currentAnim = &jumpLeftAnim;
 					position.x -= speed;
 				}
-				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
 					currentAnim = &jumpRightAnim;
 					position.x += speed;
@@ -400,12 +402,12 @@ void Player::UpdateLogic(float dt)
 			}
 			if (availableJumps == 0)
 			{
-				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
 					currentAnim = &doubleJumpLeftAnim;
 					position.x -= speed;
 				}
-				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
 					currentAnim = &doubleJumpRightAnim;
 					position.x += speed;
@@ -414,12 +416,12 @@ void Player::UpdateLogic(float dt)
 		}
 		else
 		{
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
 				currentAnim = &fallLeftAnim;
 				position.x -= speed;
 			}
-			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			{
 				currentAnim = &fallRightAnim;
 				position.x += speed;
@@ -434,6 +436,11 @@ void Player::UpdateLogic(float dt)
 			currentAnim = &disappearRightAnim;
 		else
 			currentAnim = &disappearLeftAnim;
+
+		if (isDead == false)
+		{
+			isDead = true;
+		}
 
 		if (currentAnim->HasFinished())
 		{
@@ -466,4 +473,10 @@ void Player::Reload()
 	playerState = PlayerState::IDLE;
 	verticalVelocity = 0.0f;
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
+}
+
+void Player::GodMovement()
+{
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) position.y -= speed;
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) position.y += speed;
 }

@@ -35,9 +35,11 @@ public:
 	bool CleanUp();
 
 	void ToggleColliders();
+	void GodMode();
 
 private:
 	bool isEnabled = true;
+	int storeGravity;
 };
 
 #endif

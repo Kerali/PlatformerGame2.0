@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "Collisions.h"
 #include "Log.h"
+#include "Player.h"
 
 Debug::Debug() : Module()
 {
@@ -37,9 +38,14 @@ bool Debug::Update(float dt)
 {
 	bool ret = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		ToggleColliders();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		GodMode();
 	}
 
 	return ret;
@@ -65,5 +71,21 @@ void Debug::ToggleColliders()
 	else if (app->collisions->showColliders == true) 
 	{
 		app->collisions->showColliders = false;
+	}
+}
+
+void Debug::GodMode()
+{
+	if (app->player->godMode == false)
+	{
+		app->player->ChangeState(app->player->playerState, IDLE);
+		app->player->godMode = true;
+		storeGravity = app->player->gravity;
+		app->player->gravity = 0;
+		app->player->verticalVelocity = 0.0f;
+	}
+	else if (app->player->godMode == true) {
+		app->player->gravity = storeGravity;
+		app->player->godMode = false;
 	}
 }

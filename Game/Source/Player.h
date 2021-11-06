@@ -24,13 +24,16 @@ enum PlayerState {
 class Player : public Module
 {
 private:
-	PlayerState playerState = PlayerState::PREPARE_TO_SPAWN;
 	SDL_Texture* texture = nullptr;
 	Animation* currentAnim = nullptr;
 
 	bool isGoingRight = false;
 	unsigned int jumpsLeft = 2;
+
+public:
+	PlayerState playerState = PlayerState::PREPARE_TO_SPAWN;
 	bool isDead;
+
 public:
 	Player();
 	bool Awake(pugi::xml_node&);
@@ -42,6 +45,7 @@ public:
 	void UpdateState(float dt);
 	void UpdateLogic(float dt);
 	void ChangeState(PlayerState previous, PlayerState next);
+	void GodMovement();
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&);
@@ -65,10 +69,12 @@ public:
 
 	Point<int> position;
 
-private:
-	unsigned int speed;
+	bool godMode = false;
 	float gravity;
 	float verticalVelocity = 0.0f;
+
+private:
+	unsigned int speed;
 	float maxVerticalVelocity = 30.0f;
 	float jumpForce;
 

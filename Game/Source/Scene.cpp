@@ -64,6 +64,11 @@ bool Scene::Update(float dt)
 		LoadLevel("level1.tmx");
 	}
 
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		LoadLevel("level1.tmx");
+	}
+
 	// 8 to volume down and 9 to volume up
 	if (app->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN) 
 	{
@@ -81,6 +86,7 @@ bool Scene::Update(float dt)
 
 void Scene::LoadLevel(SString name)
 {
+	app->player->isDead = false;
 	currentLevel = name;
 	app->map->Load(name.GetString());
 	app->player->Reload();
