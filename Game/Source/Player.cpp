@@ -168,8 +168,7 @@ void Player::OnCollision(Collider* a, Collider* b)
 
 	if (b->type == Collider::Type::ENDLEVEL)
 	{
-		SDL_Delay(1000);
-		printf("Game Over");
+		app->scene->FadeToNewState(Scene::GAME_OVER_SCREEN);
 	}
 
 	if (b->type == Collider::Type::DEATH)
