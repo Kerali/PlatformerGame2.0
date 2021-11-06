@@ -103,7 +103,7 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		LoadLevel("level1.tmx");
+		LoadLevel(currentLevel);
 	}
 
 	// 8 to volume down and 9 to volume up
