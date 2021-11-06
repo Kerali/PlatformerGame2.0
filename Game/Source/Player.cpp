@@ -114,7 +114,10 @@ bool Player::Start()
 
 	fallLeftAnim.PushBack({ 45,188,23,28 });
 
+	prepareToSpawnAnim.PushBack({ 0,0,0,0 });
+
 	appearAnim.loop = disappearLeftAnim.loop = disappearRightAnim.loop = false;
+	appearAnim.speed = disappearLeftAnim.speed = disappearRightAnim.speed = 0.1f;
 
 	for (int i = 0; i < 390; i += 55)
 	{
@@ -162,12 +165,13 @@ void Player::OnCollision(Collider* a, Collider* b)
 {
 	if (b->type == Collider::Type::ENDLEVEL)
 	{
+		SDL_Delay(1000);
 		printf("Game Over");
 	}
 
 	if (b->type == Collider::Type::DEATH)
 	{
-		SDL_Delay(1500);
+		SDL_Delay(1000);
 		app->scene->LoadLevel(app->scene->currentLevel);
 	}
 
@@ -216,6 +220,18 @@ void Player::UpdateState(float dt)
 
 	switch (playerState)
 	{
+	case PREPARE_TO_SPAWN:
+	{
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			ChangeState(PREPARE_TO_SPAWN, SPAWNING);
+		break;
+	}
+	case SPAWNING:
+	{
+		if (currentAnim->HasFinished() == true)
+			ChangeState(SPAWNING, IDLE);
+		break;
+	}
 	case IDLE:
 	{
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -330,6 +346,16 @@ void Player::UpdateLogic(float dt)
 
 	switch (playerState)
 	{
+	case PREPARE_TO_SPAWN:
+	{
+		currentAnim = &prepareToSpawnAnim;
+		break;
+	}
+	case SPAWNING:
+	{
+		currentAnim = &appearAnim;
+		break;
+	}
 	case(IDLE):
 	{
 		if (isGoingRight == true)
@@ -357,15 +383,47 @@ void Player::UpdateLogic(float dt)
 	}
 	case(JUMPING):
 	{
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+		if (verticalVelocity > 0)
 		{
-			currentAnim = &runLeftAnim;
-			position.x -= speed;
+			if (availableJumps == 1)
+			{
+				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+				{
+					currentAnim = &jumpLeftAnim;
+					position.x -= speed;
+				}
+				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+				{
+					currentAnim = &jumpRightAnim;
+					position.x += speed;
+				}
+			}
+			if (availableJumps == 0)
+			{
+				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+				{
+					currentAnim = &doubleJumpLeftAnim;
+					position.x -= speed;
+				}
+				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+				{
+					currentAnim = &doubleJumpRightAnim;
+					position.x += speed;
+				}
+			}
 		}
-		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+		else
 		{
-			currentAnim = &runRightAnim;
-			position.x += speed;
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
+			{
+				currentAnim = &fallLeftAnim;
+				position.x -= speed;
+			}
+			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
+			{
+				currentAnim = &fallRightAnim;
+				position.x += speed;
+			}
 		}
 		
 		break;
