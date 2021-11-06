@@ -117,7 +117,7 @@ bool Player::Start()
 	prepareToSpawnAnim.PushBack({ 0,0,0,0 });
 
 	appearAnim.loop = disappearLeftAnim.loop = disappearRightAnim.loop = false;
-	appearAnim.speed = disappearLeftAnim.speed = disappearRightAnim.speed = 0.1f;
+	appearAnim.speed = disappearLeftAnim.speed = disappearRightAnim.speed = 0.3f;
 
 	for (int i = 0; i < 390; i += 55)
 	{
@@ -128,7 +128,7 @@ bool Player::Start()
 	for (int i = 0; i < 390; i += 55)
 	{
 		disappearLeftAnim.PushBack({ i,282,55,55 });
-
+		disappearRightAnim.PushBack({ i,282,55,55 });
 	}
 
 	return ret;
@@ -171,8 +171,7 @@ void Player::OnCollision(Collider* a, Collider* b)
 
 	if (b->type == Collider::Type::DEATH)
 	{
-		SDL_Delay(1000);
-		app->scene->LoadLevel(app->scene->currentLevel);
+		ChangeState(playerState, DYING);
 	}
 
 	int deltaX = a->rect.x - b->rect.x;
@@ -200,7 +199,10 @@ void Player::OnCollision(Collider* a, Collider* b)
 			if (verticalVelocity < 0)
 			{
 				verticalVelocity = 0.0f;
-				ChangeState(playerState, IDLE);
+				if (playerState != PlayerState::DYING)
+				{
+					ChangeState(playerState, IDLE);
+				}
 				position.y -= a->rect.y + a->rect.h - b->rect.y;
 				availableJumps = maxJumps;
 			}
@@ -258,8 +260,6 @@ void Player::UpdateState(float dt)
 
 			ChangeState(playerState, JUMPING);
 		}
-
-		if (isDead == true) ChangeState(playerState, DYING);
 
 		break;
 	}
@@ -435,6 +435,11 @@ void Player::UpdateLogic(float dt)
 		else
 			currentAnim = &disappearLeftAnim;
 
+		if (currentAnim->HasFinished())
+		{
+			app->scene->LoadLevel(app->scene->currentLevel);
+		}
+
 		break;
 
 	}
@@ -447,10 +452,18 @@ void Player::UpdateLogic(float dt)
 
 void Player::ChangeState(PlayerState previousState, PlayerState newState)
 {
+	if (playerState != PlayerState::DYING && newState == PlayerState::DYING)
+	{
+		disappearLeftAnim.Reset();
+		disappearRightAnim.Reset();
+	}
+
 	playerState = newState;
 }
 
 void Player::Reload()
 {
+	playerState = PlayerState::IDLE;
+	verticalVelocity = 0.0f;
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 }
