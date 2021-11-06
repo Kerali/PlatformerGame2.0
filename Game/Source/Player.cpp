@@ -444,7 +444,7 @@ void Player::UpdateLogic(float dt)
 
 		if (currentAnim->HasFinished())
 		{
-			app->scene->LoadLevel(app->scene->currentLevel);
+			app->scene->FadeToNewState(Scene::GAME_OVER_SCREEN);
 		}
 
 		break;
