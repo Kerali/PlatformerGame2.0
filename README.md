@@ -50,5 +50,3 @@ Prepare to get into a new world while you control Tani, an astronaut who is visi
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
-
-{AdditionalLicenses}
