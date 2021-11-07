@@ -91,7 +91,7 @@ void Map::Draw()
 				}
 
 				int tilesetPosition = tileGid - tileset->firstgid;
-				SDL_Rect section = { tilesetPosition % tileset->numTilesWidth * tileset->tile_width, tilesetPosition / tileset->numTilesWidth * tileset->tile_height, tileset->tile_width, tileset->tile_height };
+				SDL_Rect section = { tilesetPosition % tileset->numTilesWidth * tileset->tileWidth, tilesetPosition / tileset->numTilesWidth * tileset->tileHeight, tileset->tileWidth, tileset->tileHeight };
 				app->render->DrawTexture(tileset->texture, j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, &section);
 
 				break;
@@ -206,7 +206,7 @@ bool Map::Load(const char* filename)
 			TileSet* t = data.tilesets[i];
 			LOG("Tileset ----");
 			LOG("name: %s firstgid: %d", t->name.GetString(), t->firstgid);
-			LOG("tile width: %d tile height: %d", t->tile_width, t->tile_height);
+			LOG("tile width: %d tile height: %d", t->tileWidth, t->tileHeight);
 			LOG("spacing: %d margin: %d", t->spacing, t->margin);
 		}
 		// L04: TODO 4: LOG the info for each loaded layer
@@ -282,8 +282,8 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	set->firstgid = tileset_node.attribute("firstgid").as_int(0);
 	set->margin = tileset_node.attribute("margin").as_int(0);
 	set->spacing = tileset_node.attribute("spacing").as_int(0);
-	set->tile_width = tileset_node.attribute("tilewidth").as_int(0);
-	set->tile_height = tileset_node.attribute("tileheight").as_int(0);
+	set->tileWidth = tileset_node.attribute("tilewidth").as_int(0);
+	set->tileHeight = tileset_node.attribute("tileheight").as_int(0);
 
 	return ret;
 }
@@ -306,8 +306,8 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		set->texture = app->tex->Load(tmp.GetString());
 		set->texWidth = image.attribute("width").as_int(0);
 		set->texHeight = image.attribute("height").as_int(0);
-		set->numTilesWidth = set->texWidth / set->tile_width;
-		set->numTilesHeight = set->texHeight / set->tile_height;
+		set->numTilesWidth = set->texWidth / set->tileWidth;
+		set->numTilesHeight = set->texHeight / set->tileHeight;
 		set->offsetX = image.attribute("offsetx").as_int(0);
 		set->offsetY = image.attribute("offsety").as_int(0);
 	}

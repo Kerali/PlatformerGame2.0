@@ -292,7 +292,7 @@ public:
 		{
 			ListItem<tdata>* p_new_item = new ListItem<tdata>(p_other_list->data);
 
-			p_new_item->next = (p_my_list) ? p_my_list->next : NULL;
+			p_new_item->next = (p_my_list)? p_my_list->next : NULL;
 
 			if(p_new_item->next != NULL)
 				p_new_item->next->prev = p_new_item;

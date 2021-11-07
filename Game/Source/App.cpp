@@ -142,7 +142,8 @@ bool App::Update()
 
 	frameTime = SDL_GetTicks() - frameStart;
 
-	if (frameTime < frameDelay) {
+	if (frameTime < frameDelay)
+	{
 		SDL_Delay(frameDelay - frameTime);
 	}
 
@@ -182,11 +183,13 @@ void App::PrepareUpdate()
 void App::FinishUpdate()
 {
 	// L02: TODO 1: This is a good place to call Load / Save methods
-	if (requestLoad == true) {
+	if (requestLoad == true)
+	{
 		Load();
 	}
 
-	if (requestSave == true) {
+	if (requestSave == true)
+	{
 		Save();
 	}
 	
@@ -205,7 +208,8 @@ bool App::PreUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
+		{
 			continue;
 		}
 
@@ -227,7 +231,8 @@ bool App::DoUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
+		{
 			continue;
 		}
 
@@ -248,7 +253,8 @@ bool App::PostUpdate()
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if(pModule->active == false)
+		{
 			continue;
 		}
 
@@ -304,7 +310,8 @@ const char* App::GetOrganization() const
 // L02: TODO 5: Create a method to actually load an xml file
 // then call all the modules to load themselves
 
-bool App::Load() {
+bool App::Load()
+{
 
 	bool ret = true;
 	
@@ -374,7 +381,8 @@ bool App::Load() {
 	return ret;
 }
 
-bool App::Save() {
+bool App::Save()
+{
 	
 	bool ret = true;
 

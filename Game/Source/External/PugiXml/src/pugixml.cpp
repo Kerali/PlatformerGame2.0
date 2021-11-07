@@ -92,7 +92,7 @@
 #endif
 
 // Simple static assertion
-#define PUGI__STATIC_ASSERT(cond) { static const char condition_failed[(cond) ? 1 : -1] = {0}; (void)condition_failed[0]; }
+#define PUGI__STATIC_ASSERT(cond) { static const char condition_failed[(cond)? 1 : -1] = {0}; (void)condition_failed[0]; }
 
 // Digital Mars C++ bug workaround for passing char loaded from memory via stack
 #ifdef __DMC__
@@ -425,7 +425,7 @@ PUGI__NS_BEGIN
             // full_size == 0 for large strings that occupy the whole page
             assert(full_size % sizeof(void*) == 0);
             assert(full_size < max_encoded_offset || (page->busy_size == full_size && page_offset == 0));
-            header->full_size = static_cast<uint16_t>(full_size < max_encoded_offset ? full_size / sizeof(void*) : 0);
+            header->full_size = static_cast<uint16_t>(full_size < max_encoded_offset? full_size / sizeof(void*) : 0);
 
             // round-trip through void* to avoid 'cast increases required alignment of target type' warning
             // header is guaranteed a pointer-sized alignment, which should be enough for char_t
@@ -446,7 +446,7 @@ PUGI__NS_BEGIN
             xml_memory_page* page = reinterpret_cast<xml_memory_page*>(static_cast<void*>(reinterpret_cast<char*>(header) - page_offset));
 
             // if full_size == 0 then this string occupies the whole page
-            size_t full_size = header->full_size == 0 ? page->busy_size : header->full_size * sizeof(void*);
+            size_t full_size = header->full_size == 0? page->busy_size : header->full_size * sizeof(void*);
 
             deallocate_memory(header, full_size, page);
         }
@@ -459,7 +459,7 @@ PUGI__NS_BEGIN
     {
         const size_t large_allocation_threshold = xml_memory_page_size / 4;
 
-        xml_memory_page* page = allocate_page(size <= large_allocation_threshold ? xml_memory_page_size : size);
+        xml_memory_page* page = allocate_page(size <= large_allocation_threshold? xml_memory_page_size : size);
         out_page = page;
 
         if (!page) return 0;
@@ -903,7 +903,7 @@ PUGI__NS_BEGIN
 
         static value_type any(value_type result, uint32_t ch)
         {
-            return (ch < 0x10000) ? low(result, ch) : high(result, ch);
+            return (ch < 0x10000)? low(result, ch) : high(result, ch);
         }
     };
 
@@ -946,7 +946,7 @@ PUGI__NS_BEGIN
 
         static value_type any(value_type result, uint32_t ch)
         {
-            return (ch < 0x10000) ? low(result, ch) : high(result, ch);
+            return (ch < 0x10000)? low(result, ch) : high(result, ch);
         }
     };
 
@@ -997,7 +997,7 @@ PUGI__NS_BEGIN
 
         static value_type low(value_type result, uint32_t ch)
         {
-            *result = static_cast<uint8_t>(ch > 255 ? '?' : ch);
+            *result = static_cast<uint8_t>(ch > 255? '?' : ch);
 
             return result + 1;
         }
@@ -1101,7 +1101,7 @@ PUGI__NS_BEGIN
 
             while (data < end)
             {
-                unsigned int lead = opt_swap::value ? endian_swap(*data) : *data;
+                unsigned int lead = opt_swap::value? endian_swap(*data) : *data;
 
                 // U+0000..U+D7FF
                 if (lead < 0xD800)
@@ -1118,7 +1118,7 @@ PUGI__NS_BEGIN
                 // surrogate pair lead
                 else if (static_cast<unsigned int>(lead - 0xD800) < 0x400 && data + 1 < end)
                 {
-                    uint16_t next = opt_swap::value ? endian_swap(data[1]) : data[1];
+                    uint16_t next = opt_swap::value? endian_swap(data[1]) : data[1];
 
                     if (static_cast<unsigned int>(next - 0xDC00) < 0x400)
                     {
@@ -1145,7 +1145,7 @@ PUGI__NS_BEGIN
 
             while (data < end)
             {
-                uint32_t lead = opt_swap::value ? endian_swap(*data) : *data;
+                uint32_t lead = opt_swap::value? endian_swap(*data) : *data;
 
                 // U+0000..U+FFFF
                 if (lead < 0x10000)
@@ -1269,7 +1269,7 @@ PUGI__NS_BEGIN
     };
     
 #ifdef PUGIXML_WCHAR_MODE
-    #define PUGI__IS_CHARTYPE_IMPL(c, ct, table) ((static_cast<unsigned int>(c) < 128 ? table[static_cast<unsigned int>(c)] : table[128]) & (ct))
+    #define PUGI__IS_CHARTYPE_IMPL(c, ct, table) ((static_cast<unsigned int>(c) < 128? table[static_cast<unsigned int>(c)] : table[128]) & (ct))
 #else
     #define PUGI__IS_CHARTYPE_IMPL(c, ct, table) (table[static_cast<unsigned char>(c)] & (ct))
 #endif
@@ -1289,9 +1289,9 @@ PUGI__NS_BEGIN
         PUGI__STATIC_ASSERT(sizeof(wchar_t) == 2 || sizeof(wchar_t) == 4);
 
         if (sizeof(wchar_t) == 2)
-            return is_little_endian() ? encoding_utf16_le : encoding_utf16_be;
+            return is_little_endian()? encoding_utf16_le : encoding_utf16_be;
         else 
-            return is_little_endian() ? encoding_utf32_le : encoding_utf32_be;
+            return is_little_endian()? encoding_utf32_le : encoding_utf32_be;
     }
 
     PUGI__FN xml_encoding guess_buffer_encoding(uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)
@@ -1324,10 +1324,10 @@ PUGI__NS_BEGIN
         if (encoding == encoding_wchar) return get_wchar_encoding();
 
         // replace utf16 encoding with utf16 with specific endianness
-        if (encoding == encoding_utf16) return is_little_endian() ? encoding_utf16_le : encoding_utf16_be;
+        if (encoding == encoding_utf16) return is_little_endian()? encoding_utf16_le : encoding_utf16_be;
 
         // replace utf32 encoding with utf32 with specific endianness
-        if (encoding == encoding_utf32) return is_little_endian() ? encoding_utf32_le : encoding_utf32_be;
+        if (encoding == encoding_utf32) return is_little_endian()? encoding_utf32_le : encoding_utf32_be;
 
         // only do autodetection if no explicit encoding is requested
         if (encoding != encoding_auto) return encoding;
@@ -1524,9 +1524,9 @@ PUGI__NS_BEGIN
         // source encoding is utf16
         if (encoding == encoding_utf16_be || encoding == encoding_utf16_le)
         {
-            xml_encoding native_encoding = is_little_endian() ? encoding_utf16_le : encoding_utf16_be;
+            xml_encoding native_encoding = is_little_endian()? encoding_utf16_le : encoding_utf16_be;
 
-            return (native_encoding == encoding) ?
+            return (native_encoding == encoding)?
                 convert_buffer_utf16(out_buffer, out_length, contents, size, opt_false()) :
                 convert_buffer_utf16(out_buffer, out_length, contents, size, opt_true());
         }
@@ -1534,9 +1534,9 @@ PUGI__NS_BEGIN
         // source encoding is utf32
         if (encoding == encoding_utf32_be || encoding == encoding_utf32_le)
         {
-            xml_encoding native_encoding = is_little_endian() ? encoding_utf32_le : encoding_utf32_be;
+            xml_encoding native_encoding = is_little_endian()? encoding_utf32_le : encoding_utf32_be;
 
-            return (native_encoding == encoding) ?
+            return (native_encoding == encoding)?
                 convert_buffer_utf32(out_buffer, out_length, contents, size, opt_false()) :
                 convert_buffer_utf32(out_buffer, out_length, contents, size, opt_true());
         }
@@ -1652,9 +1652,9 @@ PUGI__NS_BEGIN
         // source encoding is utf16
         if (encoding == encoding_utf16_be || encoding == encoding_utf16_le)
         {
-            xml_encoding native_encoding = is_little_endian() ? encoding_utf16_le : encoding_utf16_be;
+            xml_encoding native_encoding = is_little_endian()? encoding_utf16_le : encoding_utf16_be;
 
-            return (native_encoding == encoding) ?
+            return (native_encoding == encoding)?
                 convert_buffer_utf16(out_buffer, out_length, contents, size, opt_false()) :
                 convert_buffer_utf16(out_buffer, out_length, contents, size, opt_true());
         }
@@ -1662,9 +1662,9 @@ PUGI__NS_BEGIN
         // source encoding is utf32
         if (encoding == encoding_utf32_be || encoding == encoding_utf32_le)
         {
-            xml_encoding native_encoding = is_little_endian() ? encoding_utf32_le : encoding_utf32_be;
+            xml_encoding native_encoding = is_little_endian()? encoding_utf32_le : encoding_utf32_be;
 
-            return (native_encoding == encoding) ?
+            return (native_encoding == encoding)?
                 convert_buffer_utf32(out_buffer, out_length, contents, size, opt_false()) :
                 convert_buffer_utf32(out_buffer, out_length, contents, size, opt_true());
         }
@@ -2014,7 +2014,7 @@ PUGI__NS_BEGIN
             {
                 *g.flush(s) = 0;
                 
-                return s + (s[2] == '>' ? 3 : 2);
+                return s + (s[2] == '>'? 3 : 2);
             }
             else if (*s == 0)
             {
@@ -2341,7 +2341,7 @@ PUGI__NS_BEGIN
             {
                 // <? ... ?>
                 s += 2;
-                PUGI__SCANFOR(s[0] == '?' && s[1] == '>'); // no need for ENDSWITH because ?> can't terminate proper doctype
+                PUGI__SCANFOR(s[0] == '?' && s[1] == '>'); // no need for ENDSWITH because?> can't terminate proper doctype
                 if (!*s) PUGI__THROW_ERROR(status_bad_doctype, s);
 
                 s += 2;
@@ -2470,7 +2470,7 @@ PUGI__NS_BEGIN
                         if (PUGI__OPTSET(parse_comments))
                             *s = 0; // Zero-terminate this segment at the first terminating '-'.
 
-                        s += (s[2] == '>' ? 3 : 2); // Step over the '\0->'.
+                        s += (s[2] == '>'? 3 : 2); // Step over the '\0->'.
                     }
                 }
                 else PUGI__THROW_ERROR(status_bad_comment, s);
@@ -2511,7 +2511,7 @@ PUGI__NS_BEGIN
                         ++s;
                     }
 
-                    s += (s[1] == '>' ? 2 : 1); // Step over the last ']>'.
+                    s += (s[1] == '>'? 2 : 1); // Step over the last ']>'.
                 }
                 else PUGI__THROW_ERROR(status_bad_cdata, s);
             }
@@ -2565,7 +2565,7 @@ PUGI__NS_BEGIN
             // determine node type; stricmp / strcasecmp is not portable
             bool declaration = (target[0] | ' ') == 'x' && (target[1] | ' ') == 'm' && (target[2] | ' ') == 'l' && target + 3 == s;
 
-            if (declaration ? PUGI__OPTSET(parse_declaration) : PUGI__OPTSET(parse_pi))
+            if (declaration? PUGI__OPTSET(parse_declaration) : PUGI__OPTSET(parse_pi))
             {
                 if (declaration)
                 {
@@ -2604,7 +2604,7 @@ PUGI__NS_BEGIN
 
                     if (declaration)
                     {
-                        // replace ending ? with / so that 'element' terminates properly
+                        // replace ending? with / so that 'element' terminates properly
                         *s = '/';
 
                         // we exit from this function with cursor at node_declaration, which is a signal to parse() to go to LOC_ATTRIBUTES
@@ -2629,7 +2629,7 @@ PUGI__NS_BEGIN
                 PUGI__SCANFOR(s[0] == '?' && PUGI__ENDSWITH(s[1], '>'));
                 PUGI__CHECK_ERROR(status_bad_pi, s);
 
-                s += (s[1] == '>' ? 2 : 1);
+                s += (s[1] == '>'? 2 : 1);
             }
 
             // store from registers
@@ -2870,12 +2870,12 @@ PUGI__NS_BEGIN
         static char_t* parse_skip_bom(char_t* s)
         {
             unsigned int bom = 0xfeff;
-            return (s[0] == static_cast<wchar_t>(bom)) ? s + 1 : s;
+            return (s[0] == static_cast<wchar_t>(bom))? s + 1 : s;
         }
     #else
         static char_t* parse_skip_bom(char_t* s)
         {
-            return (s[0] == '\xef' && s[1] == '\xbb' && s[2] == '\xbf') ? s + 3 : s;
+            return (s[0] == '\xef' && s[1] == '\xbb' && s[2] == '\xbf')? s + 3 : s;
         }
     #endif
 
@@ -2898,10 +2898,10 @@ PUGI__NS_BEGIN
 
             // early-out for empty documents
             if (length == 0)
-                return make_parse_result(PUGI__OPTSET(parse_fragment) ? status_ok : status_no_document_element);
+                return make_parse_result(PUGI__OPTSET(parse_fragment)? status_ok : status_no_document_element);
 
             // get last child of the root before parsing
-            xml_node_struct* last_root_child = root->first_child ? root->first_child->prev_sibling_c : 0;
+            xml_node_struct* last_root_child = root->first_child? root->first_child->prev_sibling_c : 0;
     
             // create parser on stack
             xml_parser parser(alloc_);
@@ -2919,7 +2919,7 @@ PUGI__NS_BEGIN
             // update allocator state
             alloc_ = parser.alloc;
 
-            xml_parse_result result = make_parse_result(parser.error_status, parser.error_offset ? parser.error_offset - buffer : 0);
+            xml_parse_result result = make_parse_result(parser.error_status, parser.error_offset? parser.error_offset - buffer : 0);
             assert(result.offset >= 0 && static_cast<size_t>(result.offset) <= length);
 
             if (result)
@@ -2929,7 +2929,7 @@ PUGI__NS_BEGIN
                     return make_parse_result(status_unrecognized_tag, length - 1);
 
                 // check if there are any element nodes parsed
-                xml_node_struct* first_root_child_parsed = last_root_child ? last_root_child->next_sibling : root->first_child;
+                xml_node_struct* first_root_child_parsed = last_root_child? last_root_child->next_sibling : root->first_child;
 
                 if (!PUGI__OPTSET(parse_fragment) && !has_element_node_siblings(first_root_child_parsed))
                     return make_parse_result(status_no_document_element, length - 1);
@@ -2961,10 +2961,10 @@ PUGI__NS_BEGIN
         if (encoding == encoding_wchar) return get_wchar_encoding();
 
         // replace utf16 encoding with utf16 with specific endianness
-        if (encoding == encoding_utf16) return is_little_endian() ? encoding_utf16_le : encoding_utf16_be;
+        if (encoding == encoding_utf16) return is_little_endian()? encoding_utf16_le : encoding_utf16_be;
 
         // replace utf32 encoding with utf32 with specific endianness
-        if (encoding == encoding_utf32) return is_little_endian() ? encoding_utf32_le : encoding_utf32_be;
+        if (encoding == encoding_utf32) return is_little_endian()? encoding_utf32_le : encoding_utf32_be;
 
         // only do autodetection if no explicit encoding is requested
         if (encoding != encoding_auto) return encoding;
@@ -2979,7 +2979,7 @@ PUGI__NS_BEGIN
         if (length < 1) return 0;
 
         // discard last character if it's the lead of a surrogate pair 
-        return (sizeof(wchar_t) == 2 && static_cast<unsigned int>(static_cast<uint16_t>(data[length - 1]) - 0xD800) < 0x400) ? length - 1 : length;
+        return (sizeof(wchar_t) == 2 && static_cast<unsigned int>(static_cast<uint16_t>(data[length - 1]) - 0xD800) < 0x400)? length - 1 : length;
     }
 
     PUGI__FN size_t convert_buffer_output(char_t* r_char, uint8_t* r_u8, uint16_t* r_u16, uint32_t* r_u32, const char_t* data, size_t length, xml_encoding encoding)
