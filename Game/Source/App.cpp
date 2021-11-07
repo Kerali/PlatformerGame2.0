@@ -30,7 +30,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new Collisions();
 	player = new Player();
 
-	// Ordered for awake / Start / Update
+	// Ordered for awake/Start/Update
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
@@ -182,7 +182,7 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	// L02: TODO 1: This is a good place to call Load / Save methods
+	// L02: TODO 1: This is a good place to call Load/Save methods
 	if (requestLoad == true)
 	{
 		Load();

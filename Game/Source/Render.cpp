@@ -76,8 +76,8 @@ bool Render::Update(float dt)
 
 	if (app->scene->gameplayState == Scene::GameplayState::PLAYING)
 	{
-		camera.x = -app->player->position.x*scale + camera.w / 2;
-		camera.y = -app->player->position.y*scale + camera.h / 2;
+		camera.x = -app->player->position.x*scale + camera.w/2;
+		camera.y = -app->player->position.y*scale + camera.h/2;
 
 		//Camera limits ---> HARDCODED
 		if (camera.x > -160) camera.x = -160;
@@ -246,7 +246,7 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	int result = -1;
 	SDL_Point points[360];
 
-	float factor = (float)M_PI / 180.0f;
+	float factor = (float)M_PI/180.0f;
 
 	for(uint i = 0; i < 360; ++i)
 	{

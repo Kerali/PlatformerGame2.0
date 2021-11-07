@@ -91,8 +91,8 @@ void Map::Draw()
 				}
 
 				int tilesetPosition = tileGid - tileset->firstgid;
-				SDL_Rect section = { tilesetPosition % tileset->numTilesWidth*tileset->tileWidth, tilesetPosition / tileset->numTilesWidth*tileset->tileHeight, tileset->tileWidth, tileset->tileHeight };
-				app->render->DrawTexture(tileset->texture, j % layerWidth*data.tileWidth, j / layerWidth*data.tileHeight, &section);
+				SDL_Rect section = { tilesetPosition % tileset->numTilesWidth*tileset->tileWidth, tilesetPosition/tileset->numTilesWidth*tileset->tileHeight, tileset->tileWidth, tileset->tileHeight };
+				app->render->DrawTexture(tileset->texture, j % layerWidth*data.tileWidth, j/layerWidth*data.tileHeight, &section);
 
 				break;
 			}
@@ -306,8 +306,8 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		set->texture = app->tex->Load(tmp.GetString());
 		set->texWidth = image.attribute("width").as_int(0);
 		set->texHeight = image.attribute("height").as_int(0);
-		set->numTilesWidth = set->texWidth / set->tileWidth;
-		set->numTilesHeight = set->texHeight / set->tileHeight;
+		set->numTilesWidth = set->texWidth/set->tileWidth;
+		set->numTilesHeight = set->texHeight/set->tileHeight;
 		set->offsetX = image.attribute("offsetx").as_int(0);
 		set->offsetY = image.attribute("offsety").as_int(0);
 	}
@@ -380,7 +380,7 @@ bool Map::CreateColliders() {
 		for (int j = 0; j < layerSize; j++) {
 			if (data.maplayers[i]->data[j] == 0) continue;
 			int layerWidth = data.maplayers[i]->width;
-			SDL_Rect section = { j % layerWidth*data.tileWidth, j / layerWidth*data.tileHeight, data.tileWidth, data.tileHeight };
+			SDL_Rect section = { j % layerWidth*data.tileWidth, j/layerWidth*data.tileHeight, data.tileWidth, data.tileHeight };
 			if (data.maplayers[i]->properties.GetProperty("nextLevel", 0) == 1) {
 				app->collisions->AddCollider(section, Collider::Type::ENDLEVEL, this);
 			}

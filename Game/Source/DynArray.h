@@ -214,7 +214,7 @@ public:
 
 		while(swapped || gap > 1)
 		{
-			gap = MAX(1, gap / shrink);
+			gap = MAX(1, gap/shrink);
 
 			swapped = false;
 			for(unsigned int i = 0; i + gap < numElements - 1; ++i)

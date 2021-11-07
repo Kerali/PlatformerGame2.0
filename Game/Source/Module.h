@@ -58,7 +58,7 @@ public:
 		return true;
 	}
 
-	// L02: TODO 2: Create new virtual methods to Load / Save
+	// L02: TODO 2: Create new virtual methods to Load/Save
 
 	virtual bool Load(pugi::xml_node&)
 	{

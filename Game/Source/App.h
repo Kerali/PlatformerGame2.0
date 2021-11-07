@@ -49,7 +49,7 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	// L02: TODO 1: Create methods to request Load / Save
+	// L02: TODO 1: Create methods to request Load/Save
 
 private:
 
@@ -122,8 +122,8 @@ private:
 	bool requestSave = false;
 
 	const int targetFPS = 60;
-	const int frameDelay = 1000 / targetFPS;
-	float dt = frameDelay / 1000.0f;
+	const int frameDelay = 1000/targetFPS;
+	float dt = frameDelay/1000.0f;
 
 	long long frameStart;
 	int frameTime;

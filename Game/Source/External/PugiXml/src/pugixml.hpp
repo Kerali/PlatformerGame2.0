@@ -171,7 +171,7 @@ namespace pugi
     // These flags determine the encoding of input data for XML document
     enum xml_encoding
     {
-        encoding_auto,        // Auto-detect input encoding using BOM or < / <? detection; use UTF8 if BOM is not found
+        encoding_auto,        // Auto-detect input encoding using BOM or </<? detection; use UTF8 if BOM is not found
         encoding_utf8,        // UTF8 encoding
         encoding_utf16_le,    // Little-endian UTF16
         encoding_utf16_be,    // Big-endian UTF16

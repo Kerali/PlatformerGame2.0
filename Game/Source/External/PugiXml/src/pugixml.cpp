@@ -420,12 +420,12 @@ PUGI__NS_BEGIN
 
             assert(page_offset % sizeof(void*) == 0);
             assert(page_offset >= 0 && static_cast<size_t>(page_offset) < max_encoded_offset);
-            header->page_offset = static_cast<uint16_t>(static_cast<size_t>(page_offset) / sizeof(void*));
+            header->page_offset = static_cast<uint16_t>(static_cast<size_t>(page_offset)/sizeof(void*));
 
             // full_size == 0 for large strings that occupy the whole page
             assert(full_size % sizeof(void*) == 0);
             assert(full_size < max_encoded_offset || (page->busy_size == full_size && page_offset == 0));
-            header->full_size = static_cast<uint16_t>(full_size < max_encoded_offset? full_size / sizeof(void*) : 0);
+            header->full_size = static_cast<uint16_t>(full_size < max_encoded_offset? full_size/sizeof(void*) : 0);
 
             // round-trip through void* to avoid 'cast increases required alignment of target type' warning
             // header is guaranteed a pointer-sized alignment, which should be enough for char_t
@@ -457,7 +457,7 @@ PUGI__NS_BEGIN
 
     PUGI__FN_NO_INLINE void* xml_allocator::allocate_memory_oob(size_t size, xml_memory_page*& out_page)
     {
-        const size_t large_allocation_threshold = xml_memory_page_size / 4;
+        const size_t large_allocation_threshold = xml_memory_page_size/4;
 
         xml_memory_page* page = allocate_page(size <= large_allocation_threshold? xml_memory_page_size : size);
         out_page = page;
@@ -1345,7 +1345,7 @@ PUGI__NS_BEGIN
 
     PUGI__FN bool get_mutable_buffer(char_t*& out_buffer, size_t& out_length, const void* contents, size_t size, bool is_mutable)
     {
-        size_t length = size / sizeof(char_t);
+        size_t length = size/sizeof(char_t);
 
         if (is_mutable)
         {
@@ -1381,7 +1381,7 @@ PUGI__NS_BEGIN
     PUGI__FN bool convert_buffer_endian_swap(char_t*& out_buffer, size_t& out_length, const void* contents, size_t size, bool is_mutable)
     {
         const char_t* data = static_cast<const char_t*>(contents);
-        size_t length = size / sizeof(char_t);
+        size_t length = size/sizeof(char_t);
 
         if (is_mutable)
         {
@@ -1435,7 +1435,7 @@ PUGI__NS_BEGIN
     template <typename opt_swap> PUGI__FN bool convert_buffer_utf16(char_t*& out_buffer, size_t& out_length, const void* contents, size_t size, opt_swap)
     {
         const uint16_t* data = static_cast<const uint16_t*>(contents);
-        size_t data_length = size / sizeof(uint16_t);
+        size_t data_length = size/sizeof(uint16_t);
 
         // first pass: get length in wchar_t units
         size_t length = utf_decoder<wchar_counter, opt_swap>::decode_utf16_block(data, data_length, 0);
@@ -1460,7 +1460,7 @@ PUGI__NS_BEGIN
     template <typename opt_swap> PUGI__FN bool convert_buffer_utf32(char_t*& out_buffer, size_t& out_length, const void* contents, size_t size, opt_swap)
     {
         const uint32_t* data = static_cast<const uint32_t*>(contents);
-        size_t data_length = size / sizeof(uint32_t);
+        size_t data_length = size/sizeof(uint32_t);
 
         // first pass: get length in wchar_t units
         size_t length = utf_decoder<wchar_counter, opt_swap>::decode_utf32_block(data, data_length, 0);
@@ -1551,7 +1551,7 @@ PUGI__NS_BEGIN
     template <typename opt_swap> PUGI__FN bool convert_buffer_utf16(char_t*& out_buffer, size_t& out_length, const void* contents, size_t size, opt_swap)
     {
         const uint16_t* data = static_cast<const uint16_t*>(contents);
-        size_t data_length = size / sizeof(uint16_t);
+        size_t data_length = size/sizeof(uint16_t);
 
         // first pass: get length in utf8 units
         size_t length = utf_decoder<utf8_counter, opt_swap>::decode_utf16_block(data, data_length, 0);
@@ -1576,7 +1576,7 @@ PUGI__NS_BEGIN
     template <typename opt_swap> PUGI__FN bool convert_buffer_utf32(char_t*& out_buffer, size_t& out_length, const void* contents, size_t size, opt_swap)
     {
         const uint32_t* data = static_cast<const uint32_t*>(contents);
-        size_t data_length = size / sizeof(uint32_t);
+        size_t data_length = size/sizeof(uint32_t);
 
         // first pass: get length in utf8 units
         size_t length = utf_decoder<utf8_counter, opt_swap>::decode_utf32_block(data, data_length, 0);
@@ -1750,7 +1750,7 @@ PUGI__NS_BEGIN
         // reuse heap memory if waste is not too great
         const size_t reuse_threshold = 32;
 
-        return target_length >= length && (target_length < reuse_threshold || target_length - length < target_length / 2);
+        return target_length >= length && (target_length < reuse_threshold || target_length - length < target_length/2);
     }
 
     PUGI__FN bool strcpy_insitu(char_t*& dest, uintptr_t& header, uintptr_t header_mask, const char_t* source)
@@ -2562,7 +2562,7 @@ PUGI__NS_BEGIN
             PUGI__SCANWHILE(PUGI__IS_CHARTYPE(*s, ct_symbol));
             PUGI__CHECK_ERROR(status_bad_pi, s);
 
-            // determine node type; stricmp / strcasecmp is not portable
+            // determine node type; stricmp/strcasecmp is not portable
             bool declaration = (target[0] | ' ') == 'x' && (target[1] | ' ') == 'm' && (target[2] | ' ') == 'l' && target + 3 == s;
 
             if (declaration? PUGI__OPTSET(parse_declaration) : PUGI__OPTSET(parse_pi))
@@ -2604,7 +2604,7 @@ PUGI__NS_BEGIN
 
                     if (declaration)
                     {
-                        // replace ending? with / so that 'element' terminates properly
+                        // replace ending? with/so that 'element' terminates properly
                         *s = '/';
 
                         // we exit from this function with cursor at node_declaration, which is a signal to parse() to go to LOC_ATTRIBUTES
@@ -2707,7 +2707,7 @@ PUGI__NS_BEGIN
                                             if (!s) PUGI__THROW_ERROR(status_bad_attribute, a->value);
 
                                             // After this line the loop continues from the start;
-                                            // Whitespaces, / and > are ok, symbols and EOF are wrong,
+                                            // Whitespaces,/and > are ok, symbols and EOF are wrong,
                                             // everything else will be detected
                                             if (PUGI__IS_CHARTYPE(*s, ct_start_symbol)) PUGI__THROW_ERROR(status_bad_attribute, s);
                                         }
@@ -3308,7 +3308,7 @@ PUGI__NS_BEGIN
                 10240
             #endif
             ,
-            bufcapacity = bufcapacitybytes / (sizeof(char_t) + 4)
+            bufcapacity = bufcapacitybytes/(sizeof(char_t) + 4)
         };
 
         char_t buffer[bufcapacity];
@@ -3361,7 +3361,7 @@ PUGI__NS_BEGIN
                     unsigned int ch = static_cast<unsigned int>(*s++);
                     assert(ch < 32);
 
-                    writer.write('&', '#', static_cast<char_t>((ch / 10) + '0'), static_cast<char_t>((ch % 10) + '0'), ';');
+                    writer.write('&', '#', static_cast<char_t>((ch/10) + '0'), static_cast<char_t>((ch % 10) + '0'), ';');
                 }
             }
         }
@@ -4067,7 +4067,7 @@ PUGI__NS_BEGIN
 
         if (encoding == wchar_encoding || need_endian_swap_utf(encoding, wchar_encoding))
         {
-            size_t length = size / sizeof(char_t);
+            size_t length = size/sizeof(char_t);
 
             static_cast<char_t*>(buffer)[length] = 0;
             return (length + 1)*sizeof(char_t);
@@ -4155,7 +4155,7 @@ PUGI__NS_BEGIN
         xml_stream_chunk* next;
         size_t size;
 
-        T data[xml_memory_page_size / sizeof(T)];
+        T data[xml_memory_page_size/sizeof(T)];
     };
 
     template <typename T> PUGI__FN xml_parse_status load_stream_data_noseek(std::basic_istream<T>& stream, void** out_buffer, size_t* out_size)
@@ -4177,7 +4177,7 @@ PUGI__NS_BEGIN
             else chunks.data = last = chunk;
 
             // read data to chunk
-            stream.read(chunk->data, static_cast<std::streamsize>(sizeof(chunk->data) / sizeof(T)));
+            stream.read(chunk->data, static_cast<std::streamsize>(sizeof(chunk->data)/sizeof(T)));
             chunk->size = static_cast<size_t>(stream.gcount())*sizeof(T);
 
             // read may set failbit | eofbit in case gcount() is less than read length, so check for other I/O errors
@@ -4398,7 +4398,7 @@ namespace pugi
             assert(wide_stream);
             assert(size % sizeof(wchar_t) == 0);
 
-            wide_stream->write(reinterpret_cast<const wchar_t*>(data), static_cast<std::streamsize>(size / sizeof(wchar_t)));
+            wide_stream->write(reinterpret_cast<const wchar_t*>(data), static_cast<std::streamsize>(size/sizeof(wchar_t)));
         }
     }
 #endif
@@ -4547,7 +4547,7 @@ namespace pugi
 
     PUGI__FN size_t xml_attribute::hash_value() const
     {
-        return static_cast<size_t>(reinterpret_cast<uintptr_t>(_attr) / sizeof(xml_attribute_struct));
+        return static_cast<size_t>(reinterpret_cast<uintptr_t>(_attr)/sizeof(xml_attribute_struct));
     }
 
     PUGI__FN xml_attribute_struct* xml_attribute::internal_object() const
@@ -5443,7 +5443,7 @@ namespace pugi
 
     PUGI__FN size_t xml_node::hash_value() const
     {
-        return static_cast<size_t>(reinterpret_cast<uintptr_t>(_root) / sizeof(xml_node_struct));
+        return static_cast<size_t>(reinterpret_cast<uintptr_t>(_root)/sizeof(xml_node_struct));
     }
 
     PUGI__FN xml_node_struct* xml_node::internal_object() const
@@ -6481,7 +6481,7 @@ PUGI__NS_BEGIN
         else
         {
             // median of nine
-            size_t step = (last - first + 1) / 8;
+            size_t step = (last - first + 1)/8;
 
             median3(first, first + step, first + 2*step, pred);
             median3(middle - step, middle, middle + step, pred);
@@ -6496,7 +6496,7 @@ PUGI__NS_BEGIN
         while (end - begin > 32)
         {
             // find median element
-            I middle = begin + (end - begin) / 2;
+            I middle = begin + (end - begin)/2;
             median(begin, middle, end - 1, pred);
 
             // partition in three chunks (< = >)
@@ -6569,7 +6569,7 @@ PUGI__NS_BEGIN
             {
                 // make sure we have at least 1/4th of the page free after allocation to satisfy subsequent allocation requests
                 size_t block_capacity_base = sizeof(_root->data);
-                size_t block_capacity_req = size + block_capacity_base / 4;
+                size_t block_capacity_req = size + block_capacity_base/4;
                 size_t block_capacity = (block_capacity_base > block_capacity_req) ? block_capacity_base : block_capacity_req;
 
                 size_t block_size = block_capacity + offsetof(xpath_memory_block, data);
@@ -7132,7 +7132,7 @@ PUGI__NS_BEGIN
     #else
         // fallback
         const volatile double zero = 0.0;
-        return zero / zero;
+        return zero/zero;
     #endif
     }
     
@@ -7355,7 +7355,7 @@ PUGI__NS_BEGIN
         size_t length = static_cast<size_t>(end - begin);
         char_t* scratch = buffer;
 
-        if (length >= sizeof(buffer) / sizeof(buffer[0]))
+        if (length >= sizeof(buffer)/sizeof(buffer[0]))
         {
             // need to make dummy on-heap copy
             scratch = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
@@ -7720,7 +7720,7 @@ PUGI__NS_BEGIN
         size_t length = static_cast<size_t>(end - begin);
         char_t* scratch = buffer;
 
-        if (length >= sizeof(buffer) / sizeof(buffer[0]))
+        if (length >= sizeof(buffer)/sizeof(buffer[0]))
         {
             // need to make dummy on-heap copy
             scratch = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
@@ -7910,7 +7910,7 @@ PUGI__NS_BEGIN
         size_t capacity = static_cast<size_t>(_eos - _begin);
 
         // get new capacity (1.5x rule)
-        size_t new_capacity = capacity + capacity / 2 + 1;
+        size_t new_capacity = capacity + capacity/2 + 1;
 
         // reallocate the old array or allocate a new one
         xpath_node* data = static_cast<xpath_node*>(alloc->reallocate(_begin, capacity*sizeof(xpath_node), new_capacity*sizeof(xpath_node)));
@@ -8305,7 +8305,7 @@ PUGI__NS_BEGIN
         ast_op_add,                        // left + right
         ast_op_subtract,                // left - right
         ast_op_multiply,                // left*right
-        ast_op_divide,                    // left / right
+        ast_op_divide,                    // left/right
         ast_op_mod,                        // left % right
         ast_op_negate,                    // left - right
         ast_op_union,                    // left | right
@@ -9283,7 +9283,7 @@ PUGI__NS_BEGIN
                     {
                         const char_t* value = a.value();
                         
-                        // strnicmp / strncasecmp is not portable
+                        // strnicmp/strncasecmp is not portable
                         for (const char_t* lit = lang.c_str(); *lit; ++lit)
                         {
                             if (tolower_ascii(*lit) != tolower_ascii(*value)) return false;
@@ -9359,7 +9359,7 @@ PUGI__NS_BEGIN
                 return _left->eval_number(c, stack)*_right->eval_number(c, stack);
 
             case ast_op_divide:
-                return _left->eval_number(c, stack) / _right->eval_number(c, stack);
+                return _left->eval_number(c, stack)/_right->eval_number(c, stack);
 
             case ast_op_mod:
                 return fmod(_left->eval_number(c, stack), _right->eval_number(c, stack));
@@ -9497,7 +9497,7 @@ PUGI__NS_BEGIN
             xpath_string* buffer = static_buffer;
 
             // allocate on-heap for large concats
-            if (count > sizeof(static_buffer) / sizeof(static_buffer[0]))
+            if (count > sizeof(static_buffer)/sizeof(static_buffer[0]))
             {
                 buffer = static_cast<xpath_string*>(stack.temp->allocate(count*sizeof(xpath_string)));
                 assert(buffer);
@@ -11211,12 +11211,12 @@ namespace pugi
 
     PUGI__FN xpath_variable_set::xpath_variable_set()
     {
-        for (size_t i = 0; i < sizeof(_data) / sizeof(_data[0]); ++i) _data[i] = 0;
+        for (size_t i = 0; i < sizeof(_data)/sizeof(_data[0]); ++i) _data[i] = 0;
     }
 
     PUGI__FN xpath_variable_set::~xpath_variable_set()
     {
-        for (size_t i = 0; i < sizeof(_data) / sizeof(_data[0]); ++i)
+        for (size_t i = 0; i < sizeof(_data)/sizeof(_data[0]); ++i)
         {
             xpath_variable* var = _data[i];
 
@@ -11233,7 +11233,7 @@ namespace pugi
 
     PUGI__FN xpath_variable* xpath_variable_set::find(const char_t* name) const
     {
-        const size_t hash_size = sizeof(_data) / sizeof(_data[0]);
+        const size_t hash_size = sizeof(_data)/sizeof(_data[0]);
         size_t hash = impl::hash_string(name) % hash_size;
 
         // look for existing variable
@@ -11246,7 +11246,7 @@ namespace pugi
 
     PUGI__FN xpath_variable* xpath_variable_set::add(const char_t* name, xpath_value_type type)
     {
-        const size_t hash_size = sizeof(_data) / sizeof(_data[0]);
+        const size_t hash_size = sizeof(_data)/sizeof(_data[0]);
         size_t hash = impl::hash_string(name) % hash_size;
 
         // look for existing variable

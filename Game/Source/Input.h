@@ -61,7 +61,7 @@ public:
 	// Check if a certain window event happened
 	bool GetWindowEvent(EventWindow ev);
 
-	// Get mouse / axis position
+	// Get mouse/axis position
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
