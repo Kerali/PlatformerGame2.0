@@ -1,5 +1,10 @@
 # Tani: The Platformer
 
+<p align="center">
+  <img width="640" height="480" src="https://github.com/Kerali/PlatformerGame2.0/blob/master/Output/Assets/Textures/Screens/Title/TitleScreen.png">
+</p>
+
+
 ## Description
 
 Welcome to "Tani: The Platformer"! A platformer prototype made by Víctor Jara from the CITM TTC Barcelona using SDL. This prototype is part of the Game Development course from the CITM UPC Barcelona, taught by Pedro Omedas in 2021-2022.
@@ -36,6 +41,10 @@ Prepare to get into a new world while you control Tani, an astronaut who is visi
 ## Developers
 
  - Víctor Jara - Developer and Artist
+
+<p align="center">
+  <img width="640" height="480" src="https://github.com/Kerali/PlatformerGame2.0/blob/master/Output/Assets/Textures/Screens/Logo/LogoScreen.png">
+</p>
 
 
 ## License
