@@ -26,4 +26,8 @@
   <map>
     <folder>Assets/maps/</folder>
   </map>
+  <scene>
+    <music path="Assets/Audio/music/music.ogg"/>
+    <texture screen="Assets/Textures/Screens/screens_finished.png"/>
+  </scene>
 </config>

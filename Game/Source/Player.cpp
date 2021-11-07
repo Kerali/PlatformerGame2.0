@@ -47,17 +47,10 @@ bool Player::Start()
 
 	LOG("Loading Player textures");
 
-	//texture = app->tex->Load("SpriteSheet.png");
-
-	//texture = app->tex->Load("Assets/textures/Main Characters/Virtual Guy/Idle (32x32).png");
 	texture = app->tex->Load(texturePath);
 
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 
-	//jumpFx = app->audio->LoadFx("Assets/Audio/fx/jump.wav");
-	//doubleJumpFx = app->audio->LoadFx("Assets/Audio/fx/double_jump.wav");
-	//gameOverFx = app->audio->LoadFx("Assets/Audio/fx/game_over.wav");
-	//gameStartFx = app->audio->LoadFx("Assets/Audio/fx/game_start.wav");
 	jumpFx = app->audio->LoadFx(jumpFxPath);
 	doubleJumpFx = app->audio->LoadFx(doubleJumpFxPath);
 	gameOverFx = app->audio->LoadFx(gameOverFxPath);

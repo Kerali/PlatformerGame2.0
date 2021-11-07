@@ -21,9 +21,18 @@ Scene::~Scene()
 {}
 
 // Called before render is available
-bool Scene::Awake()
+bool Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
+
+	pugi::xml_node music = config.child("music");
+
+	musicPath = music.attribute("path").as_string();
+
+	pugi::xml_node texture = config.child("texture");
+
+	screenTexturePath = texture.attribute("screen").as_string();
+
 	bool ret = true;
 
 	return ret;
@@ -34,11 +43,7 @@ bool Scene::Start()
 {
 	fullScreenRect = SDL_Rect({ 0, 0, app->render->camera.w, app->render->camera.h });
 
-	app->audio->PlayMusic("Assets/Audio/music/music.ogg");
-	//screenTexture = app->tex->Load("title and end screen.png"); 
-
-	//screenTexture = app->tex->Load("Assets/title screen/title and end screen.png");
-	screenTexture = app->tex->Load("Assets/Textures/Screens/screens_finished.png");
+	screenTexture = app->tex->Load(screenTexturePath);
 	if (screenTexture == nullptr)LOG("could'nt load title screen");
 
 	titleScreenAnim.PushBack({ 0,360,480,360 });
@@ -52,6 +57,7 @@ bool Scene::Start()
 
 	turnOffAnim.PushBack({ 0,0,0,0, });
 
+	app->audio->PlayMusic(musicPath);
 
 	titleScreenAnim.loop = gameOverAnim.loop = logoScreenAnim.loop = true;
 	titleScreenAnim.speed = 0.05f;
