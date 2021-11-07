@@ -94,8 +94,13 @@ private:
 	uint jumpFx = 0;
 	uint doubleJumpFx = 0;
 	uint gameOverFx = 0;
+
+	const char* jumpFxPath;
+	const char* doubleJumpFxPath;
+	const char* gameOverFxPath;
 public:
 	uint gameStartFx = 0;
+	const char* gameStartFxPath;
 };
 
 

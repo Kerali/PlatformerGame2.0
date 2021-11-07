@@ -20,6 +20,7 @@
  <player>
   	<texture>Assets/textures/Main Characters/Virtual Guy/SpriteSheet.png</texture>
   	<movement gravity="65" jumpForce="10" speed="6" maxJumps="2"/>
+	<audio jump="Assets/Audio/fx/jump.wav" doubleJump="Assets/Audio/fx/double_jump.wav" gameOver="Assets/Audio/fx/game_over.wav" gameStart="Assets/audio/fx/game_start.wav"/>
   </player>
   <!-- L03: Added maps folder as config option -->
   <map>

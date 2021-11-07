@@ -143,6 +143,22 @@ bool Scene::Update(float dt)
 	return true;
 }
 
+bool Scene::Load(pugi::xml_node& savedGame)
+{
+	FadeToNewState(PLAYING);
+	LoadLevel(savedGame.attribute("currentLevel").as_string("level1.tmx"));
+
+	return true;
+}
+
+bool Scene::Save(pugi::xml_node& savedGame)
+{
+	pugi::xml_attribute lvl = savedGame.append_attribute("currentLevel");
+	lvl.set_value(currentLevel.GetString());
+
+	return true;
+}
+
 void Scene::FadeToNewState(GameplayState newState) {
 	if (gameplayState == newState) return;
 	if (fading) return;

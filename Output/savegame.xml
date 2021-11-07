@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <renderer>
-	<camera x="-1000" y="-1664" />
+	<camera x="-3192" y="-646" />
 </renderer>
 <audio volume="0" />
+<scene currentLevel="level1.tmx" />
+<player verticalVelocity="-1.04000008" availableJumps="2" x="1836" y="503" />

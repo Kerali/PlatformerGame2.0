@@ -321,32 +321,43 @@ bool App::Load() {
 	{		
 		//renderer
 		pugi::xml_node rend = saveGame.child("renderer");
-		if (rend == NULL) {
+		if (rend == NULL)
+		{
 			LOG("Renderer not loading");
 		}
 
 		//input
 		pugi::xml_node inp = saveGame.child("input");
-		if (inp == NULL) {
+		if (inp == NULL)
+		{
 			LOG("Input not loading");
 		}
 
 		//audio
 		pugi::xml_node au = saveGame.child("audio");
-		if (au == NULL) {
+		if (au == NULL)
+		{
 			LOG("Audio not loading");
 		}
 
 		//scene
 		pugi::xml_node sce = saveGame.child("scene");
-		if (sce == NULL) {
+		if (sce == NULL)
+		{
 			LOG("Scene not loading");
 		}
 
 		//window
 		pugi::xml_node wi = saveGame.child("window");
-		if (wi == NULL) {
+		if (wi == NULL)
+		{
 			LOG("window not loading");
+		}
+
+		pugi::xml_node pl = saveGame.child("player");
+		if (pl == NULL) 
+		{
+			LOG("player not loading");
 		}
 
 		app->audio->Load(au);
@@ -354,6 +365,7 @@ bool App::Load() {
 		app->render->Load(rend);
 		app->scene->Load(sce);
 		app->win->Load(wi);
+		app->player->Load(pl);
 
 	}
 
@@ -375,6 +387,12 @@ bool App::Save() {
 
 	pugi::xml_node audio = newSave.append_child("audio");
 	app->audio->Save(audio);
+
+	pugi::xml_node scene = newSave.append_child("scene");
+	app->scene->Save(scene);
+
+	pugi::xml_node player = newSave.append_child("player");
+	app->player->Save(player);
 
 	newSave.save_file(saveFileName);
 
