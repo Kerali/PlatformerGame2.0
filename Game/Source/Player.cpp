@@ -300,8 +300,9 @@ void Player::UpdateState(float dt)
 			ChangeState(playerState, IDLE);
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !godMode)
 		{
+			app->audio->PlayFx(jumpFx, 0);
 			if (availableJumps > 0)
 			{
 				availableJumps--;
