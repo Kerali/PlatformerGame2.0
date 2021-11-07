@@ -223,12 +223,12 @@ void Player::OnCollision(Collider* a, Collider* b)
 	{
 		if (deltaY > 0)
 		{
-			verticalVelocity = 0;
+			verticalVelocity = 0.0f;
 			position.y += b->rect.y + b->rect.h - a->rect.y;
 		}
 		else
 		{
-			if (verticalVelocity < 0)
+			if (verticalVelocity < 0.0f)
 			{
 				verticalVelocity = 0.0f;
 				if (playerState != PlayerState::DYING)
@@ -418,7 +418,7 @@ void Player::UpdateLogic(float dt)
 		}
 		case(JUMPING):
 		{
-			if (verticalVelocity > 0)
+			if (verticalVelocity > 0.0f)
 			{
 				if (availableJumps == 1)
 				{
