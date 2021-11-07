@@ -23,6 +23,8 @@ Prepare to get into a new world while you control Tani, an astronaut who is visi
  - Walk left: A.
  - Walk right: D.
  - Jump & Double jump: Space.
+ - 8: Volume Down.
+ - 9: Volume Up.
  - F1: Start from first level.
  - F3: Restart current level.
  - F5: Save current game state.
