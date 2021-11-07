@@ -80,11 +80,15 @@ bool Render::Update(float dt)
 		camera.y = -app->player->position.y*scale + camera.h/2;
 
 		//Camera limits ---> HARDCODED
-		if (camera.x > -160) camera.x = -160;
-		if (camera.x < -16*206*1.66) camera.x = -16*206*1.66;
+		if (camera.x > -160)
+			camera.x = -160;
+		if (camera.x < -16*206*1.66)
+			camera.x = -16*206*1.66;
 
-		if (camera.y > -160) camera.y = -160;
-		if (camera.y < -16*78*1.425) camera.y = -16*78*1.425;
+		if (camera.y > -160) 
+			camera.y = -160;
+		if (camera.y < -16*78*1.425)
+			camera.y = -16*78*1.425;
 	}
 
 	return true;
@@ -107,14 +111,16 @@ bool Render::CleanUp()
 
 // L02: TODO 6: Implement a method to load the state
 // for now load camera's x and y
-bool Render::Load(pugi::xml_node& savedGame) {
+bool Render::Load(pugi::xml_node& savedGame)
+{
 	pugi::xml_node cameraNode = savedGame.child("camera");
 	camera.x = cameraNode.attribute("x").as_int();
 	camera.y = cameraNode.attribute("y").as_int();
 	return true;
 }
 
-bool Render::Save(pugi::xml_node& savedGame) {
+bool Render::Save(pugi::xml_node& savedGame)
+{
 	pugi::xml_node cameraNode = savedGame.append_child("camera");
 	pugi::xml_attribute cameraX = cameraNode.append_attribute("x");
 	cameraX.set_value(camera.x);

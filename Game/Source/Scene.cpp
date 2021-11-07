@@ -91,7 +91,7 @@ bool Scene::Update(float dt)
 		FadeToNewState(PLAYING);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) 
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
 		app->RequestLoad();
 		LOG("LOAD REQUESTED");
@@ -114,12 +114,12 @@ bool Scene::Update(float dt)
 	}
 
 	// 8 to volume down and 9 to volume up
-	if (app->input->GetKey(SDL_SCANCODE_8) == KEY_REPEAT) 
+	if (app->input->GetKey(SDL_SCANCODE_8) == KEY_REPEAT)
 	{
 		app->audio->VolumeDown();
 		LOG("Volume down");
 	}
-	if (app->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT) 
+	if (app->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT)
 	{
 		app->audio->VolumeUp();
 		LOG("Volume up");
@@ -165,7 +165,8 @@ bool Scene::Save(pugi::xml_node& savedGame)
 	return true;
 }
 
-void Scene::FadeToNewState(GameplayState newState) {
+void Scene::FadeToNewState(GameplayState newState)
+{
 	if (gameplayState == newState) return;
 	if (fading) return;
 	targetState = newState;
@@ -173,32 +174,33 @@ void Scene::FadeToNewState(GameplayState newState) {
 	fading = true;
 }
 
-void Scene::ChangeGameplayState(GameplayState newState) {
+void Scene::ChangeGameplayState(GameplayState newState)
+{
 	if (gameplayState == newState) return;
 
 	switch (newState)
 	{
-	case PLAYING:
-		screenDisplayAnim = &turnOffAnim;
-		gameplayState = PLAYING;
-		currentLevel.create("level1.tmx");
-		app->map->Load("level1.tmx");
-		app->player->Reload();
-		break;
-	case TITLE_SCREEN:
-		screenDisplayAnim = &titleScreenAnim;
-		gameplayState = TITLE_SCREEN;
-		app->map->CleanUp();
-		app->render->camera.x = 0;
-		app->render->camera.y = 0;
-		break;
-	case GAME_OVER_SCREEN:
-		screenDisplayAnim = &gameOverAnim;
-		gameplayState = GAME_OVER_SCREEN;
-		app->map->CleanUp();
-		app->render->camera.x = 0;
-		app->render->camera.y = 0;
-		break;
+		case PLAYING:
+			screenDisplayAnim = &turnOffAnim;
+			gameplayState = PLAYING;
+			currentLevel.create("level1.tmx");
+			app->map->Load("level1.tmx");
+			app->player->Reload();
+			break;
+		case TITLE_SCREEN:
+			screenDisplayAnim = &titleScreenAnim;
+			gameplayState = TITLE_SCREEN;
+			app->map->CleanUp();
+			app->render->camera.x = 0;
+			app->render->camera.y = 0;
+			break;
+		case GAME_OVER_SCREEN:
+			screenDisplayAnim = &gameOverAnim;
+			gameplayState = GAME_OVER_SCREEN;
+			app->map->CleanUp();
+			app->render->camera.x = 0;
+			app->render->camera.y = 0;
+			break;
 	}
 }
 

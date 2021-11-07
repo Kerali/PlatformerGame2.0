@@ -19,7 +19,8 @@ Map::Map() : Module(), mapLoaded(false)
 // Destructor
 Map::~Map()
 {
-	for (int i = 0; i < data.tilesets.count(); i++) {
+	for (int i = 0; i < data.tilesets.count(); i++)
+	{
 		delete data.tilesets[i]->texture;
 	}
 }
@@ -76,17 +77,21 @@ void Map::Draw()
 	// L04: TODO 5: Prepare the loop to draw all tilesets + DrawTexture()
 	
 	// L04: TODO 9: Complete the draw function
-	for (int i = 0; i < data.maplayers.count(); i++) {
+	for (int i = 0; i < data.maplayers.count(); i++)
+	{
 		if (data.maplayers[i]->properties.GetProperty("draw", 1) == 0) continue;
 		int layerSize = data.maplayers[i]->width*data.maplayers[i]->height;
-		for (int j = 0; j < layerSize; j++) {
+		for (int j = 0; j < layerSize; j++)
+		{
 			uint tileGid = data.maplayers[i]->data[j];
 			int layerWidth = data.maplayers[i]->width;
 
-			for (int k = 0; k < data.tilesets.count(); k++) {
+			for (int k = 0; k < data.tilesets.count(); k++)
+			{
 				TileSet* tileset = data.tilesets[k];
 
-				if (data.tilesets.count() > k + 1 && data.tilesets[k + 1]->firstgid <= tileGid) {
+				if (data.tilesets.count() > k + 1 && data.tilesets[k + 1]->firstgid <= tileGid)
+				{
 					continue;
 				}
 
@@ -254,16 +259,20 @@ bool Map::LoadMap()
 		data.backgroundColor.b = strtol(blue.GetString(), nullptr, 16);
 		SString orientation = map.attribute("orientation").as_string();
 
-		if (orientation == "orthogonal") {
+		if (orientation == "orthogonal")
+		{
 			data.type = MAPTYPE_ORTHOGONAL;
 		}
-		else if (orientation == "isometric") {
+		else if (orientation == "isometric")
+		{
 			data.type = MAPTYPE_ISOMETRIC;
 		}
-		else if (orientation == "staggered") {
+		else if (orientation == "staggered")
+		{
 			data.type = MAPTYPE_STAGGERED;
 		}
-		else {
+		else
+		{
 			data.type = MAPTYPE_UNKNOWN;
 		}
 		LoadProperties(map.child("properties"), &data.properties);

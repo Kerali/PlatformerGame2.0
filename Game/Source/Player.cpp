@@ -14,11 +14,13 @@
 #include "../Log.h"
 #include <math.h>
 
-Player::Player() {
+Player::Player()
+{
 	name.create("player");
 }
 
-bool Player::Awake(pugi::xml_node& config) {
+bool Player::Awake(pugi::xml_node& config)
+{
 	LOG("Loading player config");
 	bool ret = true;
 
@@ -208,7 +210,8 @@ void Player::OnCollision(Collider* a, Collider* b)
 
 	if (std::abs(deltaX) > std::abs(deltaY))
 	{
-		if (deltaX > 0) {
+		if (deltaX > 0)
+		{
 			position.x += b->rect.x + b->rect.w - a->rect.x;
 		}
 		else
@@ -251,93 +254,32 @@ void Player::UpdateState(float dt)
 
 	switch (playerState)
 	{
-	case PREPARE_TO_SPAWN:
-	{
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			ChangeState(PREPARE_TO_SPAWN, SPAWNING);
-		break;
-	}
-	case SPAWNING:
-	{
-		if (currentAnim->HasFinished() == true)
-			ChangeState(SPAWNING, IDLE);
-		break;
-	}
-	case IDLE:
-	{
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			ChangeState(playerState, RUNNING);
-
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !godMode)
+		case PREPARE_TO_SPAWN:
 		{
-			app->audio->PlayFx(jumpFx, 0);
-			if (availableJumps > 0)
-			{
-				availableJumps--;
-			}
-
-			verticalVelocity += jumpForce;
-
-			if (verticalVelocity > maxVerticalVelocity)
-			{
-				verticalVelocity = maxVerticalVelocity;
-			}
-
-			if (verticalVelocity < -maxVerticalVelocity)
-			{
-				verticalVelocity = -maxVerticalVelocity;
-			}
-
-			ChangeState(playerState, JUMPING);
+			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+				ChangeState(PREPARE_TO_SPAWN, SPAWNING);
+			break;
 		}
-
-		break;
-	}
-	case RUNNING:
-	{
-		if (!(app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && !(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
+		case SPAWNING:
 		{
-			ChangeState(playerState, IDLE);
+			if (currentAnim->HasFinished() == true)
+				ChangeState(SPAWNING, IDLE);
+			break;
 		}
-
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !godMode)
+		case IDLE:
 		{
-			app->audio->PlayFx(jumpFx, 0);
-			if (availableJumps > 0)
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				ChangeState(playerState, RUNNING);
+
+			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !godMode)
 			{
-				availableJumps--;
-			}
+				app->audio->PlayFx(jumpFx, 0);
+				if (availableJumps > 0)
+				{
+					availableJumps--;
+				}
 
-			verticalVelocity += jumpForce;
-
-			if (verticalVelocity > maxVerticalVelocity)
-			{
-				verticalVelocity = maxVerticalVelocity;
-			}
-
-			if (verticalVelocity < -maxVerticalVelocity)
-			{
-				verticalVelocity = -maxVerticalVelocity;
-			}
-
-			ChangeState(playerState, JUMPING);
-		}
-
-		break;
-	}
-	case JUMPING:
-	{
-		//once animation is done change to falling
-		// or simply add the falling sprite on jumping animations
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		{
-			if (availableJumps > 0)
-			{
-				availableJumps--;
-
-				app->audio->PlayFx(doubleJumpFx, 0);
-
-				verticalVelocity = jumpForce;
+				verticalVelocity += jumpForce;
 
 				if (verticalVelocity > maxVerticalVelocity)
 				{
@@ -348,15 +290,76 @@ void Player::UpdateState(float dt)
 				{
 					verticalVelocity = -maxVerticalVelocity;
 				}
+
+				ChangeState(playerState, JUMPING);
 			}
-		}		
+
+			break;
+		}
+		case RUNNING:
+		{
+			if (!(app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) && !(app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
+			{
+				ChangeState(playerState, IDLE);
+			}
+
+			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !godMode)
+			{
+				app->audio->PlayFx(jumpFx, 0);
+				if (availableJumps > 0)
+				{
+					availableJumps--;
+				}
+
+				verticalVelocity += jumpForce;
+
+				if (verticalVelocity > maxVerticalVelocity)
+				{
+					verticalVelocity = maxVerticalVelocity;
+				}
+
+				if (verticalVelocity < -maxVerticalVelocity)
+				{
+					verticalVelocity = -maxVerticalVelocity;
+				}
+
+				ChangeState(playerState, JUMPING);
+			}
+
+			break;
+		}
+		case JUMPING:
+		{
+			//once animation is done change to falling
+			// or simply add the falling sprite on jumping animations
+			if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			{
+				if (availableJumps > 0)
+				{
+					availableJumps--;
+
+					app->audio->PlayFx(doubleJumpFx, 0);
+
+					verticalVelocity = jumpForce;
+
+					if (verticalVelocity > maxVerticalVelocity)
+					{
+						verticalVelocity = maxVerticalVelocity;
+					}
+
+					if (verticalVelocity < -maxVerticalVelocity)
+					{
+						verticalVelocity = -maxVerticalVelocity;
+					}
+				}
+			}		
 		
-		break;
-	}
-	case DYING:
-	{
-		break;
-	}
+			break;
+		}
+		case DYING:
+		{
+			break;
+		}
 
 	}
 }
@@ -379,108 +382,108 @@ void Player::UpdateLogic(float dt)
 
 	switch (playerState)
 	{
-	case PREPARE_TO_SPAWN:
-	{
-		currentAnim = &prepareToSpawnAnim;
-		break;
-	}
-	case SPAWNING:
-	{
-		currentAnim = &appearAnim;
-		break;
-	}
-	case(IDLE):
-	{
-		if (isGoingRight == true)
-			currentAnim = &idleRightAnim;
-		else
-			currentAnim = &idleLeftAnim;
+		case PREPARE_TO_SPAWN:
+		{
+			currentAnim = &prepareToSpawnAnim;
+			break;
+		}
+		case SPAWNING:
+		{
+			currentAnim = &appearAnim;
+			break;
+		}
+		case(IDLE):
+		{
+			if (isGoingRight == true)
+				currentAnim = &idleRightAnim;
+			else
+				currentAnim = &idleLeftAnim;
 
-		break;
-	}
-	case(RUNNING):
-	{
-		if (isGoingRight == true)
-		{
-			currentAnim = &runRightAnim;
-			position.x += speed;
+			break;
 		}
-		else
+		case(RUNNING):
 		{
-			currentAnim = &runLeftAnim;
-			position.x -= speed;
-		}
-
-		break;
-	}
-	case(JUMPING):
-	{
-		if (verticalVelocity > 0)
-		{
-			if (availableJumps == 1)
+			if (isGoingRight == true)
 			{
-				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-				{
-					currentAnim = &jumpLeftAnim;
-					position.x -= speed;
-				}
-				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-				{
-					currentAnim = &jumpRightAnim;
-					position.x += speed;
-				}
-			}
-			if (availableJumps == 0)
-			{
-				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-				{
-					currentAnim = &doubleJumpLeftAnim;
-					position.x -= speed;
-				}
-				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-				{
-					currentAnim = &doubleJumpRightAnim;
-					position.x += speed;
-				}
-			}
-		}
-		else
-		{
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				currentAnim = &fallLeftAnim;
-				position.x -= speed;
-			}
-			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				currentAnim = &fallRightAnim;
+				currentAnim = &runRightAnim;
 				position.x += speed;
 			}
+			else
+			{
+				currentAnim = &runLeftAnim;
+				position.x -= speed;
+			}
+	
+			break;
 		}
+		case(JUMPING):
+		{
+			if (verticalVelocity > 0)
+			{
+				if (availableJumps == 1)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+					{
+						currentAnim = &jumpLeftAnim;
+						position.x -= speed;
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+					{
+						currentAnim = &jumpRightAnim;
+						position.x += speed;
+					}
+				}
+				if (availableJumps == 0)
+				{
+					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+					{
+						currentAnim = &doubleJumpLeftAnim;
+						position.x -= speed;
+					}
+					else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+					{
+						currentAnim = &doubleJumpRightAnim;
+						position.x += speed;
+					}
+				}
+			}
+			else
+			{
+				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+				{
+					currentAnim = &fallLeftAnim;
+					position.x -= speed;
+				}
+				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				{
+					currentAnim = &fallRightAnim;
+					position.x += speed;
+				}
+			}
 		
-		break;
-	}
-	case(DYING):
-	{
-		if (isGoingRight == true)
-			currentAnim = &disappearRightAnim;
-		else
-			currentAnim = &disappearLeftAnim;
-
-		if (isDead == false)
-		{
-			app->audio->PlayFx(gameOverFx, 0);
-			isDead = true;
+			break;
 		}
-
-		if (currentAnim->HasFinished())
+		case(DYING):
 		{
-			app->scene->FadeToNewState(Scene::GAME_OVER_SCREEN);
+			if (isGoingRight == true)
+				currentAnim = &disappearRightAnim;
+			else
+				currentAnim = &disappearLeftAnim;
+
+			if (isDead == false)
+			{
+				app->audio->PlayFx(gameOverFx, 0);
+				isDead = true;
+			}
+
+			if (currentAnim->HasFinished())
+			{
+				app->scene->FadeToNewState(Scene::GAME_OVER_SCREEN);
+			}
+
+			break;
+
 		}
-
-		break;
-
-	}
 	}
 
 	collider->SetPos(position.x, position.y);
@@ -509,6 +512,8 @@ void Player::Reload()
 
 void Player::GodMovement()
 {
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) position.y -= speed;
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) position.y += speed;
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
+		position.y -= speed;
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
+		position.y += speed;
 }

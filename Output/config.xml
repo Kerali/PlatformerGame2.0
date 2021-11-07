@@ -4,6 +4,7 @@
   <app>
     <title>PlatformerGame</title>
     <organization>UPC</organization>
+	<savefile path="savegame.xml"/>
   </app>
 
   <renderer>

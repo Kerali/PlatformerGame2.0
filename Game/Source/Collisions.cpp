@@ -29,24 +29,28 @@ bool Collisions::Start()
 }
 
 // Called each loop iteration
-bool Collisions::PreUpdate() {
+bool Collisions::PreUpdate()
+{
 	bool ret = true;
 
 	return ret;
 }
 
-bool Collisions::Update(float dt) {
+bool Collisions::Update(float dt)
+{
 
 	bool ret = true;
 
 	for (int i = 0; i < dynamicColliders.count(); i++) {
 		for (int j = 0; j < staticColliders.count(); j++) {
 			if (dynamicColliders[i]->Intersects(staticColliders[j]->rect)) {
-				for each (Module*m in dynamicColliders[i]->listeners) {
+				for each (Module*m in dynamicColliders[i]->listeners)
+				{
 					if (m == nullptr) break;
 					m->OnCollision(dynamicColliders[i], staticColliders[j]);
 				}
-				for each (Module*m in staticColliders[j]->listeners) {
+				for each (Module*m in staticColliders[j]->listeners)
+				{
 					if (m == nullptr) break;
 					m->OnCollision(staticColliders[j], dynamicColliders[i]);
 				}
