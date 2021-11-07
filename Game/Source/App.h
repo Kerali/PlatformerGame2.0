@@ -49,7 +49,7 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-    // L02: TODO 1: Create methods to request Load / Save
+	// L02: TODO 1: Create methods to request Load / Save
 
 private:
 
@@ -57,7 +57,7 @@ private:
 	bool LoadConfig();
 
 	// Call modules before each loop iteration
-	void PrepareUpdate(); 
+	void PrepareUpdate();
 
 
 	// Call modules before each loop iteration
@@ -91,13 +91,14 @@ public:
 	bool Load();
 	bool Save();
 
-	void RequestSave() {
+	void RequestSave()
+	{
 		requestSave = true;
 	}
 
-	void RequestLoad() {
-		requestLoad = true;
-		
+	void RequestLoad()
+	{
+		requestLoad = true;		
 	}
 
 private:

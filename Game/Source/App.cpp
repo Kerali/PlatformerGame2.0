@@ -192,8 +192,6 @@ void App::FinishUpdate()
 	{
 		Save();
 	}
-	
-
 }
 
 // Call modules before each loop iteration
@@ -312,9 +310,8 @@ const char* App::GetOrganization() const
 
 bool App::Load()
 {
-
 	bool ret = true;
-	
+
 	pugi::xml_document saveGame;
 
 	pugi::xml_parse_result result = saveGame.load_file(saveFileName);

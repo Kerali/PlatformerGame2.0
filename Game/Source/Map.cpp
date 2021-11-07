@@ -13,7 +13,7 @@
 
 Map::Map() : Module(), mapLoaded(false)
 {
-    name.create("map");
+	name.create("map");
 }
 
 // Destructor
@@ -55,12 +55,12 @@ void Properties::SetProperty(const char* name, int value)
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
-    LOG("Loading Map Parser");
-    bool ret = true;
+	LOG("Loading Map Parser");
+	bool ret = true;
 
-    folder.create(config.child("folder").child_value());
+	folder.create(config.child("folder").child_value());
 
-    return ret;
+	return ret;
 }
 
 bool Map::PostUpdate()
@@ -124,10 +124,10 @@ SDL_Rect TileSet::GetTileRect(int id) const
 // Called before quitting
 bool Map::CleanUp()
 {
-    LOG("Unloading map");
+	LOG("Unloading map");
 
-    // L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
-    // Remove all tilesets
+	// L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
+	// Remove all tilesets
 
 	data.tilesets.clear();
 
@@ -142,7 +142,7 @@ bool Map::CleanUp()
 	// Clean up the pugui tree
 	mapFile.reset();
 
-    return true;
+	return true;
 }
 
 // Load new map
@@ -150,25 +150,25 @@ bool Map::Load(const char* filename)
 {
 	CleanUp();
 
-    bool ret = true;
-    SString tmp("%s%s", folder.GetString(), filename);
+	bool ret = true;
+	SString tmp("%s%s", folder.GetString(), filename);
 
-    pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
+	pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
-    if(result == NULL)
-    {
-        LOG("Could not load map xml file %s. pugi error: %s", filename, result.description());
-        ret = false;
-    }
+	if(result == NULL)
+	{
+		LOG("Could not load map xml file %s. pugi error: %s", filename, result.description());
+		ret = false;
+	}
 
-    if(ret == true)
-    {
-        // L03: DONE 3: Create and call a private function to load and fill all your map data
+	if(ret == true)
+	{
+		// L03: DONE 3: Create and call a private function to load and fill all your map data
 		ret = LoadMap();
 	}
 
-    // L03: DONE 4: Create and call a private function to load a tileset
-    // remember to support more any number of tilesets!
+	// L03: DONE 4: Create and call a private function to load a tileset
+	// remember to support more any number of tilesets!
 	pugi::xml_node tileset;
 	for (tileset = mapFile.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
@@ -181,7 +181,7 @@ bool Map::Load(const char* filename)
 		data.tilesets.add(set);
 	}
 	// L04: TODO 4: Iterate all layers and load each of them
-    
+	
 	pugi::xml_node layerNode;
 
 	for (layerNode = mapFile.child("map").child("layer"); layerNode && ret; layerNode = layerNode.next_sibling("layer"))
@@ -193,9 +193,9 @@ bool Map::Load(const char* filename)
 		data.maplayers.add(layerSet);
 	}
 
-    if(ret == true)
-    {
-        // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
+	if(ret == true)
+	{
+	// L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
 
 		LOG("Successfully parsed map XML file: %s", filename);
 		LOG("width: %d height: %d", data.width, data.height);
@@ -210,15 +210,15 @@ bool Map::Load(const char* filename)
 			LOG("spacing: %d margin: %d", t->spacing, t->margin);
 		}
 		// L04: TODO 4: LOG the info for each loaded layer
-    }
+	}
 
 	CreateColliders();
 	app->player->position.x = data.properties.GetProperty("playerX", 0) * data.tileWidth;
 	app->player->position.y = data.properties.GetProperty("playerY", 0) * data.tileHeight;
 
-    mapLoaded = ret;
+	mapLoaded = ret;
 
-    return ret;
+	return ret;
 }
 
 // L03: DONE: Load map general properties
