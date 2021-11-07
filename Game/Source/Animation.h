@@ -67,8 +67,8 @@ public:
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				SDL_Rect frame;
-				frame.x = rect.x + (j * frameWidth);
-				frame.y = rect.y + (i * frameHeight);
+				frame.x = rect.x + (j*frameWidth);
+				frame.y = rect.y + (i*frameHeight);
 				frame.w = frameWidth;
 				frame.h = frameHeight;
 				PushBack(frame);

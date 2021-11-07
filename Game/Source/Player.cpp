@@ -363,7 +363,7 @@ void Player::UpdateState(float dt)
 
 void Player::UpdateLogic(float dt)
 {
-	if (!godMode) verticalVelocity -= gravity * dt;
+	if (!godMode) verticalVelocity -= gravity*dt;
 
 	if (verticalVelocity > maxVerticalVelocity)
 	{

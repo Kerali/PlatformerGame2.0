@@ -1,14 +1,14 @@
 /**
- * pugixml parser - version 1.6
- * --------------------------------------------------------
- * Copyright (C) 2006-2015, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
- * Report bugs and download new versions at http://pugixml.org/
+*pugixml parser - version 1.6
+*--------------------------------------------------------
+*Copyright (C) 2006-2015, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
+*Report bugs and download new versions at http://pugixml.org/
  *
- * This library is distributed under the MIT License. See notice at the end
- * of this file.
+*This library is distributed under the MIT License. See notice at the end
+*of this file.
  *
- * This work is based on the pugxml parser, which is:
- * Copyright (C) 2003, by Kristen Wegner (kristen@tima.net)
+*This work is based on the pugxml parser, which is:
+*Copyright (C) 2003, by Kristen Wegner (kristen@tima.net)
  */
 
 #ifndef SOURCE_PUGIXML_CPP
@@ -400,12 +400,12 @@ PUGI__NS_BEGIN
 
         char_t* allocate_string(size_t length)
         {
-            static const size_t max_encoded_offset = (1 << 16) * sizeof(void*);
+            static const size_t max_encoded_offset = (1 << 16)*sizeof(void*);
 
             PUGI__STATIC_ASSERT(xml_memory_page_size <= max_encoded_offset);
 
             // allocate memory for string and header block
-            size_t size = sizeof(xml_memory_string_header) + length * sizeof(char_t);
+            size_t size = sizeof(xml_memory_string_header) + length*sizeof(char_t);
             
             // round size up to pointer alignment boundary
             size_t full_size = (size + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1);
@@ -442,11 +442,11 @@ PUGI__NS_BEGIN
             assert(header);
 
             // deallocate
-            size_t page_offset = sizeof(xml_memory_page) + header->page_offset * sizeof(void*);
+            size_t page_offset = sizeof(xml_memory_page) + header->page_offset*sizeof(void*);
             xml_memory_page* page = reinterpret_cast<xml_memory_page*>(static_cast<void*>(reinterpret_cast<char*>(header) - page_offset));
 
             // if full_size == 0 then this string occupies the whole page
-            size_t full_size = header->full_size == 0? page->busy_size : header->full_size * sizeof(void*);
+            size_t full_size = header->full_size == 0? page->busy_size : header->full_size*sizeof(void*);
 
             deallocate_memory(header, full_size, page);
         }
@@ -1354,11 +1354,11 @@ PUGI__NS_BEGIN
         }
         else
         {
-            char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+            char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
             if (!buffer) return false;
 
             if (contents)
-                memcpy(buffer, contents, length * sizeof(char_t));
+                memcpy(buffer, contents, length*sizeof(char_t));
             else
                 assert(length == 0);
 
@@ -1394,7 +1394,7 @@ PUGI__NS_BEGIN
         }
         else
         {
-            char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+            char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
             if (!buffer) return false;
 
             convert_wchar_endian_swap(buffer, data, length);
@@ -1416,7 +1416,7 @@ PUGI__NS_BEGIN
         size_t length = utf_decoder<wchar_counter>::decode_utf8_block(data, data_length, 0);
 
         // allocate buffer of suitable length
-        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
         if (!buffer) return false;
 
         // second pass: convert utf8 input to wchar_t
@@ -1441,7 +1441,7 @@ PUGI__NS_BEGIN
         size_t length = utf_decoder<wchar_counter, opt_swap>::decode_utf16_block(data, data_length, 0);
 
         // allocate buffer of suitable length
-        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
         if (!buffer) return false;
 
         // second pass: convert utf16 input to wchar_t
@@ -1466,7 +1466,7 @@ PUGI__NS_BEGIN
         size_t length = utf_decoder<wchar_counter, opt_swap>::decode_utf32_block(data, data_length, 0);
 
         // allocate buffer of suitable length
-        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
         if (!buffer) return false;
 
         // second pass: convert utf32 input to wchar_t
@@ -1491,7 +1491,7 @@ PUGI__NS_BEGIN
         size_t length = data_length;
 
         // allocate buffer of suitable length
-        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
         if (!buffer) return false;
 
         // convert latin1 input to wchar_t
@@ -1557,7 +1557,7 @@ PUGI__NS_BEGIN
         size_t length = utf_decoder<utf8_counter, opt_swap>::decode_utf16_block(data, data_length, 0);
 
         // allocate buffer of suitable length
-        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
         if (!buffer) return false;
 
         // second pass: convert utf16 input to utf8
@@ -1582,7 +1582,7 @@ PUGI__NS_BEGIN
         size_t length = utf_decoder<utf8_counter, opt_swap>::decode_utf32_block(data, data_length, 0);
 
         // allocate buffer of suitable length
-        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
         if (!buffer) return false;
 
         // second pass: convert utf32 input to utf8
@@ -1626,7 +1626,7 @@ PUGI__NS_BEGIN
         size_t length = prefix_length + utf_decoder<utf8_counter>::decode_latin1_block(postfix, postfix_length, 0);
 
         // allocate buffer of suitable length
-        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+        char_t* buffer = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
         if (!buffer) return false;
 
         // second pass: convert latin1 input to utf8
@@ -1775,7 +1775,7 @@ PUGI__NS_BEGIN
         else if (dest && strcpy_insitu_allow(source_length, header, header_mask, dest))
         {
             // we can reuse old buffer, so just copy the new data (including zero terminator)
-            memcpy(dest, source, (source_length + 1) * sizeof(char_t));
+            memcpy(dest, source, (source_length + 1)*sizeof(char_t));
             
             return true;
         }
@@ -1788,7 +1788,7 @@ PUGI__NS_BEGIN
             if (!buf) return false;
 
             // copy the string (including zero terminator)
-            memcpy(buf, source, (source_length + 1) * sizeof(char_t));
+            memcpy(buf, source, (source_length + 1)*sizeof(char_t));
 
             // deallocate old buffer (*after* the above to protect against overlapping memory and/or allocation failures)
             if (header & header_mask) alloc->deallocate_string(dest);
@@ -1864,9 +1864,9 @@ PUGI__NS_BEGIN
                     for (;;)
                     {
                         if (static_cast<unsigned int>(ch - '0') <= 9)
-                            ucsc = 16 * ucsc + (ch - '0');
+                            ucsc = 16*ucsc + (ch - '0');
                         else if (static_cast<unsigned int>((ch | ' ') - 'a') <= 5)
-                            ucsc = 16 * ucsc + ((ch | ' ') - 'a' + 10);
+                            ucsc = 16*ucsc + ((ch | ' ') - 'a' + 10);
                         else if (ch == ';')
                             break;
                         else // cancel
@@ -1886,7 +1886,7 @@ PUGI__NS_BEGIN
                     for (;;)
                     {
                         if (static_cast<unsigned int>(static_cast<unsigned int>(ch) - '0') <= 9)
-                            ucsc = 10 * ucsc + (ch - '0');
+                            ucsc = 10*ucsc + (ch - '0');
                         else if (ch == ';')
                             break;
                         else // cancel
@@ -2989,7 +2989,7 @@ PUGI__NS_BEGIN
         {
             convert_wchar_endian_swap(r_char, data, length);
 
-            return length * sizeof(char_t);
+            return length*sizeof(char_t);
         }
     
         // convert to utf8
@@ -3014,7 +3014,7 @@ PUGI__NS_BEGIN
 
             if (native_encoding != encoding) convert_utf_endian_swap(dest, dest, static_cast<size_t>(end - dest));
 
-            return static_cast<size_t>(end - dest) * sizeof(uint16_t);
+            return static_cast<size_t>(end - dest)*sizeof(uint16_t);
         }
 
         // convert to utf32
@@ -3030,7 +3030,7 @@ PUGI__NS_BEGIN
 
             if (native_encoding != encoding) convert_utf_endian_swap(dest, dest, static_cast<size_t>(end - dest));
 
-            return static_cast<size_t>(end - dest) * sizeof(uint32_t);
+            return static_cast<size_t>(end - dest)*sizeof(uint32_t);
         }
 
         // convert to latin1
@@ -3076,7 +3076,7 @@ PUGI__NS_BEGIN
 
             if (native_encoding != encoding) convert_utf_endian_swap(dest, dest, static_cast<size_t>(end - dest));
 
-            return static_cast<size_t>(end - dest) * sizeof(uint16_t);
+            return static_cast<size_t>(end - dest)*sizeof(uint16_t);
         }
 
         if (encoding == encoding_utf32_be || encoding == encoding_utf32_le)
@@ -3091,7 +3091,7 @@ PUGI__NS_BEGIN
 
             if (native_encoding != encoding) convert_utf_endian_swap(dest, dest, static_cast<size_t>(end - dest));
 
-            return static_cast<size_t>(end - dest) * sizeof(uint32_t);
+            return static_cast<size_t>(end - dest)*sizeof(uint32_t);
         }
 
         if (encoding == encoding_latin1)
@@ -3136,7 +3136,7 @@ PUGI__NS_BEGIN
 
             // fast path, just write data
             if (encoding == get_write_native_encoding())
-                writer.write(data, size * sizeof(char_t));
+                writer.write(data, size*sizeof(char_t));
             else
             {
                 // convert chunk
@@ -3159,7 +3159,7 @@ PUGI__NS_BEGIN
                 if (encoding == get_write_native_encoding())
                 {
                     // fast path, can just write data chunk
-                    writer.write(data, length * sizeof(char_t));
+                    writer.write(data, length*sizeof(char_t));
                     return;
                 }
 
@@ -3183,7 +3183,7 @@ PUGI__NS_BEGIN
                 bufsize = 0;
             }
 
-            memcpy(buffer + bufsize, data, length * sizeof(char_t));
+            memcpy(buffer + bufsize, data, length*sizeof(char_t));
             bufsize += length;
         }
 
@@ -3193,7 +3193,7 @@ PUGI__NS_BEGIN
 
             if (offset + length <= bufcapacity)
             {
-                memcpy(buffer + offset, data, length * sizeof(char_t));
+                memcpy(buffer + offset, data, length*sizeof(char_t));
                 bufsize = offset + length;
             }
             else
@@ -3315,8 +3315,8 @@ PUGI__NS_BEGIN
 
         union
         {
-            uint8_t data_u8[4 * bufcapacity];
-            uint16_t data_u16[2 * bufcapacity];
+            uint8_t data_u8[4*bufcapacity];
+            uint16_t data_u16[2*bufcapacity];
             uint32_t data_u32[bufcapacity];
             char_t data_char[bufcapacity];
         } scratch;
@@ -4070,7 +4070,7 @@ PUGI__NS_BEGIN
             size_t length = size / sizeof(char_t);
 
             static_cast<char_t*>(buffer)[length] = 0;
-            return (length + 1) * sizeof(char_t);
+            return (length + 1)*sizeof(char_t);
         }
     #else
         if (encoding == encoding_utf8)
@@ -4178,7 +4178,7 @@ PUGI__NS_BEGIN
 
             // read data to chunk
             stream.read(chunk->data, static_cast<std::streamsize>(sizeof(chunk->data) / sizeof(T)));
-            chunk->size = static_cast<size_t>(stream.gcount()) * sizeof(T);
+            chunk->size = static_cast<size_t>(stream.gcount())*sizeof(T);
 
             // read may set failbit | eofbit in case gcount() is less than read length, so check for other I/O errors
             if (stream.bad() || (!stream.eof() && stream.fail())) return status_io_error;
@@ -4230,7 +4230,7 @@ PUGI__NS_BEGIN
         size_t max_suffix_size = sizeof(char_t);
 
         // read stream data into memory (guard against stream exceptions with buffer holder)
-        buffer_holder buffer(xml_memory::allocate(read_length * sizeof(T) + max_suffix_size), xml_memory::deallocate);
+        buffer_holder buffer(xml_memory::allocate(read_length*sizeof(T) + max_suffix_size), xml_memory::deallocate);
         if (!buffer.data) return status_out_of_memory;
 
         stream.read(static_cast<T*>(buffer.data), static_cast<std::streamsize>(read_length));
@@ -4243,7 +4243,7 @@ PUGI__NS_BEGIN
         assert(actual_length <= read_length);
         
         *out_buffer = buffer.release();
-        *out_size = actual_length * sizeof(T);
+        *out_size = actual_length*sizeof(T);
 
         return status_ok;
     }
@@ -6096,7 +6096,7 @@ namespace pugi
         xml_encoding encoding = encoding_utf8;
     #endif
 
-        return load_buffer(contents, impl::strlength(contents) * sizeof(char_t), options, encoding);
+        return load_buffer(contents, impl::strlength(contents)*sizeof(char_t), options, encoding);
     }
 
     PUGI__FN xml_parse_result xml_document::load(const char_t* contents, unsigned int options)
@@ -6483,9 +6483,9 @@ PUGI__NS_BEGIN
             // median of nine
             size_t step = (last - first + 1) / 8;
 
-            median3(first, first + step, first + 2 * step, pred);
+            median3(first, first + step, first + 2*step, pred);
             median3(middle - step, middle, middle + step, pred);
-            median3(last - 2 * step, last - step, last, pred);
+            median3(last - 2*step, last - step, last, pred);
             median3(first + step, middle, last - step, pred);
         }
     }
@@ -6747,10 +6747,10 @@ PUGI__NS_BEGIN
 
         static char_t* duplicate_string(const char_t* string, size_t length, xpath_allocator* alloc)
         {
-            char_t* result = static_cast<char_t*>(alloc->allocate((length + 1) * sizeof(char_t)));
+            char_t* result = static_cast<char_t*>(alloc->allocate((length + 1)*sizeof(char_t)));
             assert(result);
 
-            memcpy(result, string, length * sizeof(char_t));
+            memcpy(result, string, length*sizeof(char_t));
             result[length] = 0;
 
             return result;
@@ -6804,14 +6804,14 @@ PUGI__NS_BEGIN
                 size_t result_length = target_length + source_length;
 
                 // allocate new buffer
-                char_t* result = static_cast<char_t*>(alloc->reallocate(_uses_heap ? const_cast<char_t*>(_buffer) : 0, (target_length + 1) * sizeof(char_t), (result_length + 1) * sizeof(char_t)));
+                char_t* result = static_cast<char_t*>(alloc->reallocate(_uses_heap ? const_cast<char_t*>(_buffer) : 0, (target_length + 1)*sizeof(char_t), (result_length + 1)*sizeof(char_t)));
                 assert(result);
 
                 // append first string to the new buffer in case there was no reallocation
-                if (!_uses_heap) memcpy(result, _buffer, target_length * sizeof(char_t));
+                if (!_uses_heap) memcpy(result, _buffer, target_length*sizeof(char_t));
 
                 // append second string to the new buffer
-                memcpy(result + target_length, o._buffer, source_length * sizeof(char_t));
+                memcpy(result + target_length, o._buffer, source_length*sizeof(char_t));
                 result[result_length] = 0;
 
                 // finalize
@@ -7176,7 +7176,7 @@ PUGI__NS_BEGIN
 
         if (v == 0) return PUGIXML_TEXT("0");
         if (v != v) return PUGIXML_TEXT("NaN");
-        if (v * 2 == v) return value > 0 ? PUGIXML_TEXT("Infinity") : PUGIXML_TEXT("-Infinity");
+        if (v*2 == v) return value > 0 ? PUGIXML_TEXT("Infinity") : PUGIXML_TEXT("-Infinity");
         return 0;
     #endif
     }
@@ -7255,7 +7255,7 @@ PUGI__NS_BEGIN
 
         // allocate a buffer of suitable length for the number
         size_t result_size = strlen(mantissa_buffer) + (exponent > 0 ? exponent : -exponent) + 4;
-        char_t* result = static_cast<char_t*>(alloc->allocate(sizeof(char_t) * result_size));
+        char_t* result = static_cast<char_t*>(alloc->allocate(sizeof(char_t)*result_size));
         assert(result);
 
         // make the number!
@@ -7358,12 +7358,12 @@ PUGI__NS_BEGIN
         if (length >= sizeof(buffer) / sizeof(buffer[0]))
         {
             // need to make dummy on-heap copy
-            scratch = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+            scratch = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
             if (!scratch) return false;
         }
 
         // copy string to zero-terminated buffer and perform conversion
-        memcpy(scratch, begin, length * sizeof(char_t));
+        memcpy(scratch, begin, length*sizeof(char_t));
         scratch[length] = 0;
 
         *out_result = convert_string_to_number(scratch);
@@ -7653,12 +7653,12 @@ PUGI__NS_BEGIN
         if (length == 0) return 0; // empty variable names are invalid
 
         // $$ we can't use offsetof(T, name) because T is non-POD, so we just allocate additional length characters
-        void* memory = xml_memory::allocate(sizeof(T) + length * sizeof(char_t));
+        void* memory = xml_memory::allocate(sizeof(T) + length*sizeof(char_t));
         if (!memory) return 0;
 
         T* result = new (memory) T();
 
-        memcpy(result->name, name, (length + 1) * sizeof(char_t));
+        memcpy(result->name, name, (length + 1)*sizeof(char_t));
 
         return result;
     }
@@ -7723,12 +7723,12 @@ PUGI__NS_BEGIN
         if (length >= sizeof(buffer) / sizeof(buffer[0]))
         {
             // need to make dummy on-heap copy
-            scratch = static_cast<char_t*>(xml_memory::allocate((length + 1) * sizeof(char_t)));
+            scratch = static_cast<char_t*>(xml_memory::allocate((length + 1)*sizeof(char_t)));
             if (!scratch) return 0;
         }
 
         // copy string to zero-terminated buffer and perform lookup
-        memcpy(scratch, begin, length * sizeof(char_t));
+        memcpy(scratch, begin, length*sizeof(char_t));
         scratch[length] = 0;
 
         xpath_variable* result = set->get(scratch);
@@ -7861,7 +7861,7 @@ PUGI__NS_BEGIN
             if (size_ + count > capacity)
             {
                 // reallocate the old array or allocate a new one
-                xpath_node* data = static_cast<xpath_node*>(alloc->reallocate(_begin, capacity * sizeof(xpath_node), (size_ + count) * sizeof(xpath_node)));
+                xpath_node* data = static_cast<xpath_node*>(alloc->reallocate(_begin, capacity*sizeof(xpath_node), (size_ + count)*sizeof(xpath_node)));
                 assert(data);
 
                 // finalize
@@ -7870,7 +7870,7 @@ PUGI__NS_BEGIN
                 _eos = data + size_ + count;
             }
 
-            memcpy(_end, begin_, count * sizeof(xpath_node));
+            memcpy(_end, begin_, count*sizeof(xpath_node));
             _end += count;
         }
 
@@ -7913,7 +7913,7 @@ PUGI__NS_BEGIN
         size_t new_capacity = capacity + capacity / 2 + 1;
 
         // reallocate the old array or allocate a new one
-        xpath_node* data = static_cast<xpath_node*>(alloc->reallocate(_begin, capacity * sizeof(xpath_node), new_capacity * sizeof(xpath_node)));
+        xpath_node* data = static_cast<xpath_node*>(alloc->reallocate(_begin, capacity*sizeof(xpath_node), new_capacity*sizeof(xpath_node)));
         assert(data);
 
         // finalize
@@ -8304,13 +8304,13 @@ PUGI__NS_BEGIN
         ast_op_greater_or_equal,        // left >= right
         ast_op_add,                        // left + right
         ast_op_subtract,                // left - right
-        ast_op_multiply,                // left * right
+        ast_op_multiply,                // left*right
         ast_op_divide,                    // left / right
         ast_op_mod,                        // left % right
         ast_op_negate,                    // left - right
         ast_op_union,                    // left | right
         ast_predicate,                    // apply predicate to set; next points to next predicate
-        ast_filter,                        // select * from left where right
+        ast_filter,                        // select*from left where right
         ast_string_constant,            // string constant
         ast_number_constant,            // number constant
         ast_variable,                    // variable
@@ -9356,7 +9356,7 @@ PUGI__NS_BEGIN
                 return _left->eval_number(c, stack) - _right->eval_number(c, stack);
 
             case ast_op_multiply:
-                return _left->eval_number(c, stack) * _right->eval_number(c, stack);
+                return _left->eval_number(c, stack)*_right->eval_number(c, stack);
 
             case ast_op_divide:
                 return _left->eval_number(c, stack) / _right->eval_number(c, stack);
@@ -9499,7 +9499,7 @@ PUGI__NS_BEGIN
             // allocate on-heap for large concats
             if (count > sizeof(static_buffer) / sizeof(static_buffer[0]))
             {
-                buffer = static_cast<xpath_string*>(stack.temp->allocate(count * sizeof(xpath_string)));
+                buffer = static_cast<xpath_string*>(stack.temp->allocate(count*sizeof(xpath_string)));
                 assert(buffer);
             }
 
@@ -9517,7 +9517,7 @@ PUGI__NS_BEGIN
             for (size_t i = 0; i < count; ++i) length += buffer[i].length();
 
             // create final string
-            char_t* result = static_cast<char_t*>(stack.result->allocate((length + 1) * sizeof(char_t)));
+            char_t* result = static_cast<char_t*>(stack.result->allocate((length + 1)*sizeof(char_t)));
             assert(result);
 
             char_t* ri = result;
@@ -10060,11 +10060,11 @@ PUGI__NS_BEGIN
             {
                 size_t length = static_cast<size_t>(value.end - value.begin);
 
-                char_t* c = static_cast<char_t*>(_alloc->allocate_nothrow((length + 1) * sizeof(char_t)));
+                char_t* c = static_cast<char_t*>(_alloc->allocate_nothrow((length + 1)*sizeof(char_t)));
                 if (!c) throw_error_oom();
                 assert(c); // workaround for clang static analysis
 
-                memcpy(c, value.begin, length * sizeof(char_t));
+                memcpy(c, value.begin, length*sizeof(char_t));
                 c[length] = 0;
 
                 return c;
@@ -11006,7 +11006,7 @@ namespace pugi
         else
         {
             // make heap copy
-            xpath_node* storage = static_cast<xpath_node*>(impl::xml_memory::allocate(size_ * sizeof(xpath_node)));
+            xpath_node* storage = static_cast<xpath_node*>(impl::xml_memory::allocate(size_*sizeof(xpath_node)));
 
             if (!storage)
             {
@@ -11017,7 +11017,7 @@ namespace pugi
             #endif
             }
 
-            memcpy(storage, begin_, size_ * sizeof(xpath_node));
+            memcpy(storage, begin_, size_*sizeof(xpath_node));
             
             // deallocate old buffer
             if (_begin != &_storage) impl::xml_memory::deallocate(_begin);
@@ -11187,7 +11187,7 @@ namespace pugi
         impl::xpath_variable_string* var = static_cast<impl::xpath_variable_string*>(this);
 
         // duplicate string
-        size_t size = (impl::strlength(value) + 1) * sizeof(char_t);
+        size_t size = (impl::strlength(value) + 1)*sizeof(char_t);
 
         char_t* copy = static_cast<char_t*>(impl::xml_memory::allocate(size));
         if (!copy) return false;
@@ -11394,7 +11394,7 @@ namespace pugi
             size_t size = (full_size < capacity) ? full_size : capacity;
             assert(size > 0);
 
-            memcpy(buffer, r.c_str(), (size - 1) * sizeof(char_t));
+            memcpy(buffer, r.c_str(), (size - 1)*sizeof(char_t));
             buffer[size - 1] = 0;
         }
         
@@ -11529,26 +11529,26 @@ namespace pugi
 #endif
 
 /**
- * Copyright (c) 2006-2015 Arseny Kapoulkine
+*Copyright (c) 2006-2015 Arseny Kapoulkine
  *
- * Permission is hereby granted, free of charge, to any person
- * obtaining a copy of this software and associated documentation
- * files (the "Software"), to deal in the Software without
- * restriction, including without limitation the rights to use,
- * copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following
- * conditions:
+*Permission is hereby granted, free of charge, to any person
+*obtaining a copy of this software and associated documentation
+*files (the "Software"), to deal in the Software without
+*restriction, including without limitation the rights to use,
+*copy, modify, merge, publish, distribute, sublicense, and/or sell
+*copies of the Software, and to permit persons to whom the
+*Software is furnished to do so, subject to the following
+*conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+*The above copyright notice and this permission notice shall be
+*included in all copies or substantial portions of the Software.
+*
+*THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+*EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+*OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+*NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+*HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+*WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+*FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+*OTHER DEALINGS IN THE SOFTWARE.
  */

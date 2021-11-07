@@ -14,8 +14,8 @@ Input::Input() : Module()
 	name.create("input");
 
 	keyboard = new KeyState[MAX_KEYS];
-	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
-	memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
+	memset(keyboard, KEY_IDLE, sizeof(KeyState)*MAX_KEYS);
+	memset(mouseButtons, KEY_IDLE, sizeof(KeyState)*NUM_MOUSE_BUTTONS);
 }
 
 // Destructor

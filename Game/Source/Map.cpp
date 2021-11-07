@@ -78,7 +78,7 @@ void Map::Draw()
 	// L04: TODO 9: Complete the draw function
 	for (int i = 0; i < data.maplayers.count(); i++) {
 		if (data.maplayers[i]->properties.GetProperty("draw", 1) == 0) continue;
-		int layerSize = data.maplayers[i]->width * data.maplayers[i]->height;
+		int layerSize = data.maplayers[i]->width*data.maplayers[i]->height;
 		for (int j = 0; j < layerSize; j++) {
 			uint tileGid = data.maplayers[i]->data[j];
 			int layerWidth = data.maplayers[i]->width;
@@ -91,8 +91,8 @@ void Map::Draw()
 				}
 
 				int tilesetPosition = tileGid - tileset->firstgid;
-				SDL_Rect section = { tilesetPosition % tileset->numTilesWidth * tileset->tileWidth, tilesetPosition / tileset->numTilesWidth * tileset->tileHeight, tileset->tileWidth, tileset->tileHeight };
-				app->render->DrawTexture(tileset->texture, j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, &section);
+				SDL_Rect section = { tilesetPosition % tileset->numTilesWidth*tileset->tileWidth, tilesetPosition / tileset->numTilesWidth*tileset->tileHeight, tileset->tileWidth, tileset->tileHeight };
+				app->render->DrawTexture(tileset->texture, j % layerWidth*data.tileWidth, j / layerWidth*data.tileHeight, &section);
 
 				break;
 			}
@@ -105,8 +105,8 @@ iPoint Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
 
-	ret.x = x * data.tileWidth;
-	ret.y = y * data.tileHeight;
+	ret.x = x*data.tileWidth;
+	ret.y = y*data.tileHeight;
 
 	return ret;
 }
@@ -213,8 +213,8 @@ bool Map::Load(const char* filename)
 	}
 
 	CreateColliders();
-	app->player->position.x = data.properties.GetProperty("playerX", 0) * data.tileWidth;
-	app->player->position.y = data.properties.GetProperty("playerY", 0) * data.tileHeight;
+	app->player->position.x = data.properties.GetProperty("playerX", 0)*data.tileWidth;
+	app->player->position.y = data.properties.GetProperty("playerY", 0)*data.tileHeight;
 
 	mapLoaded = ret;
 
@@ -325,8 +325,8 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name.create(node.attribute("name").as_string("Not Found"));
 	layer->width = node.attribute("width").as_int(0);
 	layer->height = node.attribute("height").as_int(0);
-	layer->data = new uint[(data.width * data.height * sizeof(uint))];
-	memset(layer->data, 0, size_t(data.width * data.height * sizeof(uint)));
+	layer->data = new uint[(data.width*data.height*sizeof(uint))];
+	memset(layer->data, 0, size_t(data.width*data.height*sizeof(uint)));
 
 	pugi::xml_node nodeID;
 
@@ -362,7 +362,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties* properties)
 	return ret;
 }
 
-bool Map::StoreID(pugi::xml_node & node, MapLayer * layer, int ID)
+bool Map::StoreID(pugi::xml_node & node, MapLayer*layer, int ID)
 {
 	bool ret = true;
 
@@ -376,11 +376,11 @@ bool Map::CreateColliders() {
 
 	for (int i = 0; i < data.maplayers.count(); i++) {
 		if (data.maplayers[i]->properties.GetProperty("navigation", 0) == 0) continue;
-		int layerSize = data.maplayers[i]->width * data.maplayers[i]->height;
+		int layerSize = data.maplayers[i]->width*data.maplayers[i]->height;
 		for (int j = 0; j < layerSize; j++) {
 			if (data.maplayers[i]->data[j] == 0) continue;
 			int layerWidth = data.maplayers[i]->width;
-			SDL_Rect section = { j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight, data.tileWidth, data.tileHeight };
+			SDL_Rect section = { j % layerWidth*data.tileWidth, j / layerWidth*data.tileHeight, data.tileWidth, data.tileHeight };
 			if (data.maplayers[i]->properties.GetProperty("nextLevel", 0) == 1) {
 				app->collisions->AddCollider(section, Collider::Type::ENDLEVEL, this);
 			}

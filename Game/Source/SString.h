@@ -277,7 +277,7 @@ public:
 			uint src_len = strlen(src);
 			uint dst_len = strlen(dst);
 			uint diff = dst_len - src_len;
-			uint needed_size = 1 + strlen(str) + (diff * instances);
+			uint needed_size = 1 + strlen(str) + (diff*instances);
 
 			if(size < needed_size)
 			{
