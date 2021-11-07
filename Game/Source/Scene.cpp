@@ -34,6 +34,7 @@ bool Scene::Start()
 {
 	fullScreenRect = SDL_Rect({ 0, 0, app->render->camera.w, app->render->camera.h });
 
+	app->audio->PlayMusic("Assets/Audio/music/music.ogg");
 	//screenTexture = app->tex->Load("title and end screen.png"); 
 
 	//screenTexture = app->tex->Load("Assets/title screen/title and end screen.png");
@@ -107,12 +108,12 @@ bool Scene::Update(float dt)
 	}
 
 	// 8 to volume down and 9 to volume up
-	if (app->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN) 
+	if (app->input->GetKey(SDL_SCANCODE_8) == KEY_REPEAT) 
 	{
 		app->audio->VolumeDown();
 		LOG("Volume down");
 	}
-	if (app->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN) 
+	if (app->input->GetKey(SDL_SCANCODE_9) == KEY_REPEAT) 
 	{
 		app->audio->VolumeUp();
 		LOG("Volume up");

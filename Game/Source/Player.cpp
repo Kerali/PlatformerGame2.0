@@ -8,6 +8,7 @@
 #include "Collisions.h"
 #include "Render.h"
 #include "Scene.h"
+#include "Audio.h"
 
 #include "../Defs.h"
 #include "../Log.h"
@@ -45,6 +46,11 @@ bool Player::Start()
 	texture = app->tex->Load(texturePath);
 
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
+
+	jumpFx = app->audio->LoadFx("Assets/Audio/fx/jump.wav");
+	doubleJumpFx = app->audio->LoadFx("Assets/Audio/fx/double_jump.wav");
+	gameOverFx = app->audio->LoadFx("Assets/Audio/fx/game_over.wav");
+	gameStartFx = app->audio->LoadFx("Assets/Audio/fx/game_start.wav");
 
 	currentAnim = &idleRightAnim;
 
@@ -243,6 +249,7 @@ void Player::UpdateState(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !godMode)
 		{
+			app->audio->PlayFx(jumpFx, 0);
 			if (availableJumps > 0)
 			{
 				availableJumps--;
@@ -305,6 +312,8 @@ void Player::UpdateState(float dt)
 			if (availableJumps > 0)
 			{
 				availableJumps--;
+
+				app->audio->PlayFx(doubleJumpFx, 0);
 
 				verticalVelocity = jumpForce;
 
@@ -438,6 +447,7 @@ void Player::UpdateLogic(float dt)
 
 		if (isDead == false)
 		{
+			app->audio->PlayFx(gameOverFx, 0);
 			isDead = true;
 		}
 
@@ -469,6 +479,7 @@ void Player::ChangeState(PlayerState previousState, PlayerState newState)
 
 void Player::Reload()
 {
+	app->audio->PlayFx(gameStartFx, 0);
 	playerState = PlayerState::IDLE;
 	verticalVelocity = 0.0f;
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
