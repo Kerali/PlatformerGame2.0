@@ -88,6 +88,10 @@ bool App::Awake()
 		saveFileName = configApp.child("savefile").attribute("path").as_string();
 		win->SetTitle(title.GetString());
 
+		int cap = configApp.attribute("framerate_cap").as_int(-1);
+
+		if (cap > 0) cappedMs = 1000 / cap;
+
 		ListItem<Module*>* item;
 		item = modules.start;
 
@@ -219,6 +223,11 @@ void App::FinishUpdate()
 		averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
 
 	app->win->SetTitle(title);
+
+	if ((cappedMs > 0) && (lastFrameMs < cappedMs))
+	{
+		SDL_Delay(cappedMs - lastFrameMs);
+	}
 }
 
 // Call modules before each loop iteration
