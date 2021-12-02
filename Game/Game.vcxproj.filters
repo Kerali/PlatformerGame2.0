@@ -20,6 +20,8 @@
     <ClCompile Include="Source\Collisions.cpp" />
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\PerfTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -60,6 +62,8 @@
     <ClInclude Include="Source\Collider.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\PerfTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

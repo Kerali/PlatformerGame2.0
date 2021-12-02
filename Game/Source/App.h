@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "List.h"
+#include "Timer.h"
+#include "PerfTimer.h"
 
 #include "PugiXml/src/pugixml.hpp"
 
@@ -121,12 +123,15 @@ private:
 	bool requestLoad = false;
 	bool requestSave = false;
 
-	const int targetFPS = 60;
-	const int frameDelay = 1000/targetFPS;
-	float dt = frameDelay/1000.0f;
+	PerfTimer ptimer;
+	uint64 frameCount = 0;
 
-	long long frameStart;
-	int frameTime;
+	Timer startupTime;
+	Timer frameTime;
+	Timer lastSecFrameTime;
+	uint32 lastSecFrameCount = 0;
+	uint32 prevLastSecFrameCount = 0;
+	float dt = 0.0f;
 
 };
 

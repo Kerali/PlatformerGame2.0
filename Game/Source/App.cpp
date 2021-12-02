@@ -17,6 +17,8 @@
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
+	PERF_START(ptimer);
+
 	frames = 0;
 
 	input = new Input();
@@ -44,6 +46,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Render last to swap buffer
 	AddModule(render);
+
+	PERF_PEEK(ptimer);
 }
 
 // Destructor
@@ -72,6 +76,8 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
+	PERF_START(ptimer);
+
 	// L01: DONE 3: Load config from XML
 	bool ret = LoadConfig();
 
@@ -97,12 +103,16 @@ bool App::Awake()
 		}
 	}
 
+	PERF_PEEK(ptimer);
+
 	return ret;
 }
 
 // Called before the first frame
 bool App::Start()
 {
+	PERF_START(ptimer);
+
 	bool ret = true;
 	ListItem<Module*>* item;
 	item = modules.start;
@@ -113,6 +123,8 @@ bool App::Start()
 		item = item->next;
 	}
 
+	PERF_PEEK(ptimer);
+
 	return ret;
 }
 
@@ -122,8 +134,6 @@ bool App::Start()
 bool App::Update()
 {
 	bool ret = true;
-
-	frameStart = SDL_GetTicks();
 
 	PrepareUpdate();
 
@@ -140,13 +150,6 @@ bool App::Update()
 		ret = PostUpdate();
 
 	FinishUpdate();
-
-	frameTime = SDL_GetTicks() - frameStart;
-
-	if (frameTime < frameDelay)
-	{
-		SDL_Delay(frameDelay - frameTime);
-	}
 
 	return ret;
 }
@@ -177,7 +180,12 @@ bool App::LoadConfig()
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
+	frameCount++;
+	lastSecFrameCount++;
 
+	// L08: DONE 4: Calculate the dt: differential time since last frame
+	dt = frameTime.ReadSec();
+	frameTime.Start();
 }
 
 // ---------------------------------------------
@@ -193,6 +201,24 @@ void App::FinishUpdate()
 	{
 		Save();
 	}
+
+	if (lastSecFrameTime.Read() > 1000)
+	{
+		lastSecFrameTime.Start();
+		prevLastSecFrameCount = lastSecFrameCount;
+		lastSecFrameCount = 0;
+	}
+
+	float averageFps = float(frameCount) / startupTime.ReadSec();
+	float secondsSinceStartup = startupTime.ReadSec();
+	uint32 lastFrameMs = frameTime.Read();
+	uint32 framesOnLastUpdate = prevLastSecFrameCount;
+
+	static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
+		averageFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount);
+
+	app->win->SetTitle(title);
 }
 
 // Call modules before each loop iteration
