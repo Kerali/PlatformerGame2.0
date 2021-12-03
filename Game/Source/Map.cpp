@@ -390,10 +390,12 @@ bool Map::CreateColliders() {
 			if (data.maplayers[i]->data[j] == 0) continue;
 			int layerWidth = data.maplayers[i]->width;
 			SDL_Rect section = { j % layerWidth*data.tileWidth, j/layerWidth*data.tileHeight, data.tileWidth, data.tileHeight };
-			if (data.maplayers[i]->properties.GetProperty("nextLevel", 0) == 1) {
+			if (data.maplayers[i]->properties.GetProperty("nextLevel", 0) == 1)
+			{
 				app->collisions->AddCollider(section, Collider::Type::ENDLEVEL, this);
 			}
-			else if (data.maplayers[i]->properties.GetProperty("death", 0) == 1) {
+			else if (data.maplayers[i]->properties.GetProperty("death", 0) == 1)
+			{
 				app->collisions->AddCollider(section, Collider::Type::DEATH, this);
 			}
 			else

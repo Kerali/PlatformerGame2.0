@@ -14,6 +14,8 @@ struct Collider
 		STATIC,
 		DYNAMIC,
 		ENDLEVEL,
+		ITEMSCORE,
+		ITEMHEALTH,
 		DEATH
 	};
 

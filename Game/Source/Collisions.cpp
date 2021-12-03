@@ -76,6 +76,14 @@ bool Collisions::PostUpdate()
 			{
 				DrawCollider(&staticColliders[i]->rect, 0, 0, 255, 80);
 			}
+			else if (staticColliders[i]->type == Collider::Type::ITEMHEALTH)
+			{
+				DrawCollider(&staticColliders[i]->rect, 255, 255, 255, 80);
+			}
+			else if (staticColliders[i]->type == Collider::Type::ITEMSCORE)
+			{
+				DrawCollider(&staticColliders[i]->rect, 0, 0, 0, 80);
+			}
 			else
 			{
 				DrawCollider(&staticColliders[i]->rect, 0, 255, 0, 80);
