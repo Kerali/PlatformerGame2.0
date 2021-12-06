@@ -128627,7 +128627,8 @@
  <layer id="13" name="scoreColliders" width="206" height="78">
   <properties>
    <property name="draw" type="int" value="0"/>
-   <property name="entityType" type="int" value="2"/>
+   <property name="itemType" type="int" value="2"/>
+   <property name="navigation" type="int" value="1"/>
   </properties>
   <data>
    <tile/>
@@ -192931,7 +192932,8 @@
  <layer id="14" name="healthColliders" width="206" height="78">
   <properties>
    <property name="draw" type="int" value="0"/>
-   <property name="entityType" type="int" value="1"/>
+   <property name="itemType" type="int" value="1"/>
+   <property name="navigation" type="int" value="1"/>
   </properties>
   <data>
    <tile/>

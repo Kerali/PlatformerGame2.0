@@ -205,43 +205,49 @@ void Player::OnCollision(Collider* a, Collider* b)
 		ChangeState(playerState, DYING);
 	}
 
-	int deltaX = a->rect.x - b->rect.x;
-	int deltaY = a->rect.y - b->rect.y;
-
-	if (std::abs(deltaX) > std::abs(deltaY))
+	if (b->type == Collider::Type::CHECKPOINT)
 	{
-		if (deltaX > 0)
-		{
-			position.x += b->rect.x + b->rect.w - a->rect.x;
-		}
-		else
-		{
-			position.x -= a->rect.x + a->rect.w - b->rect.x;
-		}
+		app->player->initialPosition = app->player->position;
 	}
-	else
+
+	if (b->type != Collider::Type::ITEMHEALTH && b->type != Collider::Type::ITEMSCORE && b->type != Collider::Type::CHECKPOINT)
 	{
-		if (deltaY > 0)
+		int deltaX = a->rect.x - b->rect.x;
+		int deltaY = a->rect.y - b->rect.y;
+		if (std::abs(deltaX) > std::abs(deltaY))
 		{
-			verticalVelocity = 0.0f;
-			position.y += b->rect.y + b->rect.h - a->rect.y;
+			if (deltaX > 0)
+			{
+				position.x += b->rect.x + b->rect.w - a->rect.x;
+			}
+			else
+			{
+				position.x -= a->rect.x + a->rect.w - b->rect.x;
+			}
 		}
 		else
 		{
-			if (verticalVelocity < 0.0f)
+			if (deltaY > 0)
 			{
 				verticalVelocity = 0.0f;
-				if (playerState != PlayerState::DYING)
-				{
-					ChangeState(playerState, IDLE);
-				}
-				position.y -= a->rect.y + a->rect.h - b->rect.y;
-				availableJumps = maxJumps;
+				position.y += b->rect.y + b->rect.h - a->rect.y;
 			}
-		}		
+			else
+			{
+				if (verticalVelocity < 0.0f)
+				{
+					verticalVelocity = 0.0f;
+					if (playerState != PlayerState::DYING)
+					{
+						ChangeState(playerState, IDLE);
+					}
+					position.y -= a->rect.y + a->rect.h - b->rect.y;
+					availableJumps = maxJumps;
+				}
+			}
+		}
+		collider->SetPos(position.x, position.y);
 	}
-
-	collider->SetPos(position.x, position.y);
 
 }
 

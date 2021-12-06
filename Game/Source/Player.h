@@ -74,6 +74,8 @@ public:
 	float gravity;
 	float verticalVelocity = 0.0f;
 
+	Point<int> initialPosition;
+
 private:
 	unsigned int speed;
 	float maxVerticalVelocity = 30.0f;

@@ -16,6 +16,7 @@ struct Collider
 		ENDLEVEL,
 		ITEMSCORE,
 		ITEMHEALTH,
+		CHECKPOINT,
 		DEATH
 	};
 
