@@ -4,6 +4,8 @@
 #include "Render.h"
 #include "Log.h"
 
+#include "Optick/include/optick.h"
+
 Collisions::Collisions() : Module()
 {
 
@@ -56,7 +58,7 @@ bool Collisions::PreUpdate()
 
 bool Collisions::Update(float dt)
 {
-
+	OPTICK_EVENT("CollisionsUpdate", Optick::Category::Physics);
 	bool ret = true;
 
 	for (int i = 0; i < dynamicColliders.count(); i++) {
@@ -80,6 +82,7 @@ bool Collisions::Update(float dt)
 
 bool Collisions::PostUpdate()
 {
+	OPTICK_EVENT("CollisionsPostUpdate", Optick::Category::Rendering);
 	bool ret = true;
 
 	if (showColliders == true)
