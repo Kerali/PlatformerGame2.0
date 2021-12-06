@@ -247635,6 +247635,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -247840,8 +247841,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -263777,6 +263777,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -263982,8 +263983,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="358"/>
    <tile/>
    <tile/>
    <tile/>
