@@ -46,7 +46,7 @@ public:
 	void UpdateState(float dt);
 	void UpdateLogic(float dt);
 	void ChangeState(PlayerState previous, PlayerState next);
-	void GodMovement(float dt);
+	void GodMovement();
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&);
@@ -68,7 +68,7 @@ public:
 	Animation doubleJumpRightAnim;
 	Animation doubleJumpLeftAnim;
 
-	Point<float> position;
+	Point<int> position;
 
 	bool godMode = false;
 	float gravity;
@@ -76,11 +76,11 @@ public:
 
 	int health;
 
-	Point<float> initialPosition;
+	Point<int> initialPosition;
 
 private:
 	unsigned int speed;
-	float maxVerticalVelocity = 800.0f;
+	float maxVerticalVelocity = 30.0f;
 	float jumpForce;
 
 	int maxJumps = 2;

@@ -9,8 +9,6 @@
 #include "Defs.h"
 #include "Log.h"
 
-#include "Optick/include/optick.h"
-
 #include <math.h>
 
 Map::Map() : Module(), mapLoaded(false)
@@ -21,7 +19,10 @@ Map::Map() : Module(), mapLoaded(false)
 // Destructor
 Map::~Map()
 {
-	
+	for (int i = 0; i < data.tilesets.count(); i++)
+	{
+		delete data.tilesets[i]->texture;
+	}
 }
 
 
@@ -65,8 +66,6 @@ bool Map::Awake(pugi::xml_node& config)
 
 bool Map::PostUpdate()
 {
-	OPTICK_EVENT("MapPostUpdate", Optick::Category::Rendering);
-
 	Draw();
 	return true;
 }
@@ -134,10 +133,7 @@ bool Map::CleanUp()
 
 	// L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
 	// Remove all tilesets
-	for (int i = 0; i < data.tilesets.count(); i++)
-	{
-		app->tex->UnLoad(data.tilesets[i]->texture);
-	}
+
 	data.tilesets.clear();
 
 	// L04: TODO 2: clean up all layer data

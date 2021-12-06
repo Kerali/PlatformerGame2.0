@@ -11,8 +11,6 @@
 #include "Audio.h"
 #include "ModuleUI.h"
 
-#include "Optick/include/optick.h"
-
 #include "../Defs.h"
 #include "../Log.h"
 #include <math.h>
@@ -56,7 +54,7 @@ bool Player::Start()
 
 	texture = app->tex->Load(texturePath);
 
-	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x, (int)position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
+	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 
 	jumpFx = app->audio->LoadFx(jumpFxPath);
 	doubleJumpFx = app->audio->LoadFx(doubleJumpFxPath);
@@ -66,8 +64,8 @@ bool Player::Start()
 	currentAnim = &idleRightAnim;
 
 	idleRightAnim.loop = idleLeftAnim.loop = runRightAnim.loop = runLeftAnim.loop = true;
-	idleRightAnim.speed = idleLeftAnim.speed = 16.0f;
-	runRightAnim.speed = runLeftAnim.speed = 25.0f;
+	idleRightAnim.speed = idleLeftAnim.speed = 0.6f;
+	runRightAnim.speed = runLeftAnim.speed = 0.7f;
 
 	idleRightAnim.PushBack({ 0,0,22,26 });
 	idleRightAnim.PushBack({ 32,0,22,26 });
@@ -134,7 +132,7 @@ bool Player::Start()
 	prepareToSpawnAnim.PushBack({ 0,0,0,0 });
 
 	appearAnim.loop = disappearLeftAnim.loop = disappearRightAnim.loop = false;
-	appearAnim.speed = disappearLeftAnim.speed = disappearRightAnim.speed = 11.0f;
+	appearAnim.speed = disappearLeftAnim.speed = disappearRightAnim.speed = 0.3f;
 
 	for (int i = 0; i < 390; i += 55)
 	{
@@ -152,12 +150,10 @@ bool Player::Start()
 
 bool Player::Update(float dt)
 {
-	OPTICK_EVENT("PlayerUpdate", Optick::Category::GameLogic);
-
 	UpdateState(dt);
 	UpdateLogic(dt);
 
-	if (godMode) GodMovement(dt);
+	if (godMode) GodMovement();
 
 	return true;
 }
@@ -268,7 +264,7 @@ void Player::OnCollision(Collider* a, Collider* b)
 				}
 			}
 		}
-		collider->SetPos((int)position.x, (int)position.y);
+		collider->SetPos(position.x, position.y);
 	}
 
 }
@@ -304,13 +300,10 @@ void Player::UpdateState(float dt)
 				app->audio->PlayFx(jumpFx, 0);
 				if (availableJumps > 0)
 				{
-					if (verticalVelocity < 0.0f)
-						availableJumps -= 2;
-					else
-						availableJumps--;
+					availableJumps--;
 				}
 
-				verticalVelocity = jumpForce;
+				verticalVelocity += jumpForce;
 
 				if (verticalVelocity > maxVerticalVelocity)
 				{
@@ -409,8 +402,7 @@ void Player::UpdateLogic(float dt)
 		verticalVelocity = -maxVerticalVelocity;
 	}
 
-	LOG("%f\n", verticalVelocity);
-	position.y -= verticalVelocity*dt;
+	position.y -= verticalVelocity;
 
 	switch (playerState)
 	{
@@ -438,12 +430,12 @@ void Player::UpdateLogic(float dt)
 			if (isGoingRight == true)
 			{
 				currentAnim = &runRightAnim;
-				position.x += speed*dt;
+				position.x += speed;
 			}
 			else
 			{
 				currentAnim = &runLeftAnim;
-				position.x -= speed*dt;
+				position.x -= speed;
 			}
 	
 			break;
@@ -457,12 +449,12 @@ void Player::UpdateLogic(float dt)
 					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 					{
 						currentAnim = &jumpLeftAnim;
-						position.x -= speed*dt;
+						position.x -= speed;
 					}
 					else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 					{
 						currentAnim = &jumpRightAnim;
-						position.x += speed*dt;
+						position.x += speed;
 					}
 				}
 				if (availableJumps == 0)
@@ -470,12 +462,12 @@ void Player::UpdateLogic(float dt)
 					if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 					{
 						currentAnim = &doubleJumpLeftAnim;
-						position.x -= speed*dt;
+						position.x -= speed;
 					}
 					else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 					{
 						currentAnim = &doubleJumpRightAnim;
-						position.x += speed*dt;
+						position.x += speed;
 					}
 				}
 			}
@@ -484,12 +476,12 @@ void Player::UpdateLogic(float dt)
 				if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
 					currentAnim = &fallLeftAnim;
-					position.x -= speed*dt;
+					position.x -= speed;
 				}
 				else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
 					currentAnim = &fallRightAnim;
-					position.x += speed*dt;
+					position.x += speed;
 				}
 			}
 		
@@ -535,7 +527,7 @@ void Player::UpdateLogic(float dt)
 
 	collider->SetPos(position.x, position.y);
 
-	currentAnim->Update(dt);
+	currentAnim->Update();
 }
 
 void Player::ChangeState(PlayerState previousState, PlayerState newState)
@@ -559,14 +551,14 @@ void Player::Reload()
 		health = 3;
 		app->ui->score = 0;
 	}
-	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x, (int)position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
+	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 	initialPosition = position;
 }
 
-void Player::GodMovement(float dt)
+void Player::GodMovement()
 {
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
-		position.y -= speed*dt;
+		position.y -= speed;
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
-		position.y += speed*dt;
+		position.y += speed;
 }

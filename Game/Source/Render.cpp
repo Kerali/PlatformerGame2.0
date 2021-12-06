@@ -4,8 +4,6 @@
 #include "Player.h"
 #include "Scene.h"
 
-#include "Optick/include/optick.h"
-
 #include "Defs.h"
 #include "Log.h"
 
@@ -78,8 +76,8 @@ bool Render::Update(float dt)
 
 	if (app->scene->gameplayState == Scene::GameplayState::PLAYING)
 	{
-		camera.x = -(int)app->player->position.x * scale + camera.w / 2;
-		camera.y = -(int)app->player->position.y * scale + camera.h / 2;
+		camera.x = -app->player->position.x*scale + camera.w/2;
+		camera.y = -app->player->position.y*scale + camera.h/2;
 
 		//Camera limits ---> HARDCODED
 		if (camera.x > -160)
@@ -98,8 +96,6 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
-	OPTICK_EVENT("RenderPostUpdate", Optick::Category::Rendering);
-
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;

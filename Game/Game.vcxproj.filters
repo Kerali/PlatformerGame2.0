@@ -66,12 +66,6 @@
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\ModuleUI.h" />
-	<ClInclude Include="Source\External\Optick\include\optick.config.h">
-      <Filter>External\Optick</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\Optick\include\optick.h">
-      <Filter>External\Optick</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -82,9 +76,6 @@
     </Filter>
     <Filter Include="External\PugiXml">
       <UniqueIdentifier>{2855ff7f-53a1-413d-a75b-18b4ade921dd}</UniqueIdentifier>
-    </Filter>
-	<Filter Include="External\Optick">
-      <UniqueIdentifier>{dafa520a-b7ed-4339-938e-68ebe1db94b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

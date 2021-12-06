@@ -4,7 +4,6 @@
 #include "Log.h"
 
 #include "SDL/include/SDL.h"
-#include "Optick/include/optick.h"
 
 #include <stdlib.h>
 
@@ -30,7 +29,6 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
-		OPTICK_FRAME("MainLoop");
 		switch(state)
 		{
 
