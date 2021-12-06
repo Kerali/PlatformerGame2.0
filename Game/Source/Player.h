@@ -74,6 +74,8 @@ public:
 	float gravity;
 	float verticalVelocity = 0.0f;
 
+	int health;
+
 	Point<int> initialPosition;
 
 private:

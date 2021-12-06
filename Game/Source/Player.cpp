@@ -9,6 +9,7 @@
 #include "Render.h"
 #include "Scene.h"
 #include "Audio.h"
+#include "ModuleUI.h"
 
 #include "../Defs.h"
 #include "../Log.h"
@@ -46,6 +47,8 @@ bool Player::Awake(pugi::xml_node& config)
 bool Player::Start()
 {
 	bool ret = true;
+
+	health = 3;
 
 	LOG("Loading Player textures");
 
@@ -203,6 +206,11 @@ void Player::OnCollision(Collider* a, Collider* b)
 	if (b->type == Collider::Type::DEATH)
 	{
 		ChangeState(playerState, DYING);
+	}
+
+	if (b->type == Collider::Type::ITEMSCORE)
+	{
+		app->ui->score += 100;
 	}
 
 	if (b->type == Collider::Type::CHECKPOINT)

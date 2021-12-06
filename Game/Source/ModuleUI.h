@@ -41,12 +41,16 @@ public:
 public:
 	int score;
 	int lifes;
+	int currentLevel;
 
 	int font = -1;
 
 	const char* fontPath;
 	char scoreText[DYNAMIC_TEXT_LEN + 1] = { "0000000000" };
+	char shortNumberText[2] = { "0" };
 	char lifeText[2] = { "0" };
+
+	SDL_Rect box;
 
 	SDL_Texture* pointSpritesheetTex;
 	SDL_Rect pointsRect;
@@ -65,6 +69,7 @@ public:
 	// Create a surface from text
 	void BlitText(int x, int y, int fontIndex, const char* text) const;
 	void IntToDynamicString(char* buffer, int k);
+	void IntToString(char* buffer, int k, int length);
 
 	int k = 0;
 
