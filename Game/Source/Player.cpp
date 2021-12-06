@@ -150,7 +150,7 @@ bool Player::Update(float dt)
 	UpdateState(dt);
 	UpdateLogic(dt);
 
-	if (godMode)GodMovement();
+	if (godMode) GodMovement();
 
 	return true;
 }

@@ -19,6 +19,7 @@ class Map;
 class Debug;
 class Collisions;
 class Player;
+class ModuleUI;
 
 class App
 {
@@ -89,6 +90,7 @@ public:
 	Debug* debug;
 	Collisions* collisions;
 	Player* player;
+	ModuleUI* ui;
 
 	bool Load();
 	bool Save();

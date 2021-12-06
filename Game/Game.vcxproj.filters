@@ -22,6 +22,7 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
+    <ClCompile Include="Source\ModuleUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -64,6 +65,7 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\PerfTimer.h" />
+    <ClInclude Include="Source\ModuleUI.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

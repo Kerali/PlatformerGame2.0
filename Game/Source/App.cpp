@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "App.h"
 #include "Window.h"
 #include "Input.h"
@@ -7,6 +9,7 @@
 #include "Scene.h"
 #include "Collisions.h"
 #include "Player.h"
+#include "ModuleUI.h"
 
 #include "Map.h"
 #include "Debug.h"
@@ -31,6 +34,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	debug = new Debug();
 	collisions = new Collisions();
 	player = new Player();
+	ui = new ModuleUI();
 
 	// Ordered for awake/Start/Update
 	// Reverse order of CleanUp
@@ -43,6 +47,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(debug);
 	AddModule(collisions);
 	AddModule(player);
+	AddModule(ui);
 
 	// Render last to swap buffer
 	AddModule(render);
