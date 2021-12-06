@@ -33,6 +33,24 @@ bool Collisions::PreUpdate()
 {
 	bool ret = true;
 
+	for (int i = 0; i < dynamicColliders.count(); i++)
+	{
+		if (dynamicColliders[i]->pendingToDelete)
+		{
+			ListItem<Collider*>* c = app->collisions->dynamicColliders.At(i);
+			app->collisions->dynamicColliders.del(c);
+		}
+	}
+
+	for (int i = 0; i < staticColliders.count(); i++)
+	{
+		if (staticColliders[i]->pendingToDelete)
+		{
+			ListItem<Collider*>* c = app->collisions->staticColliders.At(i);
+			app->collisions->staticColliders.del(c);
+		}
+	}
+
 	return ret;
 }
 
@@ -136,5 +154,5 @@ void Collisions::DrawCollider(const SDL_Rect* section, Uint8 r, Uint8 g, Uint8 b
 
 void Collisions::RemoveCollider(Collider* collider)
 {
-	
+	delete collider;
 }

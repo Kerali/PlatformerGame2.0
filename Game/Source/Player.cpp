@@ -210,7 +210,17 @@ void Player::OnCollision(Collider* a, Collider* b)
 
 	if (b->type == Collider::Type::ITEMSCORE)
 	{
-		app->ui->score += 100;
+		app->ui->score += 1000;
+
+		b->pendingToDelete = true;
+	}
+
+	if (b->type == Collider::Type::ITEMHEALTH)
+	{
+		if (health < 3)
+			app->player->health++;
+
+		b->pendingToDelete = true;
 	}
 
 	if (b->type == Collider::Type::CHECKPOINT)
@@ -492,7 +502,22 @@ void Player::UpdateLogic(float dt)
 
 			if (currentAnim->HasFinished())
 			{
-				app->scene->FadeToNewState(Scene::GAME_OVER_SCREEN);
+				health--;
+
+				if (health < 0)
+					health = 0;
+
+				if (health == 0)
+				{
+					app->scene->FadeToNewState(Scene::GAME_OVER_SCREEN);
+				}
+				else
+				{
+					app->audio->PlayFx(gameStartFx, 0);
+					playerState = PlayerState::IDLE;
+					verticalVelocity = 0.0f;
+					position = initialPosition;
+				}
 			}
 
 			break;
@@ -521,7 +546,13 @@ void Player::Reload()
 	app->audio->PlayFx(gameStartFx, 0);
 	playerState = PlayerState::IDLE;
 	verticalVelocity = 0.0f;
+	if (health == 0)
+	{
+		health = 3;
+		app->ui->score = 0;
+	}
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
+	initialPosition = position;
 }
 
 void Player::GodMovement()

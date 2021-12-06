@@ -33,6 +33,8 @@ struct Collider
 	SDL_Rect rect;
 	Type type;
 	Module* listeners[MAX_LISTENERS] = { nullptr };
+
+	bool pendingToDelete = false;
 };
 
 
