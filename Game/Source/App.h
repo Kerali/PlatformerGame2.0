@@ -20,6 +20,7 @@ class Debug;
 class Collisions;
 class Player;
 class ModuleUI;
+class PathFinding;
 
 class App
 {
@@ -91,6 +92,7 @@ public:
 	Collisions* collisions;
 	Player* player;
 	ModuleUI* ui;
+	PathFinding* pathfinding;
 
 	bool Load();
 	bool Save();

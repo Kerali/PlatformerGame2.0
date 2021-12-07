@@ -10,6 +10,7 @@
 #include "Collisions.h"
 #include "Player.h"
 #include "ModuleUI.h"
+#include "Pathfinding.h"
 
 #include "Map.h"
 #include "Debug.h"
@@ -35,6 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new Collisions();
 	player = new Player();
 	ui = new ModuleUI();
+	pathfinding = new PathFinding();
 
 	// Ordered for awake/Start/Update
 	// Reverse order of CleanUp
@@ -48,6 +50,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(player);
 	AddModule(ui);
+	AddModule(pathfinding);
 
 	// Render last to swap buffer
 	AddModule(render);

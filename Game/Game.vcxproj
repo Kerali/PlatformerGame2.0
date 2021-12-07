@@ -98,6 +98,7 @@
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\ModuleUI.cpp" />
+    <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="Source\Debug.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\ModuleUI.h" />
+    <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Scene.h" />
