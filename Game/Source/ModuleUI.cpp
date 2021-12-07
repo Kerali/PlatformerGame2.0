@@ -7,7 +7,9 @@
 #include "Player.h"
 #include "Scene.h"
 
-#include "Optick/include/optick.h"
+
+#include <string.h>
+#include <stdio.h>
 
 
 ModuleUI::ModuleUI() : Module()
@@ -55,8 +57,6 @@ bool ModuleUI::Update(float dt)
 
 bool ModuleUI::PostUpdate()
 {
-	OPTICK_EVENT("UIPostUpdate", Optick::Category::UI);
-
 	app->render->DrawRectangle(box, 33, 31, 48, 255, true, false);
 
 	int uiposx = 10;
