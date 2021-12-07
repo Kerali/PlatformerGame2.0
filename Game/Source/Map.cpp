@@ -20,10 +20,7 @@ Map::Map() : Module(), mapLoaded(false)
 // Destructor
 Map::~Map()
 {
-	for (int i = 0; i < data.tilesets.count(); i++)
-	{
-		delete data.tilesets[i]->texture;
-	}
+	
 }
 
 int Properties::GetProperty(const char* name, int defaultValue) const
@@ -133,6 +130,10 @@ bool Map::CleanUp()
 	// L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
 	// Remove all tilesets
 
+	for (int i = 0; i < data.tilesets.count(); i++)
+	{
+		app->tex->UnLoad(data.tilesets[i]->texture);
+	}
 	data.tilesets.clear();
 
 	// L04: TODO 2: clean up all layer data
