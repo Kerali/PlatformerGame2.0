@@ -1,15 +1,16 @@
-
 #include "App.h"
 #include "Render.h"
 #include "Textures.h"
 #include "Map.h"
 #include "Collisions.h"
 #include "Player.h"
+#include "Pathfinding.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 #include <math.h>
+#include <algorithm>
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -25,12 +26,8 @@ Map::~Map()
 	}
 }
 
-
-
 int Properties::GetProperty(const char* name, int defaultValue) const
 {
-
-
 	for (int i = 0; i < list.count(); i++)
 	{
 		if (list[i]->name == name)
@@ -220,6 +217,12 @@ bool Map::Load(const char* filename)
 	CreateColliders();
 	app->player->position.x = data.properties.GetProperty("playerX", 0)*data.tileWidth;
 	app->player->position.y = data.properties.GetProperty("playerY", 0)*data.tileHeight;
+
+	CreateWalkabilityMap();
+
+	app->pathfinding->SetMap(data.width, data.height, walkabilityMap);
+	int p = app->pathfinding->CreatePath(iPoint(20, 61), iPoint(24, 61));
+	LOG("%d\n", p);
 
 	mapLoaded = ret;
 
@@ -418,4 +421,21 @@ bool Map::CreateColliders() {
 	}
 
 	return ret;
+}
+
+void Map::CreateWalkabilityMap()
+{
+	walkabilityMap = new uchar[data.width * data.height];
+	std::fill_n(walkabilityMap, data.width * data.height, 1);
+	List<Collider*>* colliders = &app->collisions->staticColliders;
+	for (int i = 0; i < colliders->count(); i++)
+	{
+		if ((*colliders)[i]->type == Collider::Type::STATIC || (*colliders)[i]->type == Collider::Type::DEATH)
+		{
+			Point<int> p;
+			p.x = (*colliders)[i]->rect.x / data.tileWidth;
+			p.y = (*colliders)[i]->rect.y / data.tileHeight;
+			walkabilityMap[p.x + data.width * p.y] = 0;
+		}
+	}
 }

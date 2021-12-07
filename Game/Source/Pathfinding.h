@@ -83,6 +83,11 @@ struct PathNode
 	int Score() const;
 	// Calculate the F for a specific destination tile
 	int CalculateF(const iPoint& destination);
+
+	const bool operator ==(const PathNode other)
+	{
+		return pos == other.pos;
+	}
 };
 
 // ---------------------------------------------------------------------

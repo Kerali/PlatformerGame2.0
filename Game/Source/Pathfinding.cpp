@@ -158,7 +158,10 @@ int PathNode::Score() const
 // ----------------------------------------------------------------------------------
 int PathNode::CalculateF(const iPoint& destination)
 {
-	g = parent->g + 1;
+	if (parent == NULL)
+		g = 0;
+	else
+		g = parent->g + 1;
 	h = pos.DistanceTo(destination);
 
 	return g + h;
@@ -170,10 +173,66 @@ int PathNode::CalculateF(const iPoint& destination)
 int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
+	if (!IsWalkable(origin) || !IsWalkable(destination))
+		return -1;
 
 	// L12b: TODO 2: Create two lists: open, close
 	// Add the origin tile to open
 	// Iterate while we have tile in the open list
+	PathList open;
+	PathList close;
+	PathNode* o = new PathNode(-1, -1, origin, NULL);
+	o->CalculateF(destination);
+	open.list.add(*o);
+	while (open.list.count() > 0)
+	{
+		ListItem<PathNode>* lowest = open.GetNodeLowestScore();
+		close.list.add(lowest->data);
+		open.list.del(lowest);
+
+		if (lowest->data.pos == destination)
+		{
+			lastPath.PushBack(close.list[close.list.count() - 1].pos);
+			PathNode p = *close.list[close.list.count() - 1].parent;
+			lastPath.PushBack(p.pos);
+			while (p.pos != origin)
+			{
+				p = *p.parent;
+				lastPath.PushBack(p.pos);
+			}
+			lastPath.Flip();
+			for (int i = 0; i < lastPath.Count(); i++)
+			{
+				LOG("%d, %d\n", lastPath[i].x, lastPath[i].y);
+			}
+			break;
+		}
+
+		PathList adjacent;
+		close.list[close.list.count() - 1].FindWalkableAdjacents(adjacent);
+		for (int i = 0; i < adjacent.list.count(); i++)
+		{
+			if (close.list.find(adjacent.list[i]) != -1)
+			{
+				continue;
+			}
+
+			PathNode n = adjacent.list[i];
+			n.CalculateF(destination);
+			int index = open.list.find(n);
+			open.list.add(n);
+			if (index != -1)
+			{
+				if (open.list[index].g > n.g)
+				{
+					open.list[index].parent = n.parent;
+					open.list[index].g = n.g;
+				}
+			}
+		}
+	}
+
+	return lastPath.Count();
 
 	// L12b: TODO 3: Move the lowest score cell from open list to the closed list
 
