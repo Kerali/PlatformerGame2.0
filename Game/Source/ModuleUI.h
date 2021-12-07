@@ -2,6 +2,7 @@
 #define __ModuleUI_H__
 
 #include "Module.h"
+#include "Animation.h"
 #include "SDL\include\SDL_pixels.h"
 
 #define MAX_FONTS 100
@@ -9,6 +10,7 @@
 #define DYNAMIC_TEXT_LEN 10
 
 struct SDL_Texture;
+struct Animation;
 
 struct Font
 {
@@ -46,6 +48,9 @@ public:
 	int font = -1;
 
 	const char* fontPath;
+
+	const char* livesTexturePath;
+
 	char scoreText[DYNAMIC_TEXT_LEN + 1] = { "0000000000" };
 	char shortNumberText[2] = { "0" };
 	char lifeText[2] = { "0" };
@@ -54,6 +59,10 @@ public:
 
 	SDL_Texture* pointSpritesheetTex;
 	SDL_Rect pointsRect;
+
+	SDL_Texture* livesTexture = nullptr;
+	SDL_Rect livesRect;
+	SDL_Rect extraLivesRect;
 
 	// Loads a font file from a texture
 	// Returns a font index from the fonts array
@@ -67,7 +76,7 @@ public:
 	void UnLoad(int fontIndex);
 
 	// Create a surface from text
-	void BlitText(int x, int y, int fontIndex, const char* text) const;
+	void BlitText(int x, int y, int fontIndex, const char* text, bool useCamera) const;
 	void IntToDynamicString(char* buffer, int k);
 	void IntToString(char* buffer, int k, int length);
 

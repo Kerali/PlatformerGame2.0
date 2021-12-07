@@ -7,14 +7,13 @@
 #include "Player.h"
 #include "Scene.h"
 
-
 #include <string.h>
 #include <stdio.h>
 
 
 ModuleUI::ModuleUI() : Module()
 {
-	name.create("font");
+	name.create("ui");
 }
 
 ModuleUI::~ModuleUI()
@@ -25,9 +24,11 @@ bool ModuleUI::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
 
-	pugi::xml_node fontPathN = config.child("font");
+	pugi::xml_node uiPathN = config.child("ui");
 
-	fontPath = fontPathN.attribute("fontPath").as_string();
+	fontPath = uiPathN.attribute("fontPath").as_string();
+
+	livesTexturePath = uiPathN.attribute("livesTexturePath").as_string();
 
 	score = 0;
 
@@ -46,6 +47,10 @@ bool ModuleUI::Start()
 
 	box = SDL_Rect({ 0, 0, app->render->camera.w, 30 });
 
+	livesTexture = app->tex->Load(livesTexturePath);
+	livesRect = SDL_Rect({ 0,0,12,10 });
+	extraLivesRect = SDL_Rect({ 12,0,12,10 });
+
 	return ret;
 }
 
@@ -60,17 +65,54 @@ bool ModuleUI::PostUpdate()
 	app->render->DrawRectangle(box, 33, 31, 48, 255, true, false);
 
 	int uiposx = 10;
-	BlitText(uiposx, 5, font, "LEVEL");
+	BlitText(uiposx, 5, font, "LEVEL", false);
 	IntToString(shortNumberText, currentLevel, 2);
-	BlitText(uiposx + 55, 5, font, shortNumberText);
+	BlitText(uiposx + 55, 5, font, shortNumberText, false);
 
-	BlitText(uiposx + 90, 5, font, "HEALTH");
-	IntToString(shortNumberText, app->player->health, 2);
-	BlitText(uiposx + 155, 5, font, shortNumberText);
+	BlitText(uiposx + 90, 5, font, "HEALTH", false);
+	/*IntToString(shortNumberText, app->player->health, 2);
+	BlitText(uiposx + 155, 5, font, shortNumberText, false);
+	*/
 
-	BlitText(uiposx + 320, 5, font, "SCORE");
+	for (int i = 0; i < app->player->health; i++)
+	{
+		if (i < 3)
+		{
+			app->render->DrawTexture(livesTexture, uiposx + 150 + (i * 15), 3, &livesRect, 0, 0, 0, 0, false);
+		}
+		else
+		{
+			app->render->DrawTexture(livesTexture, uiposx + 150 + (i * 15), 3, &extraLivesRect, 0, 0, 0, 0, false);
+
+		}
+	}
+
+	//switch (app->player->health)
+	//{
+	//case(1):
+	//	oneLifeLeft = &SDL_Rect({ 0, 0, 8,7 });
+	//	app->render->DrawTexture(livesTexture, uiposx + 155, 5, oneLifeLeft, 0, 0, 0, 0, false);
+	//	break;
+	//case(2):
+	//	twoLivesLeft = &SDL_Rect({ 0, 0, 20,7 });
+	//	app->render->DrawTexture(livesTexture, 0, 0, twoLivesLeft, 0, 0, 0, 0, false);
+	//	break;
+	//case(3):
+	//	threeLivesLeft = &SDL_Rect({ 0, 0, 28,7 });
+	//	app->render->DrawTexture(livesTexture, uiposx + 155, 5, threeLivesLeft, 0, 0, 0, 0, false);
+	//	break;
+	//case(4):
+	//	fourLivesLeft = &SDL_Rect({ 0, 0, 38,7 });
+	//	app->render->DrawTexture(livesTexture, 0, 0, fourLivesLeft, 0, 0, 0, 0, false);
+	//	break;
+	//default:
+
+	//	break;
+	//}
+
+	BlitText(uiposx + 320, 5, font, "SCORE", false);
 	IntToDynamicString(scoreText, score);
-	BlitText(uiposx + 375, 5, font, scoreText);
+	BlitText(uiposx + 375, 5, font, scoreText, false);
 
 	return true;
 }
@@ -151,7 +193,7 @@ void ModuleUI::UnLoad(int font_id)
 	k--;
 }
 
-void ModuleUI::BlitText(int x, int y, int font_id, const char* text) const
+void ModuleUI::BlitText(int x, int y, int font_id, const char* text, bool useCamera) const
 {
 	if (text == nullptr || font_id < 0 || font_id >= MAX_FONTS || fonts[font_id].texture == nullptr)
 	{
