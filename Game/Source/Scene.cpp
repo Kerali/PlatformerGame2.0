@@ -8,6 +8,8 @@
 #include "Map.h"
 #include "Player.h"
 
+#include "Optick/include/optick.h"
+
 #include "Defs.h"
 #include "Log.h"
 
@@ -60,9 +62,9 @@ bool Scene::Start()
 	app->audio->PlayMusic(musicPath);
 
 	titleScreenAnim.loop = gameOverAnim.loop = logoScreenAnim.loop = true;
-	titleScreenAnim.speed = 0.05f;
-	gameOverAnim.speed = 0.03f;
-	logoScreenAnim.speed = 0.03f;
+	logoScreenAnim.speed = 6.0f;
+	titleScreenAnim.speed = 6.0f;
+	gameOverAnim.speed = 1.8f;
 
 	screenDisplayAnim = &logoScreenAnim;
 
@@ -144,7 +146,7 @@ bool Scene::Update(float dt)
 		fading = false;
 	}
 
-	screenDisplayAnim->Update();
+	screenDisplayAnim->Update(dt);
 
 	return true;
 }
@@ -215,6 +217,8 @@ void Scene::LoadLevel(SString name)
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
+	OPTICK_EVENT("ScenePostUpdate", Optick::Category::Rendering);
+
 	bool ret = true;
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
