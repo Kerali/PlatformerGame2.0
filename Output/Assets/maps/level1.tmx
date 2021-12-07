@@ -5,7 +5,7 @@
  </editorsettings>
  <properties>
   <property name="playerX" type="int" value="11"/>
-  <property name="playerY" type="int" value="60"/>
+  <property name="playerY" type="int" value="57"/>
  </properties>
  <tileset firstgid="1" name="terrain" tilewidth="16" tileheight="16" tilecount="330" columns="22">
   <image source="terrain.png" width="352" height="240"/>

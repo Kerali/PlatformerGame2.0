@@ -78,6 +78,8 @@ public:
 
 	Point<int> initialPosition;
 
+	bool playing = false;
+
 private:
 	unsigned int speed;
 	float maxVerticalVelocity = 30.0f;

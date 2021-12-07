@@ -46,6 +46,8 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
+	void DrawPath(const DynArray<iPoint>* path, int r, int g, int b);
+
 private:
 
 	// size of the map

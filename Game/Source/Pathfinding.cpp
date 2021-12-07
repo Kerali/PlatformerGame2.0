@@ -1,5 +1,7 @@
 #include "App.h"
 #include "PathFinding.h"
+#include "Map.h"
+#include "Render.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -24,6 +26,22 @@ bool PathFinding::CleanUp()
 	RELEASE_ARRAY(map);
 
 	return true;
+}
+
+void PathFinding::DrawPath(const DynArray<iPoint>* path, int r, int g, int b)
+{
+	for (int i = 0; i < path->Count() - 1; i++)
+	{
+		iPoint ap = (*path)[i];
+		iPoint bp = (*path)[i + 1];
+
+		ap.x = ap.x * app->map->data.tileWidth + app->map->data.tileWidth / 2;
+		ap.y = ap.y * app->map->data.tileHeight + app->map->data.tileHeight / 2;
+		bp.x = bp.x * app->map->data.tileWidth + app->map->data.tileWidth / 2;
+		bp.y = bp.y * app->map->data.tileHeight + app->map->data.tileHeight / 2;
+
+		app->render->DrawLine(ap.x, ap.y, bp.x, bp.y, r, g, b);
+	}
 }
 
 // Sets up the walkability map

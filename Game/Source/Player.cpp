@@ -553,6 +553,7 @@ void Player::Reload()
 	}
 	collider = app->collisions->AddCollider(SDL_Rect({ position.x, position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 	initialPosition = position;
+	playing = true;
 }
 
 void Player::GodMovement()
