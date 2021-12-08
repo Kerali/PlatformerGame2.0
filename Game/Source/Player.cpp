@@ -396,7 +396,13 @@ void Player::UpdateState(float dt)
 
 void Player::UpdateLogic(float dt)
 {
-	if (!godMode) verticalVelocity -= gravity*dt;
+	if (gravityOn == false)
+		initialWaitCount += dt;
+
+	if (initialWaitCount > initialWait)
+		gravityOn = true;
+
+	if (!godMode && gravityOn) verticalVelocity -= gravity * dt;
 
 	if (verticalVelocity > maxVerticalVelocity)
 	{
@@ -559,7 +565,8 @@ void Player::Reload()
 	}
 	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x, (int)position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 	initialPosition = position;
-	playing = true;
+	gravityOn = true;
+	initialWaitCount = 0.0f;
 }
 
 void Player::GodMovement(float dt)
