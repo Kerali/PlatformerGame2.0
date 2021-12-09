@@ -188,7 +188,7 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, bool useGravity)
 {
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
 	if (!IsWalkable(origin) || !IsWalkable(destination))

@@ -65,12 +65,12 @@ bool Collisions::Update(float dt)
 				for each (Module*m in dynamicColliders[i]->listeners)
 				{
 					if (m == nullptr) break;
-					m->OnCollision(dynamicColliders[i], staticColliders[j]);
+					m->OnCollision(dynamicColliders[i], staticColliders[j], dt);
 				}
 				for each (Module*m in staticColliders[j]->listeners)
 				{
 					if (m == nullptr) break;
-					m->OnCollision(staticColliders[j], dynamicColliders[i]);
+					m->OnCollision(staticColliders[j], dynamicColliders[i], dt);
 				}
 			}
 		}

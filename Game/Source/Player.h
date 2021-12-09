@@ -41,7 +41,7 @@ public:
 	bool Start();
 	bool Update(float dt);
 	bool PostUpdate();
-	void OnCollision(Collider* a, Collider* b);
+	void OnCollision(Collider* a, Collider* b, float dt);
 
 	void UpdateState(float dt);
 	void UpdateLogic(float dt);

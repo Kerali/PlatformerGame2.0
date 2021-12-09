@@ -194,7 +194,7 @@ bool Player::Save(pugi::xml_node& savedGame)
 	return true;
 }
 
-void Player::OnCollision(Collider* a, Collider* b)
+void Player::OnCollision(Collider* a, Collider* b, float dt)
 {
 	if (godMode) return;
 
