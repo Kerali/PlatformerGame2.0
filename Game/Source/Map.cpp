@@ -224,8 +224,6 @@ bool Map::Load(const char* filename)
 	CreateWalkabilityMap();
 
 	app->pathfinding->SetMap(data.width, data.height, walkabilityMap);
-	int p = app->pathfinding->CreatePath(iPoint(20, 61), iPoint(24, 61));
-	LOG("%d\n", p);
 
 	mapLoaded = ret;
 

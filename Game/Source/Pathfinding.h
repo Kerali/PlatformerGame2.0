@@ -32,7 +32,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination, bool useGravity = false);
+	int CreatePath(const iPoint& origin, const iPoint& destination, bool useGravity = false, int maxJump = 0, int maxLength = 10);
 
 	// To request all tiles involved in the last generated path
 	const DynArray<iPoint>* GetLastPath() const;
@@ -71,16 +71,17 @@ struct PathNode
 {
 	int g;
 	int h;
+	int jump;
 	iPoint pos;
 	const PathNode* parent; // needed to reconstruct the path in the end
 
 	// Convenient constructors
 	PathNode();
-	PathNode(int g, int h, const iPoint& pos, const PathNode* parent);
+	PathNode(int g, int h, const iPoint& pos, const PathNode* parent, int jump = 0);
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathList& list_to_fill) const;
+	uint FindWalkableAdjacents(PathList& list_to_fill, bool useGravity, int maxJump) const;
 	// Calculates this tile score
 	int Score() const;
 	// Calculate the F for a specific destination tile
@@ -88,7 +89,7 @@ struct PathNode
 
 	const bool operator ==(const PathNode other)
 	{
-		return pos == other.pos;
+		return pos == other.pos && jump == other.jump;
 	}
 };
 

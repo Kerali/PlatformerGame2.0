@@ -30,7 +30,8 @@ bool PathFinding::CleanUp()
 
 void PathFinding::DrawPath(const DynArray<iPoint>* path, int r, int g, int b)
 {
-	for (int i = 0; i < path->Count() - 1; i++)
+	int c = path->Count() - 1;
+	for (int i = 0; i < c; i++)
 	{
 		iPoint ap = (*path)[i];
 		iPoint bp = (*path)[i + 1];
@@ -123,42 +124,83 @@ ListItem<PathNode>* PathList::GetNodeLowestScore() const
 // PathNode -------------------------------------------------------------------------
 // Convenient constructors
 // ----------------------------------------------------------------------------------
-PathNode::PathNode() : g(-1), h(-1), pos(-1, -1), parent(NULL)
+PathNode::PathNode() : g(-1), h(-1), pos(-1, -1), parent(NULL), jump(0) {}
+
+PathNode::PathNode(int g, int h, const iPoint& pos, const PathNode* parent, int jump) : g(g), h(h), pos(pos), parent(parent), jump(jump)
 {}
 
-PathNode::PathNode(int g, int h, const iPoint& pos, const PathNode* parent) : g(g), h(h), pos(pos), parent(parent)
-{}
-
-PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent)
+PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), parent(node.parent), jump(node.jump)
 {}
 
 // PathNode -------------------------------------------------------------------------
 // Fills a list (PathList) of all valid adjacent pathnodes
 // ----------------------------------------------------------------------------------
-uint PathNode::FindWalkableAdjacents(PathList& listToFill) const
+uint PathNode::FindWalkableAdjacents(PathList& listToFill, bool useGravity, int maxJump) const
 {
 	iPoint cell;
+	iPoint ground;
 	uint before = listToFill.list.count();
 
-	// north
+	// down
 	cell.create(pos.x, pos.y + 1);
 	if (app->pathfinding->IsWalkable(cell))
-		listToFill.list.add(PathNode(-1, -1, cell, this));
+	{
+		ground.create(cell.x, cell.y + 1);
+		if (!app->pathfinding->IsWalkable(ground) || !useGravity)
+		{
+			listToFill.list.add(PathNode(-1, -1, cell, this));
+		}
+		else
+		{
+			listToFill.list.add(PathNode(-1, -1, cell, this, jump + 1));
+		}
+	}
 
-	// south
-	cell.create(pos.x, pos.y - 1);
-	if (app->pathfinding->IsWalkable(cell))
-		listToFill.list.add(PathNode(-1, -1, cell, this));
+	// up
+	if (jump < maxJump * 2 || !useGravity)
+	{
+		cell.create(pos.x, pos.y - 1);
+		if (app->pathfinding->IsWalkable(cell))
+		{
+			listToFill.list.add(PathNode(-1, -1, cell, this, (jump % 2) ? jump + 1 : jump + 2));
+		}
+	}
 
-	// east
-	cell.create(pos.x + 1, pos.y);
-	if (app->pathfinding->IsWalkable(cell))
-		listToFill.list.add(PathNode(-1, -1, cell, this));
+	// right
+	if (jump % 2 == 0 || !useGravity)
+	{
+		cell.create(pos.x + 1, pos.y);
+		if (app->pathfinding->IsWalkable(cell))
+		{
+			ground.create(cell.x, cell.y + 1);
+			if (!app->pathfinding->IsWalkable(ground) || !useGravity)
+			{
+				listToFill.list.add(PathNode(-1, -1, cell, this));
+			}
+			else
+			{
+				listToFill.list.add(PathNode(-1, -1, cell, this, jump + 1));
+			}
+		}
+	}
 
-	// west
-	cell.create(pos.x - 1, pos.y);
-	if (app->pathfinding->IsWalkable(cell))
-		listToFill.list.add(PathNode(-1, -1, cell, this));
+	// left
+	if (jump % 2 == 0 || !useGravity)
+	{
+		cell.create(pos.x - 1, pos.y);
+		if (app->pathfinding->IsWalkable(cell))
+		{
+			ground.create(cell.x, cell.y + 1);
+			if (!app->pathfinding->IsWalkable(ground) || !useGravity)
+			{
+				listToFill.list.add(PathNode(-1, -1, cell, this));
+			}
+			else
+			{
+				listToFill.list.add(PathNode(-1, -1, cell, this, jump + 1));
+			}
+		}
+	}
 
 	return listToFill.list.count();
 }
@@ -188,11 +230,13 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, bool useGravity)
+int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, bool useGravity, int maxJump, int maxLength)
 {
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
 	if (!IsWalkable(origin) || !IsWalkable(destination))
 		return -1;
+
+	lastPath.Clear();
 
 	// L12b: TODO 2: Create two lists: open, close
 	// Add the origin tile to open
@@ -205,6 +249,13 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 	while (open.list.count() > 0)
 	{
 		ListItem<PathNode>* lowest = open.GetNodeLowestScore();
+
+		if (lowest->data.g > maxLength)
+		{
+			open.list.del(lowest);
+			continue;
+		}
+
 		close.list.add(lowest->data);
 		open.list.del(lowest);
 
@@ -227,8 +278,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 		}
 
 		PathList adjacent;
-		close.list[close.list.count() - 1].FindWalkableAdjacents(adjacent);
-		for (int i = 0; i < adjacent.list.count(); i++)
+		close.list[close.list.count() - 1].FindWalkableAdjacents(adjacent, useGravity, maxJump);		for (int i = 0; i < adjacent.list.count(); i++)
 		{
 			if (close.list.find(adjacent.list[i]) != -1)
 			{
@@ -238,7 +288,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 			PathNode n = adjacent.list[i];
 			n.CalculateF(destination);
 			int index = open.list.find(n);
-			open.list.add(n);
+			//open.list.add(n);
 			if (index != -1)
 			{
 				if (open.list[index].g > n.g)
@@ -246,8 +296,19 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 					open.list[index].parent = n.parent;
 					open.list[index].g = n.g;
 				}
+
+				//if (open.list[index].jump > n.jump)
+				//{
+				//	open.list[index].parent = n.parent;
+				//	open.list[index].jump = n.jump;
+				//}
 			}
 		}
+	}
+
+	if (lastPath.Count() == 0)
+	{
+		return -1;
 	}
 
 	return lastPath.Count();
