@@ -7,6 +7,7 @@
 #include "Collisions.h"
 #include "Log.h"
 #include "Player.h"
+#include "Entities.h"
 
 Debug::Debug() : Module()
 {
@@ -46,6 +47,19 @@ bool Debug::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		GodMode();
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		showPaths = !showPaths;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		fPoint pos;
+		pos.x = 176;
+		pos.y = 928;
+		app->entities->AddEntity(pos, Entity::Type::BAT);
 	}
 
 	return ret;

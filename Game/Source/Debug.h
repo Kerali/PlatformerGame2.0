@@ -37,6 +37,8 @@ public:
 	void ToggleColliders();
 	void GodMode();
 
+	bool showPaths = false;
+
 private:
 	bool isEnabled = true;
 	int storeGravity;

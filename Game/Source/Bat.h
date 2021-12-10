@@ -4,6 +4,7 @@
 #include "Point.h"
 #include "Entity.h"
 #include "Animation.h"
+#include "Pathfinding.h"
 #include "SDL_image/include/SDL_image.h"
 
 class Bat : Entity
@@ -17,7 +18,7 @@ public:
 		FLYING
 	};
 
-	Bat(fPoint position, SDL_Texture* texture, Type type);
+	Bat(fPoint position, SDL_Texture* texture, Type type, int s);
 
 	bool Start();
 
@@ -27,8 +28,18 @@ public:
 
 private:
 	Animation idleAnimation;
-	Animation flyingAnimation;
+	Animation flyingLeftAnimation;
+	Animation flyingRightAnimation;
+	Animation questionMarkAnimation;
 	Animation* currentAnimation;
+
+	State state;
+
+	iPoint lastPlayerPosition;
+	DynArray<iPoint> path;
+	int pathIndex = 0;
+	int speed;
+	bool hasPath = false;
 };
 
 #endif // !__ENTITY_H__

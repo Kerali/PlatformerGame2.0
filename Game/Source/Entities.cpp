@@ -20,12 +20,6 @@ bool Entities::Start()
 {
 	batTexture = app->tex->Load("Assets/enemies/bat/bat.png");
 
-	fPoint pos;
-	pos.x = 176;
-	pos.y = 928;
-
-	AddEntity(pos, Entity::Type::BAT);
-
 	return true;
 }
 
@@ -36,9 +30,17 @@ bool Entities::PreUpdate()
 
 bool Entities::Update(float dt)
 {
-	for (int i = 0; i < entityList.Count(); i++)
+	for (int i = 0; i < entityList.count(); i++)
 	{
-		entityList[i]->Update(dt);
+		ListItem<Entity*>* e = entityList.At(i);
+
+		if (e->data->pendingToDelete)
+		{
+			entityList.del(e);
+			continue;
+		}
+
+		e->data->Update(dt);
 	}
 
 	return true;
@@ -46,9 +48,10 @@ bool Entities::Update(float dt)
 
 bool Entities::PostUpdate()
 {
-	for (int i = 0; i < entityList.Count(); i++)
+	for (int i = 0; i < entityList.count(); i++)
 	{
-		entityList[i]->Draw();
+		ListItem<Entity*>* e = entityList.At(i);
+		e->data->Draw();
 	}
 
 	return true;
@@ -64,8 +67,8 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 	switch (type)
 	{
 	case Entity::Type::BAT:
-		Entity* e = (Entity*)(new Bat(position, batTexture, type));
-		entityList.PushBack(e);
+		Entity* e = (Entity*)(new Bat(position, batTexture, type, 120));
+		entityList.add(e);
 		break;
 	}
 }

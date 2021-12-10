@@ -160,9 +160,13 @@ uint PathNode::FindWalkableAdjacents(PathList& listToFill, bool useGravity, int 
 	if (jump < maxJump * 2 || !useGravity)
 	{
 		cell.create(pos.x, pos.y - 1);
-		if (app->pathfinding->IsWalkable(cell))
+		if (app->pathfinding->IsWalkable(cell) && useGravity)
 		{
 			listToFill.list.add(PathNode(-1, -1, cell, this, (jump % 2) ? jump + 1 : jump + 2));
+		}
+		else if (app->pathfinding->IsWalkable(cell) && !useGravity)
+		{
+			listToFill.list.add(PathNode(-1, -1, cell, this));
 		}
 	}
 
@@ -230,10 +234,13 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, bool useGravity, int maxJump, int maxLength)
+int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, bool useGravity, int maxJump, int maxLength, int maxNodes)
 {
 	// L12b: TODO 1: if origin or destination are not walkable, return -1
 	if (!IsWalkable(origin) || !IsWalkable(destination))
+		return -1;
+
+	if (origin == destination)
 		return -1;
 
 	lastPath.Clear();
@@ -243,6 +250,9 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 	PathNode* o = new PathNode(-1, -1, origin, NULL);
 	o->CalculateF(destination);
 	open.list.add(*o);
+
+	int k = 0;
+
 	while (open.list.count() > 0)
 	{
 		ListItem<PathNode>* lowest = open.GetNodeLowestScore();
@@ -252,6 +262,8 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 			open.list.del(lowest);
 			continue;
 		}
+
+		int j = lowest->data.jump;
 
 		close.list.add(lowest->data);
 		open.list.del(lowest);
@@ -267,12 +279,12 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 				lastPath.PushBack(p.pos);
 			}
 			lastPath.Flip();
-			for (int i = 0; i < lastPath.Count(); i++)
-			{
-				LOG("%d, %d\n", lastPath[i].x, lastPath[i].y);
-			}
 			break;
 		}
+
+		k++;
+		if (k == maxNodes)
+			break;
 
 		PathList adjacent;
 		close.list[close.list.count() - 1].FindWalkableAdjacents(adjacent, useGravity, maxJump);		for (int i = 0; i < adjacent.list.count(); i++)
@@ -293,6 +305,10 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 					open.list[index].g = n.g;
 				}
 			}
+			else
+			{
+				open.list.add(n);
+			}
 		}
 	}
 
@@ -302,6 +318,4 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 	}
 
 	return lastPath.Count();
-
-	return -1;
 }

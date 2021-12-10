@@ -97,8 +97,6 @@ void Map::Draw()
 			}
 		}
 	}
-	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-	app->pathfinding->DrawPath(path, 255, 0, 0);
 }
 
 // L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
