@@ -59,6 +59,13 @@ bool Entities::PostUpdate()
 
 bool Entities::CleanUp()
 {
+	for (int i = 0; i < entityList.count(); i++)
+	{
+		ListItem<Entity*>* e = entityList.At(i);
+
+		entityList.del(e);
+	}
+
 	return true;
 }
 
@@ -67,8 +74,13 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 	switch (type)
 	{
 	case Entity::Type::BAT:
-		Entity* e = (Entity*)(new Bat(position, batTexture, type, 120));
+		Entity* e = (Entity*)(new Bat((Module*)this, position, batTexture, type, 120));
 		entityList.add(e);
 		break;
 	}
+}
+
+void Entities::OnCollision(Collider* a, Collider* b, float dt)
+{
+
 }

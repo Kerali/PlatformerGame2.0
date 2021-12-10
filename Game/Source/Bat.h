@@ -18,7 +18,7 @@ public:
 		FLYING
 	};
 
-	Bat(fPoint position, SDL_Texture* texture, Type type, int s);
+	Bat(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s);
 
 	bool Start();
 

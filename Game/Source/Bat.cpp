@@ -8,7 +8,7 @@
 
 #include <math.h>
 
-Bat::Bat(fPoint position, SDL_Texture* texture, Type type, int s) : Entity(position, texture, type)
+Bat::Bat(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s) : Entity(parent, position, texture, type)
 {
 	idleAnimation.GenerateAnimation(SDL_Rect({ 0, 0, 216, 25 }), 1, 12);
 	idleAnimation.speed = 6.0f;

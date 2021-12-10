@@ -2,6 +2,7 @@
 #define __ENTITY_H__
 
 #include "Point.h"
+#include "Module.h"
 #include "SDL_image/include/SDL_image.h"
 
 class Entity
@@ -16,7 +17,7 @@ public:
 		BAT
 	};
 
-	Entity(fPoint position, SDL_Texture* texture, Type type) : position(position), texture(texture), type(type)
+	Entity(Module* parent, fPoint position, SDL_Texture* texture, Type type) : parent(parent), position(position), texture(texture), type(type)
 	{}
 
 	virtual bool Start()
@@ -33,6 +34,8 @@ public:
 	{
 		return true;
 	}
+
+	Module* parent;
 
 	Type type;
 	fPoint position;

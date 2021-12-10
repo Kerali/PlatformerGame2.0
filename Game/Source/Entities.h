@@ -33,6 +33,8 @@ public:
 
 	void AddEntity(fPoint position, Entity::Type type);
 
+	void OnCollision(Collider* a, Collider* b, float dt);
+
 private:
 	List<Entity*> entityList;
 

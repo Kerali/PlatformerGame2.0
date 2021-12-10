@@ -5,6 +5,7 @@
 #include "Collisions.h"
 #include "Player.h"
 #include "Pathfinding.h"
+#include "Entities.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -141,6 +142,7 @@ bool Map::CleanUp()
 	data.properties.list.clear();
 
 	app->collisions->CleanUp();
+	app->entities->CleanUp();
 
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -218,6 +220,8 @@ bool Map::Load(const char* filename)
 	CreateColliders();
 	app->player->position.x = data.properties.GetProperty("playerX", 0)*data.tileWidth;
 	app->player->position.y = data.properties.GetProperty("playerY", 0)*data.tileHeight;
+
+	CreateEntities();
 
 	CreateWalkabilityMap();
 
@@ -415,6 +419,42 @@ bool Map::CreateColliders() {
 			else
 			{
 				app->collisions->AddCollider(section, Collider::Type::STATIC, this);
+			}
+		}
+	}
+
+	return ret;
+}
+
+bool Map::CreateEntities()
+{
+	bool ret = true;
+
+	for (int i = 0; i < data.maplayers.count(); i++)
+	{
+		if (data.maplayers[i]->properties.GetProperty("entityType", 0) == 0)
+			continue;
+		int layerSize = data.maplayers[i]->width * data.maplayers[i]->height;
+
+
+		for (int j = 0; j < layerSize; j++)
+		{
+			if (data.maplayers[i]->data[j] == 0)
+				continue;
+			int layerWidth = data.maplayers[i]->width;
+			fPoint pos = fPoint(j % layerWidth * data.tileWidth, j / layerWidth * data.tileHeight);
+
+			if (data.maplayers[i]->properties.GetProperty("entityType", 0) == 1)
+			{
+				app->entities->AddEntity(pos, Entity::Type::HEART);
+			}
+			else if (data.maplayers[i]->properties.GetProperty("entityType", 0) == 2)
+			{
+				app->entities->AddEntity(pos, Entity::Type::FRUIT);
+			}
+			else if (data.maplayers[i]->properties.GetProperty("entityType", 0) == 3)
+			{
+				app->entities->AddEntity(pos, Entity::Type::BAT);
 			}
 		}
 	}

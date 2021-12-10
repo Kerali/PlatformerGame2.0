@@ -128627,8 +128627,7 @@
  <layer id="13" name="scoreColliders" width="206" height="78">
   <properties>
    <property name="draw" type="int" value="0"/>
-   <property name="itemType" type="int" value="2"/>
-   <property name="navigation" type="int" value="1"/>
+   <property name="entityType" type="int" value="2"/>
   </properties>
   <data>
    <tile/>
@@ -160777,7 +160776,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="19" name="bats" width="206" height="78" visible="0">
+ <layer id="19" name="bats" width="206" height="78">
   <properties>
    <property name="draw" type="int" value="0"/>
    <property name="entityType" type="int" value="3"/>
@@ -167893,7 +167892,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="358"/>
    <tile/>
    <tile/>
    <tile/>
@@ -192932,8 +192931,7 @@
  <layer id="14" name="healthColliders" width="206" height="78">
   <properties>
    <property name="draw" type="int" value="0"/>
-   <property name="itemType" type="int" value="1"/>
-   <property name="navigation" type="int" value="1"/>
+   <property name="entityType" type="int" value="1"/>
   </properties>
   <data>
    <tile/>

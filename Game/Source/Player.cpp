@@ -168,6 +168,13 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 {
 	if (godMode) return;
 
+	if (b == collider)
+	{
+		Collider* c = a;
+		a = b;
+		b = c;
+	}
+
 	switch (b->type)
 	{
 	case(Collider::Type::ENDLEVEL):
