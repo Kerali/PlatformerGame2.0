@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "ModuleUI.h"
 #include "Pathfinding.h"
+#include "Entities.h"
 
 #include "Map.h"
 #include "Debug.h"
@@ -37,6 +38,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	player = new Player();
 	ui = new ModuleUI();
 	pathfinding = new PathFinding();
+	entities = new Entities();
 
 	// Ordered for awake/Start/Update
 	// Reverse order of CleanUp
@@ -51,6 +53,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(ui);
 	AddModule(pathfinding);
+	AddModule(entities);
 
 	// Render last to swap buffer
 	AddModule(render);

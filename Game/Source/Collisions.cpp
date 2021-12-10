@@ -6,7 +6,7 @@
 
 Collisions::Collisions() : Module()
 {
-
+	name.create("collisions");
 }
 
 Collisions::~Collisions()

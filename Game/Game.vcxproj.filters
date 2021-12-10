@@ -24,6 +24,8 @@
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\ModuleUI.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
+    <ClCompile Include="Source\Entities.cpp" />
+    <ClCompile Include="Source\Bat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -68,6 +70,9 @@
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\ModuleUI.h" />
     <ClInclude Include="Source\Pathfinding.h" />
+    <ClInclude Include="Source\Entities.h" />
+    <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\Bat.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

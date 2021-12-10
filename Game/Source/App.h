@@ -21,6 +21,7 @@ class Collisions;
 class Player;
 class ModuleUI;
 class PathFinding;
+class Entities;
 
 class App
 {
@@ -93,6 +94,7 @@ public:
 	Player* player;
 	ModuleUI* ui;
 	PathFinding* pathfinding;
+	Entities* entities;
 
 	bool Load();
 	bool Save();
