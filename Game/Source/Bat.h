@@ -15,7 +15,8 @@ public:
 	enum class State
 	{
 		IDLE,
-		FLYING
+		FLYING,
+		DYING
 	};
 
 	Bat(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s);
@@ -26,11 +27,14 @@ public:
 
 	bool Draw();
 
+	void Collision(Collider* other);
+
 private:
 	Animation idleAnimation;
 	Animation flyingLeftAnimation;
 	Animation flyingRightAnimation;
 	Animation questionMarkAnimation;
+	Animation deathAnimation;
 	Animation* currentAnimation;
 
 	State state;

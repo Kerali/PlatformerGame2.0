@@ -4,6 +4,10 @@
 #include "Point.h"
 #include "Module.h"
 #include "SDL_image/include/SDL_image.h"
+#include "Collisions.h"
+#include "App.h"
+
+#include "Log.h"
 
 class Entity
 {
@@ -20,6 +24,11 @@ public:
 	Entity(Module* parent, fPoint position, SDL_Texture* texture, Type type) : parent(parent), position(position), texture(texture), type(type)
 	{}
 
+	~Entity()
+	{
+		collider->pendingToDelete = true;
+	}
+
 	virtual bool Start()
 	{
 		return true;
@@ -35,11 +44,18 @@ public:
 		return true;
 	}
 
+	virtual void Collision(Collider* other)
+	{
+
+	}
+
 	Module* parent;
 
 	Type type;
 	fPoint position;
 	SDL_Texture* texture;
+
+	Collider* collider = nullptr;
 
 	bool pendingToDelete = false;
 };

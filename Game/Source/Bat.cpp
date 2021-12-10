@@ -5,6 +5,8 @@
 #include "Pathfinding.h"
 #include "Map.h"
 #include "Debug.h"
+#include "Log.h"
+#include "Collisions.h"
 
 #include <math.h>
 
@@ -22,10 +24,17 @@ Bat::Bat(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s
 	questionMarkAnimation.GenerateAnimation(SDL_Rect({ 322, 0, 96, 96 }), 3, 3);
 	questionMarkAnimation.speed = 10.0f;
 
+	deathAnimation.GenerateAnimation(SDL_Rect({ 0, 96, 390, 55 }), 1, 7);
+	deathAnimation.speed = 10.0f;
+	deathAnimation.loop = false;
+
 	currentAnimation = &idleAnimation;
 
 	lastPlayerPosition.x = -1;
 	lastPlayerPosition.y = -1;
+
+	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x, (int)position.y, 18, 24 }), Collider::Type::BAT, parent);
+
 
 	speed = s;
 
@@ -49,11 +58,11 @@ bool Bat::Update(float dt)
 	gridPos.x = position.x / app->map->data.tileWidth;
 	gridPos.y = position.y / app->map->data.tileHeight;
 
-	if (playerPos != lastPlayerPosition && playerPos.DistanceTo(gridPos) <= 12)
+	if (playerPos != lastPlayerPosition && playerPos.DistanceTo(gridPos) <= 12 && state != State::DYING)
 	{
 		lastPlayerPosition = playerPos;
 
-		int n = app->pathfinding->CreatePath(gridPos, playerPos, false, 0, 10);
+		int n = app->pathfinding->CreatePath(gridPos, playerPos, false, 0, 9);
 		if (n == -1)
 		{
 			hasPath = false;
@@ -82,6 +91,9 @@ bool Bat::Update(float dt)
 		}
 	}
 
+	fPoint pixelPosition;
+	float distance;
+
 	switch (state)
 	{
 	case State::IDLE:
@@ -94,11 +106,10 @@ bool Bat::Update(float dt)
 		if (pathIndex >= path.Count())
 			break;
 
-		fPoint pixelPosition;
 		pixelPosition.x = path[pathIndex].x * app->map->data.tileWidth;
 		pixelPosition.y = path[pathIndex].y * app->map->data.tileHeight;
 
-		float distance = pixelPosition.DistanceTo(position);
+		distance = pixelPosition.DistanceTo(position);
 
 		if (distance == 0)
 		{
@@ -140,7 +151,17 @@ bool Bat::Update(float dt)
 			}
 		}
 		break;
+
+	case State::DYING:
+		currentAnimation = &deathAnimation;
+		if (currentAnimation->HasFinished())
+		{
+			pendingToDelete = true;
+		}
+		break;
 	}
+
+	collider->SetPos(position.x, position.y);
 
 	questionMarkAnimation.Update(dt);
 
@@ -150,7 +171,14 @@ bool Bat::Update(float dt)
 bool Bat::Draw()
 {
 	if (state == State::FLYING)
+	{
 		app->render->DrawTexture(texture, position.x - 14, position.y, &currentAnimation->GetCurrentFrame());
+	}
+	else if (state == State::DYING)
+	{
+		currentAnimation = &deathAnimation;
+		app->render->DrawTexture(texture, position.x - 20, position.y - 15, &currentAnimation->GetCurrentFrame());
+	}
 	else
 		app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 
@@ -168,4 +196,22 @@ bool Bat::Draw()
 	}
 
 	return true;
+}
+
+void Bat::Collision(Collider* other)
+{
+	if (other == app->player->collider)
+	{
+		iPoint center = iPoint(collider->rect.x + (collider->rect.w / 2), collider->rect.y + (collider->rect.h / 2));
+		iPoint playerCenter = iPoint(other->rect.x + (other->rect.w / 2), other->rect.y + (other->rect.h / 2));
+
+		int xDiff = center.x - playerCenter.x;
+		int yDiff = center.y - playerCenter.y;
+
+		if (abs(yDiff) > abs(xDiff) && yDiff > 0 && app->player->verticalVelocity < 0.0f)
+		{
+			state = State::DYING;
+			collider->pendingToDelete = true;
+		}
+	}
 }

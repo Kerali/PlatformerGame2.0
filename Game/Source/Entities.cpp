@@ -36,6 +36,7 @@ bool Entities::Update(float dt)
 
 		if (e->data->pendingToDelete)
 		{
+			delete e->data;
 			entityList.del(e);
 			continue;
 		}
@@ -82,5 +83,18 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 
 void Entities::OnCollision(Collider* a, Collider* b, float dt)
 {
+	for (int i = 0; i < entityList.count(); i++)
+	{
+		ListItem<Entity*>* e = entityList.At(i);
 
+		if (e->data->collider == a && b != nullptr)
+		{
+			e->data->Collision(b);
+		}
+
+		if (e->data->collider == b && a != nullptr)
+		{
+			e->data->Collision(a);
+		}
+	}
 }

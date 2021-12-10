@@ -17,11 +17,14 @@ struct Collider
 		ITEMSCORE,
 		ITEMHEALTH,
 		CHECKPOINT,
-		DEATH
+		DEATH,
+		BAT
 	};
 
 	//Methods
 	Collider(SDL_Rect rectangle, Type type, Module* listener = nullptr);
+
+	~Collider();
 
 	void SetPos(int x, int y);
 

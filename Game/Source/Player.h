@@ -80,6 +80,8 @@ public:
 
 	bool gravityOn = false;
 
+	Collider* collider;
+
 private:
 
 	float initialWaitCount = 0.0f;
@@ -91,8 +93,6 @@ private:
 
 	int maxJumps = 2;
 	int availableJumps = 2;
-
-	Collider* collider;
 
 	bool canMoveRight = true;
 	bool canMoveLeft = true;
