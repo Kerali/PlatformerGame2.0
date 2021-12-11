@@ -141,35 +141,6 @@ uint PathNode::FindWalkableAdjacents(PathList& listToFill, bool useGravity, int 
 	iPoint ground;
 	uint before = listToFill.list.count();
 
-	// down
-	cell.create(pos.x, pos.y + 1);
-	if (app->pathfinding->IsWalkable(cell))
-	{
-		ground.create(cell.x, cell.y + 1);
-		if (!app->pathfinding->IsWalkable(ground) || !useGravity)
-		{
-			listToFill.list.add(PathNode(-1, -1, cell, this));
-		}
-		else
-		{
-			listToFill.list.add(PathNode(-1, -1, cell, this, jump + 1));
-		}
-	}
-
-	// up
-	if (jump < maxJump * 2 || !useGravity)
-	{
-		cell.create(pos.x, pos.y - 1);
-		if (app->pathfinding->IsWalkable(cell) && useGravity)
-		{
-			listToFill.list.add(PathNode(-1, -1, cell, this, (jump % 2) ? jump + 1 : jump + 2));
-		}
-		else if (app->pathfinding->IsWalkable(cell) && !useGravity)
-		{
-			listToFill.list.add(PathNode(-1, -1, cell, this));
-		}
-	}
-
 	// right
 	if (jump % 2 == 0 || !useGravity)
 	{
@@ -206,6 +177,35 @@ uint PathNode::FindWalkableAdjacents(PathList& listToFill, bool useGravity, int 
 		}
 	}
 
+	// down
+	cell.create(pos.x, pos.y + 1);
+	if (app->pathfinding->IsWalkable(cell))
+	{
+		ground.create(cell.x, cell.y + 1);
+		if (!app->pathfinding->IsWalkable(ground) || !useGravity)
+		{
+			listToFill.list.add(PathNode(-1, -1, cell, this));
+		}
+		else
+		{
+			listToFill.list.add(PathNode(-1, -1, cell, this, maxJump * 2));
+		}
+	}
+
+	// up
+	if (jump < maxJump * 2 || !useGravity)
+	{
+		cell.create(pos.x, pos.y - 1);
+		if (app->pathfinding->IsWalkable(cell) && useGravity)
+		{
+			listToFill.list.add(PathNode(-1, -1, cell, this, (jump % 2) ? jump + 1 : jump + 2));
+		}
+		else if (app->pathfinding->IsWalkable(cell) && !useGravity)
+		{
+			listToFill.list.add(PathNode(-1, -1, cell, this));
+		}
+	}
+
 	return listToFill.list.count();
 }
 
@@ -220,18 +220,21 @@ int PathNode::Score() const
 // PathNode -------------------------------------------------------------------------
 // Calculate the F for a specific destination tile
 // ----------------------------------------------------------------------------------
-int PathNode::CalculateF(const iPoint& destination)
+int PathNode::CalculateF(const iPoint& destination, bool useGravity)
 {
 	if (parent == NULL)
 		g = 0;
 	else
 		g = parent->g + 1;
-	h = pos.DistanceTo(destination);
+	if (!useGravity)
+		h = pos.DistanceTo(destination);
+	else
+		h = pos.DistanceManhattan(destination);
 
 	return g + h;
 }
 
-iPoint PathFinding::GetGroundTile(iPoint& pos)
+iPoint PathFinding::GetGroundTile(iPoint pos)
 {
 	while (IsWalkable(pos))
 	{
@@ -258,7 +261,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 	PathList open;
 	PathList close;
 	PathNode* o = new PathNode(-1, -1, origin, NULL);
-	o->CalculateF(destination);
+	o->CalculateF(destination, useGravity);
 	open.list.add(*o);
 
 	int k = 0;
@@ -305,7 +308,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, boo
 			}
 
 			PathNode n = adjacent.list[i];
-			n.CalculateF(destination);
+			n.CalculateF(destination, useGravity);
 			int index = open.list.find(n);
 			if (index != -1)
 			{

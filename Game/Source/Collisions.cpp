@@ -166,7 +166,7 @@ Collider* Collisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* li
 
 	ret = new Collider(rect, type, listener);
 
-	if (type == Collider::Type::DYNAMIC)
+	if (type == Collider::Type::DYNAMIC || type == Collider::Type::PIG || type == Collider::Type::BAT)
 	{
 		dynamicColliders.add(ret);
 	}

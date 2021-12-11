@@ -11,7 +11,7 @@
 
 #include <math.h>
 
-Pig::Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s, int h) : Entity(parent, position, texture, type)
+Pig::Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s, int h, int g, int jForce) : Entity(parent, position, texture, type)
 {
 	idleLeftAnimation.GenerateAnimation(SDL_Rect({ 0, 0, 324, 30 }), 1, 9);
 	idleLeftAnimation.speed = 10.0f;
@@ -44,8 +44,13 @@ Pig::Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s
 	speed = s;
 	health = h;
 
+	gravity = g;
+	jumpForce = jForce;
+
 	lastPlayerPosition.x = -1;
 	lastPlayerPosition.y = -1;
+
+	lastPosition = iPoint((int)position.x / app->map->data.tileWidth, (int)position.y / app->map->data.tileHeight);
 
 	currentAnimation = &idleLeftAnimation;
 	state = State::IDLE;
@@ -113,18 +118,23 @@ bool Pig::Update(float dt)
 void Pig::UpdatePathfinding(float dt)
 {
 	iPoint playerPos;
-	playerPos.x = app->player->position.x / app->map->data.tileWidth;
-	playerPos.y = app->player->position.y / app->map->data.tileHeight;
+	playerPos.x = (app->player->collider->rect.x) / app->map->data.tileWidth;
+	playerPos.y = (app->player->collider->rect.y) / app->map->data.tileHeight;
 
 	iPoint gridPos;
 	gridPos.x = position.x / app->map->data.tileWidth;
 	gridPos.y = position.y / app->map->data.tileHeight;
 
-	if (playerPos != lastPlayerPosition && playerPos.DistanceTo(gridPos) <= 16 && state != State::DYING && !app->player->godMode)
-	{
-		lastPlayerPosition = playerPos;
+	bool changedPosition = (abs(gridPos.x - lastPosition.x) > 2 && !jumping);
+	//changedPosition = false;
+	iPoint groundPos;
+	groundPos = app->pathfinding->GetGroundTile(playerPos);
 
-		int n = app->pathfinding->CreatePath(gridPos, playerPos, true, 3, 20);
+	if ((changedPosition || groundPos != lastPlayerPosition) && playerPos.DistanceTo(gridPos) <= 16 && state != State::DYING && !app->player->godMode && !jumping)
+	{
+		lastPlayerPosition = groundPos;
+
+		int n = app->pathfinding->CreatePath(gridPos, groundPos, true, 3, 20);
 		if (n == -1)
 		{
 			hasPath = false;
@@ -157,20 +167,92 @@ void Pig::UpdatePathfinding(float dt)
 
 	if (hasPath)
 	{
-		state = State::WALKING;
+		if (pathIndex < path.Count())
+		{
+			state = State::WALKING;
+
+			iPoint pixelPos = iPoint(path[pathIndex].x * app->map->data.tileWidth, path[pathIndex].y * app->map->data.tileHeight);
+
+			while (pixelPos.x == (int)position.x/* && (abs(pixelPos.y - (int)position.y) <= 12 || jumping)*/)
+			{
+				pathIndex++;
+				if (pathIndex < path.Count())
+					pixelPos = iPoint(path[pathIndex].x * app->map->data.tileWidth, path[pathIndex].y * app->map->data.tileHeight);
+				else
+					break;
+			}
+
+			if (pixelPos.x > position.x)
+			{
+				if (abs(position.x - pixelPos.x) < speed * dt)
+					position.x += pixelPos.x - position.x;
+				else
+				{
+					lookingRight = true;
+					SafeMovementX(speed * dt);
+				}
+			}
+
+			if (pixelPos.x < position.x)
+			{
+				if (abs(position.x - pixelPos.x) < speed * dt)
+					position.x -= position.x - pixelPos.x;
+				else
+				{
+					lookingRight = false;
+					SafeMovementX(-speed * dt);
+				}
+			}
+
+			iPoint nextPixelPos;
+			if (pathIndex + 1 < path.Count())
+				nextPixelPos = iPoint(path[pathIndex + 1].x * app->map->data.tileWidth, path[pathIndex + 1].y * app->map->data.tileHeight);
+			else
+				nextPixelPos = pixelPos;
+
+
+
+			bool nextNoGround = false;
+			if (pathIndex + 1 < path.Count() && pathIndex + 2 < path.Count())
+			{
+				iPoint floor = app->pathfinding->GetGroundTile(path[pathIndex + 1]);
+				if (path[pathIndex + 1] != floor && abs(path[pathIndex].x * app->map->data.tileWidth - path[pathIndex + 1].x * app->map->data.tileWidth) < 4 && path[pathIndex + 2].y <= path[pathIndex].y)
+					nextNoGround = true;
+			}
+
+			if (((pixelPos.y <= (int)position.y - 16 && nextPixelPos.y <= (int)position.y - 16) || nextNoGround) && !jumping)
+			{
+				verticalVelocity = jumpForce;
+				jumping = true;
+			}
+		}
+		else
+			state = State::IDLE;
 	}
 	else
 	{
 		state = State::IDLE;
 	}
+
+	verticalVelocity -= gravity * dt;
+
+	SafeMovementY(-verticalVelocity * dt);
+	collider->SetPos((int)position.x, (int)position.y - 12);
+
+	if (changedPosition)
+		lastPosition = gridPos;
 }
 
 bool Pig::Draw()
 {
-	if (hasPath)
-		app->pathfinding->DrawPath(&path, 255, 0, 0);
-
 	app->render->DrawTexture(texture, position.x - 10, position.y - 14, &currentAnimation->GetCurrentFrame());
+
+	if (hasPath && app->debug->showPaths)
+	{
+		if (pathIndex < path.Count())
+			app->render->DrawRectangle(SDL_Rect({ path[pathIndex].x * app->map->data.tileWidth - 3 + app->map->data.tileWidth / 2, path[pathIndex].y * app->map->data.tileHeight - 3 + app->map->data.tileHeight / 2, 6, 6 }), 255, 0, 0);
+		app->pathfinding->DrawPath(&path, 255, 0, 0);
+	}
 
 	return true;
 }
@@ -180,6 +262,42 @@ void Pig::Collision(Collider* other)
 	if (other == app->player->collider)
 	{
 
+	}
+
+	if (other->type == Collider::Type::STATIC || other->type == Collider::Type::DEATH)
+	{
+		int deltaX = collider->rect.x - other->rect.x;
+		int deltaY = collider->rect.y - other->rect.y;
+
+		if (std::abs(deltaX) > std::abs(deltaY))
+		{
+			if (deltaX > 0)
+			{
+				position.x += other->rect.x + other->rect.w - collider->rect.x;
+			}
+			else
+			{
+				position.x -= collider->rect.x + collider->rect.w - other->rect.x;
+			}
+		}
+		else
+		{
+			if (deltaY > 0)
+			{
+				verticalVelocity = 0.0f;
+				position.y += other->rect.y + other->rect.h - collider->rect.y;
+			}
+			else
+			{
+				if (verticalVelocity < 0.0f)
+				{
+					jumping = false;
+					verticalVelocity = 0.0f;
+					position.y -= collider->rect.y + collider->rect.h - other->rect.y;
+				}
+			}
+		}
+		collider->SetPos((int)position.x, (int)position.y - 12);
 	}
 }
 
@@ -203,4 +321,53 @@ int Pig::GetJumpFrameCount(int deltaY)
 			return 14;
 		}
 	}
+}
+
+void Pig::SafeMovementX(float deltaX)
+{
+
+	float initialX = position.x;
+
+	int xDir = 0;
+	if (deltaX > 0.0f)
+		xDir = 1;
+	else if (deltaX < 0.0f)
+		xDir = -1;
+
+	for (int x = 1; x <= abs((int)deltaX); x++)
+	{
+		position.x = initialX + (float)(x * xDir);
+		collider->SetPos(position.x, position.y - 12);
+		if (app->map->IntersectsWithMap(collider, 1))
+		{
+			break;
+		}
+	}
+
+	float remainder = deltaX - (float)((int)deltaX);
+	position.x += remainder;
+}
+
+void Pig::SafeMovementY(float deltaY)
+{
+	float initialY = position.y;
+
+	int yDir = 0;
+	if (deltaY > 0.0f)
+		yDir = 1;
+	else if (deltaY < 0.0f)
+		yDir = -1;
+
+	for (int y = 1; y <= abs((int)deltaY); y++)
+	{
+		position.y = initialY + (float)(y * yDir);
+		collider->SetPos(position.x, position.y - 12);
+		if (app->map->IntersectsWithMap(collider, 2))
+		{
+			break;
+		}
+	}
+
+	float remainder = deltaY - (float)((int)deltaY);
+	position.y += remainder;
 }

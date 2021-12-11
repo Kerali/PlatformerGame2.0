@@ -218,7 +218,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 		xDiff = batCenter.x - center.x;
 		yDiff = batCenter.y - center.y;
 
-		if (abs(yDiff) <= abs(xDiff) || yDiff < 0 || app->player->verticalVelocity > 0.0f)
+		if (abs(yDiff) <= abs(xDiff) || yDiff < 0 || app->player->verticalVelocity < 0.0f)
 		{
 			ChangeState(playerState, DYING);
 		}

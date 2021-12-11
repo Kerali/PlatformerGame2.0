@@ -193,7 +193,11 @@ bool Bat::Draw()
 	if (hasPath)
 	{
 		if (app->debug->showPaths)
+		{
+			if (pathIndex < path.Count())
+				app->render->DrawRectangle(SDL_Rect({ path[pathIndex].x * app->map->data.tileWidth - 3 + app->map->data.tileWidth / 2, path[pathIndex].y * app->map->data.tileHeight - 3 + app->map->data.tileHeight / 2, 6, 6 }), 255, 0, 0);
 			app->pathfinding->DrawPath(&path, 255, 0, 0);
+		}
 	}
 	else
 	{

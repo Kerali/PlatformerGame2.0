@@ -48,7 +48,7 @@ public:
 
 	void DrawPath(const DynArray<iPoint>* path, int r, int g, int b);
 
-	iPoint GetGroundTile(iPoint& pos);
+	iPoint GetGroundTile(iPoint pos);
 
 private:
 
@@ -87,7 +87,7 @@ struct PathNode
 	// Calculates this tile score
 	int Score() const;
 	// Calculate the F for a specific destination tile
-	int CalculateF(const iPoint& destination);
+	int CalculateF(const iPoint& destination, bool useGravity = false);
 
 	const bool operator ==(const PathNode other)
 	{

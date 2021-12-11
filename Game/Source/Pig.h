@@ -21,7 +21,7 @@ public:
 		DYING
 	};
 
-	Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s, int h);
+	Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s, int h, int g, int jForce);
 
 	bool Start();
 
@@ -37,6 +37,11 @@ public:
 
 private:
 	int GetJumpFrameCount(int deltaY);
+
+	void SafeMovementX(float deltaX);
+	void SafeMovementY(float deltaY);
+
+	float verticalVelocity = 0.0f;
 
 	Animation idleLeftAnimation;
 	Animation idleRightAnimation;
@@ -54,11 +59,16 @@ private:
 
 	DynArray<iPoint> path;
 	iPoint lastPlayerPosition;
+	iPoint lastPosition;
 	int pathIndex = 0;
 	bool hasPath = false;
 
 	int speed;
 	int health;
+	int gravity;
+	int jumpForce;
+
+	bool jumping = false;
 
 	bool lookingRight = false;
 };

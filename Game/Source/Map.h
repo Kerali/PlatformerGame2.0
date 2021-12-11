@@ -139,6 +139,8 @@ public:
 
 	uchar* GetWalkabilityMap();
 
+	bool IntersectsWithMap(Collider* c, int direction = 0);
+
 private:
 
 	// L03: Methods to load all required map data

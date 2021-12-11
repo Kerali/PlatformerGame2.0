@@ -107,7 +107,7 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 		entityList.add(e);
 		break;
 	case Entity::Type::PIG:
-		e = (Entity*)(new Pig((Module*)this, position, pigTexture, type, 80, 2));
+		e = (Entity*)(new Pig((Module*)this, position, pigTexture, type, 80, 2, 1000, 350));
 		entityList.add(e);
 		break;
 	}
@@ -115,9 +115,6 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 
 void Entities::OnCollision(Collider* a, Collider* b, float dt)
 {
-	if (app->player->godMode)
-		return;
-
 	for (int i = 0; i < entityList.count(); i++)
 	{
 		ListItem<Entity*>* e = entityList.At(i);
