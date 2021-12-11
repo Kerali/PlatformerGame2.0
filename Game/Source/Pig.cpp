@@ -49,7 +49,6 @@ Pig::Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s
 
 	currentAnimation = &idleLeftAnimation;
 	state = State::IDLE;
-	pathfindingState = PathfindingState::NONE;
 }
 
 bool Pig::Start()
@@ -154,6 +153,15 @@ void Pig::UpdatePathfinding(float dt)
 			else
 				pathIndex = 0;
 		}
+	}
+
+	if (hasPath)
+	{
+		state = State::WALKING;
+	}
+	else
+	{
+		state = State::IDLE;
 	}
 }
 

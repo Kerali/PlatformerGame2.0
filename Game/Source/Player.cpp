@@ -190,6 +190,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 	{
 	case(Collider::Type::ENDLEVEL):
 		app->scene->FadeToNewState(Scene::GAME_OVER_SCREEN);
+		return;
 		break;
 
 	case(Collider::Type::DEATH):
@@ -232,7 +233,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 		break;
 	}
 
-	if (b->type != Collider::Type::BAT && b->type != Collider::Type::PIG && b->type != Collider::Type::ITEMHEALTH && b->type != Collider::Type::ITEMSCORE && b->type != Collider::Type::CHECKPOINT)
+	if (b->type != Collider::Type::ENDLEVEL && b->type != Collider::Type::BAT && b->type != Collider::Type::PIG && b->type != Collider::Type::ITEMHEALTH && b->type != Collider::Type::ITEMSCORE && b->type != Collider::Type::CHECKPOINT)
 	{
 		int deltaX = a->rect.x - b->rect.x;
 		int deltaY = a->rect.y - b->rect.y;

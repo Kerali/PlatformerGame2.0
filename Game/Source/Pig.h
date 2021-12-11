@@ -21,21 +21,6 @@ public:
 		DYING
 	};
 
-	enum class PathfindingState
-	{
-		NONE,
-		MOVING
-	};
-
-	enum class KeyInput
-	{
-		LEFT,
-		RIGHT,
-		DOWN,
-		JUMP,
-		COUNT
-	};
-
 	Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s, int h);
 
 	bool Start();
@@ -66,7 +51,6 @@ private:
 	Animation* currentAnimation;
 
 	State state;
-	PathfindingState pathfindingState;
 
 	DynArray<iPoint> path;
 	iPoint lastPlayerPosition;
@@ -77,7 +61,6 @@ private:
 	int health;
 
 	bool lookingRight = false;
-	bool inputs[];
 };
 
 #endif // !__PIG_H__
