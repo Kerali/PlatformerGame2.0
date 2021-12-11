@@ -19,6 +19,12 @@ Pig::Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s
 	idleRightAnimation.GenerateAnimation(SDL_Rect({ 0, 30, 324, 30 }), 1, 9);
 	idleRightAnimation.speed = 10.0f;
 
+	idleRageLeftAnimation.GenerateAnimation(SDL_Rect({ 0, 240, 324, 30 }), 1, 9);
+	idleRageLeftAnimation.speed = 18.0f;
+
+	idleRageRightAnimation.GenerateAnimation(SDL_Rect({ 0, 270, 324, 30 }), 1, 9);
+	idleRageRightAnimation.speed = 18.0f;
+
 	walkingLeftAnimation.GenerateAnimation(SDL_Rect({ 0, 60, 576, 30 }), 1, 16);
 	walkingLeftAnimation.speed = 20.0f;
 
@@ -39,6 +45,10 @@ Pig::Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s
 	hitRightAnimation.speed = 10.0f;
 	hitRightAnimation.loop = false;
 
+	deathAnimation.GenerateAnimation(SDL_Rect({ 0, 300, 385, 55 }), 1, 7);
+	deathAnimation.speed = 10.0f;
+	deathAnimation.loop = false;
+
 	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x, (int)position.y - 12, 16, 28 }), Collider::Type::PIG, parent);
 
 	speed = s;
@@ -49,6 +59,10 @@ Pig::Pig(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s
 
 	lastPlayerPosition.x = -1;
 	lastPlayerPosition.y = -1;
+
+	initialPosition = position;
+	initialHealth = health;
+
 
 	lastPosition = iPoint((int)position.x / app->map->data.tileWidth, (int)position.y / app->map->data.tileHeight);
 
@@ -75,13 +89,23 @@ bool Pig::Update(float dt)
 	switch (state)
 	{
 	case State::IDLE:
-		if (!lookingRight)
-			currentAnimation = &idleLeftAnimation;
+		if (health > 2)
+		{
+			if (!lookingRight)
+				currentAnimation = &idleLeftAnimation;
+			else
+				currentAnimation = &idleRightAnimation;
+		}
 		else
-			currentAnimation = &idleRightAnimation;
+		{
+			if (!lookingRight)
+				currentAnimation = &idleRageLeftAnimation;
+			else
+				currentAnimation = &idleRageRightAnimation;
+		}
 		break;
 	case State::WALKING:
-		if (health > 1)
+		if (health > 2)
 		{
 			if (!lookingRight)
 				currentAnimation = &walkingLeftAnimation;
@@ -101,6 +125,10 @@ bool Pig::Update(float dt)
 			currentAnimation = &hitLeftAnimation;
 		else
 			currentAnimation = &hitRightAnimation;
+		if (currentAnimation->HasFinished())
+		{
+			state = State::IDLE;
+		}
 		break;
 	case State::LOST:
 		if (!lookingRight)
@@ -110,6 +138,8 @@ bool Pig::Update(float dt)
 		break;
 	case State::DYING:
 		currentAnimation = &deathAnimation;
+		if (currentAnimation->HasFinished())
+			pendingToDelete = true;
 	}
 
 	return true;
@@ -130,7 +160,9 @@ void Pig::UpdatePathfinding(float dt)
 	iPoint groundPos;
 	groundPos = app->pathfinding->GetGroundTile(playerPos);
 
-	if ((changedPosition || groundPos != lastPlayerPosition) && playerPos.DistanceTo(gridPos) <= 16 && state != State::DYING && !app->player->godMode && !jumping)
+	int finalSpeed = (health > 2) ? speed : (int)((float)speed * 1.5f);
+
+	if ((changedPosition || groundPos != lastPlayerPosition) && playerPos.DistanceTo(gridPos) <= 12 && state != State::DYING && !app->player->godMode && !jumping)
 	{
 		lastPlayerPosition = groundPos;
 
@@ -165,7 +197,7 @@ void Pig::UpdatePathfinding(float dt)
 		}
 	}
 
-	if (hasPath)
+	if (hasPath && state != State::HIT && state != State::DYING)
 	{
 		if (pathIndex < path.Count())
 		{
@@ -184,23 +216,23 @@ void Pig::UpdatePathfinding(float dt)
 
 			if (pixelPos.x > position.x)
 			{
-				if (abs(position.x - pixelPos.x) < speed * dt)
+				if (abs(position.x - pixelPos.x) < finalSpeed * dt)
 					position.x += pixelPos.x - position.x;
 				else
 				{
 					lookingRight = true;
-					SafeMovementX(speed * dt);
+					SafeMovementX(finalSpeed * dt);
 				}
 			}
 
 			if (pixelPos.x < position.x)
 			{
-				if (abs(position.x - pixelPos.x) < speed * dt)
+				if (abs(position.x - pixelPos.x) < finalSpeed * dt)
 					position.x -= position.x - pixelPos.x;
 				else
 				{
 					lookingRight = false;
-					SafeMovementX(-speed * dt);
+					SafeMovementX(-finalSpeed * dt);
 				}
 			}
 
@@ -229,14 +261,15 @@ void Pig::UpdatePathfinding(float dt)
 		else
 			state = State::IDLE;
 	}
-	else
+	else if (!hasPath && state != State::HIT && state != State::DYING)
 	{
 		state = State::IDLE;
 	}
 
 	verticalVelocity -= gravity * dt;
 
-	SafeMovementY(-verticalVelocity * dt);
+	if (state != State::DYING)
+		SafeMovementY(-verticalVelocity * dt);
 	collider->SetPos((int)position.x, (int)position.y - 12);
 
 	if (changedPosition)
@@ -245,7 +278,10 @@ void Pig::UpdatePathfinding(float dt)
 
 bool Pig::Draw()
 {
-	app->render->DrawTexture(texture, position.x - 10, position.y - 14, &currentAnimation->GetCurrentFrame());
+	if (currentAnimation == &deathAnimation)
+		app->render->DrawTexture(texture, position.x - 19, position.y - 26, &currentAnimation->GetCurrentFrame());
+	else
+		app->render->DrawTexture(texture, position.x - 10, position.y - 14, &currentAnimation->GetCurrentFrame());
 
 	if (hasPath && app->debug->showPaths)
 	{
@@ -370,4 +406,11 @@ void Pig::SafeMovementY(float deltaY)
 
 	float remainder = deltaY - (float)((int)deltaY);
 	position.y += remainder;
+}
+
+void Pig::Reset()
+{
+	position = initialPosition;
+	health = initialHealth;
+	state = State::IDLE;
 }

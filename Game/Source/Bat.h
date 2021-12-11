@@ -31,6 +31,8 @@ public:
 
 	void CleanUp();
 
+	void Reset();
+
 private:
 	Animation idleAnimation;
 	Animation flyingLeftAnimation;
@@ -46,6 +48,8 @@ private:
 	int pathIndex = 0;
 	int speed;
 	bool hasPath = false;
+
+	fPoint initialPosition;
 };
 
 #endif // !__BAT_H__

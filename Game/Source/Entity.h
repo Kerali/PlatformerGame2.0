@@ -55,6 +55,11 @@ public:
 		/*collider->pendingToDelete = true;*/
 	}
 
+	virtual void Reset()
+	{
+
+	}
+
 	Module* parent;
 
 	Type type;

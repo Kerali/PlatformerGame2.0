@@ -107,7 +107,7 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 		entityList.add(e);
 		break;
 	case Entity::Type::PIG:
-		e = (Entity*)(new Pig((Module*)this, position, pigTexture, type, 80, 2, 1000, 350));
+		e = (Entity*)(new Pig((Module*)this, position, pigTexture, type, 80, 3, 1000, 350));
 		entityList.add(e);
 		break;
 	}
@@ -128,5 +128,15 @@ void Entities::OnCollision(Collider* a, Collider* b, float dt)
 		{
 			e->data->Collision(a);
 		}
+	}
+}
+
+void Entities::ResetEntities()
+{
+	for (int i = 0; i < entityList.count(); i++)
+	{
+		ListItem<Entity*>* e = entityList.At(i);
+
+		e->data->Reset();
 	}
 }

@@ -35,6 +35,8 @@ public:
 
 	void CleanUp();
 
+	void Reset();
+
 private:
 	int GetJumpFrameCount(int deltaY);
 
@@ -45,6 +47,8 @@ private:
 
 	Animation idleLeftAnimation;
 	Animation idleRightAnimation;
+	Animation idleRageLeftAnimation;
+	Animation idleRageRightAnimation;
 	Animation walkingLeftAnimation;
 	Animation walkingRightAnimation;
 	Animation runningLeftAnimation;
@@ -62,6 +66,9 @@ private:
 	iPoint lastPosition;
 	int pathIndex = 0;
 	bool hasPath = false;
+
+	fPoint initialPosition;
+	int initialHealth;
 
 	int speed;
 	int health;
