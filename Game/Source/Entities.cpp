@@ -6,6 +6,7 @@
 
 #include "Bat.h"
 #include "Fruit.h"
+#include "Player.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -101,6 +102,9 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 
 void Entities::OnCollision(Collider* a, Collider* b, float dt)
 {
+	if (app->player->godMode)
+		return;
+
 	for (int i = 0; i < entityList.count(); i++)
 	{
 		ListItem<Entity*>* e = entityList.At(i);
