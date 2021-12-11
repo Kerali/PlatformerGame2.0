@@ -62,7 +62,7 @@ bool Bat::Update(float dt)
 	{
 		lastPlayerPosition = playerPos;
 
-		int n = app->pathfinding->CreatePath(gridPos, playerPos, false, 0, 9);
+		int n = app->pathfinding->CreatePath(gridPos, playerPos, false, 0, 14);
 		if (n == -1)
 		{
 			hasPath = false;
