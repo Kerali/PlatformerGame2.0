@@ -26,6 +26,7 @@
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
     <ClCompile Include="Source\Bat.cpp" />
+    <ClCompile Include="Source\Fruit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -73,6 +74,7 @@
     <ClInclude Include="Source\Entities.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\Bat.h" />
+    <ClInclude Include="Source\Fruit.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

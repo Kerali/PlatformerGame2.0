@@ -5,6 +5,10 @@
 #include "Textures.h"
 
 #include "Bat.h"
+#include "Fruit.h"
+
+#include <stdlib.h>
+#include <time.h>
 
 Entities::Entities() : Module()
 {
@@ -19,6 +23,9 @@ bool Entities::Awake(pugi::xml_node& config)
 bool Entities::Start()
 {
 	batTexture = app->tex->Load("Assets/enemies/bat/bat.png");
+	fruitTexture = app->tex->Load("Assets/Items/item_spritesheet.png");
+
+	srand(time(NULL));
 
 	return true;
 }
@@ -30,18 +37,19 @@ bool Entities::PreUpdate()
 
 bool Entities::Update(float dt)
 {
-	for (int i = 0; i < entityList.count(); i++)
-	{
-		ListItem<Entity*>* e = entityList.At(i);
+	ListItem<Entity*>* start = entityList.start;
 
-		if (e->data->pendingToDelete)
+	while (start != nullptr)
+	{
+		if (start->data->pendingToDelete)
 		{
-			delete e->data;
-			entityList.del(e);
+			delete start->data;
+			entityList.del(start);
+			start = start->next;
 			continue;
 		}
-
-		e->data->Update(dt);
+		start->data->Update(dt);
+		start = start->next;
 	}
 
 	return true;
@@ -64,18 +72,28 @@ bool Entities::CleanUp()
 	{
 		ListItem<Entity*>* e = entityList.At(i);
 
-		entityList.del(e);
+		delete e->data;
 	}
+
+	entityList.clear();
 
 	return true;
 }
 
 void Entities::AddEntity(fPoint position, Entity::Type type)
 {
+	Entity* e;
+	int r;
+
 	switch (type)
 	{
 	case Entity::Type::BAT:
-		Entity* e = (Entity*)(new Bat((Module*)this, position, batTexture, type, 120));
+		e = (Entity*)(new Bat((Module*)this, position, batTexture, type, 80));
+		entityList.add(e);
+		break;
+	case Entity::Type::FRUIT:
+		r = rand() % 3;
+		e = (Entity*)(new Fruit((Module*)this, position, fruitTexture, type, r));
 		entityList.add(e);
 		break;
 	}

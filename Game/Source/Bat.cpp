@@ -212,6 +212,7 @@ void Bat::Collision(Collider* other)
 		{
 			state = State::DYING;
 			collider->pendingToDelete = true;
+			app->player->verticalVelocity = app->player->jumpForce;
 		}
 	}
 }

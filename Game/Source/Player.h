@@ -82,6 +82,8 @@ public:
 
 	Collider* collider;
 
+	float jumpForce;
+
 private:
 
 	float initialWaitCount = 0.0f;
@@ -89,7 +91,6 @@ private:
 
 	unsigned int speed;
 	float maxVerticalVelocity = 350.0f;
-	float jumpForce;
 
 	int maxJumps = 2;
 	int availableJumps = 2;

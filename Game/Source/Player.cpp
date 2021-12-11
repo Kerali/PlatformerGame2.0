@@ -402,7 +402,7 @@ void Player::UpdateLogic(float dt)
 	if (initialWaitCount > initialWait)
 		gravityOn = true;
 
-	if (!godMode && gravityOn) verticalVelocity -= gravity * dt;
+	if (!godMode && gravityOn && playerState != DYING) verticalVelocity -= gravity * dt;
 
 	if (verticalVelocity > maxVerticalVelocity)
 	{
@@ -501,6 +501,9 @@ void Player::UpdateLogic(float dt)
 		}
 		case(DYING):
 		{
+			gravityOn = false;
+			verticalVelocity = 0.0f;
+
 			if (isGoingRight == true)
 				currentAnim = &disappearRightAnim;
 			else

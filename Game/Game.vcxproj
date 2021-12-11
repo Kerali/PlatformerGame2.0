@@ -94,6 +94,7 @@
     <ClCompile Include="Source\Collisions.cpp" />
     <ClCompile Include="Source\Debug.cpp" />
     <ClCompile Include="Source\Entities.cpp" />
+    <ClCompile Include="Source\Fruit.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="Source\Debug.h" />
     <ClInclude Include="Source\Entities.h" />
     <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\Fruit.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\ModuleUI.h" />
     <ClInclude Include="Source\Pathfinding.h" />

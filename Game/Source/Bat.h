@@ -46,4 +46,4 @@ private:
 	bool hasPath = false;
 };
 
-#endif // !__ENTITY_H__
+#endif // !__BAT_H__
