@@ -26,7 +26,7 @@ public:
 
 	~Entity()
 	{
-		collider->pendingToDelete = true;
+		CleanUp();
 	}
 
 	virtual bool Start()
@@ -47,6 +47,11 @@ public:
 	virtual void Collision(Collider* other)
 	{
 
+	}
+
+	virtual void CleanUp()
+	{
+		collider->pendingToDelete = true;
 	}
 
 	Module* parent;

@@ -4,6 +4,10 @@
 #include "Module.h"
 #include "List.h"
 #include "Point.h"
+#include "Textures.h"
+#include "App.h"
+
+#include "Log.h"
 
 #include "PugiXml\src\pugixml.hpp"
 #include "SDL/include/SDL.h"

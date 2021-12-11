@@ -29,6 +29,8 @@ public:
 
 	void Collision(Collider* other);
 
+	void CleanUp();
+
 private:
 	Animation idleAnimation;
 	Animation flyingLeftAnimation;

@@ -46,6 +46,12 @@ bool Bat::Start()
 	return true;
 }
 
+void Bat::CleanUp()
+{
+	collider->pendingToDelete = true;
+	delete& path;
+}
+
 bool Bat::Update(float dt)
 {
 	currentAnimation->Update(dt);
