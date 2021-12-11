@@ -6,6 +6,8 @@
 
 #include "Bat.h"
 #include "Fruit.h"
+#include "Heart.h"
+
 #include "Player.h"
 
 #include <stdlib.h>
@@ -25,6 +27,7 @@ bool Entities::Start()
 {
 	batTexture = app->tex->Load("Assets/enemies/bat/bat.png");
 	fruitTexture = app->tex->Load("Assets/Items/item_spritesheet.png");
+	heartTexture = app->tex->Load("Assets/Items/heart_anim.png");
 
 	srand(time(NULL));
 
@@ -95,6 +98,10 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 	case Entity::Type::FRUIT:
 		r = rand() % 3;
 		e = (Entity*)(new Fruit((Module*)this, position, fruitTexture, type, r));
+		entityList.add(e);
+		break;
+	case Entity::Type::HEART:
+		e = (Entity*)(new Heart((Module*)this, position, heartTexture, type));
 		entityList.add(e);
 		break;
 	}
