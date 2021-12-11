@@ -44,10 +44,10 @@ bool Heart::Draw()
 	if (state == State::DISAPPEAR)
 	{
 		currentAnimation = &disappearAnimation;
-		app->render->DrawTexture(texture, position.x - 8, position.y - 8, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexture(texture, position.x - 10, position.y - 10, &currentAnimation->GetCurrentFrame());
 	}
 	else
-		app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+		app->render->DrawTexture(texture, position.x - 2, position.y - 2, &currentAnimation->GetCurrentFrame());
 
 	return true;
 }

@@ -42,6 +42,7 @@ bool Debug::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		ToggleColliders();
+		showPaths = !showPaths;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
@@ -51,7 +52,17 @@ bool Debug::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
-		showPaths = !showPaths;
+		if (capFrameRate)
+		{
+			storeFrameRateCap = app->cappedMs;
+			app->cappedMs = 1000 / 30;
+			capFrameRate = false;
+		}
+		else
+		{
+			app->cappedMs = storeFrameRateCap;
+			capFrameRate = true;
+		}
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)

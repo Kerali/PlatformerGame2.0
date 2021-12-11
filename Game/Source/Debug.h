@@ -42,6 +42,9 @@ public:
 private:
 	bool isEnabled = true;
 	int storeGravity;
+
+	int storeFrameRateCap;
+	bool capFrameRate = true;
 };
 
 #endif
