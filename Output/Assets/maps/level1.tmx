@@ -176852,7 +176852,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="20" name="pigs" width="206" height="78" visible="0">
+ <layer id="20" name="pigs" width="206" height="78">
   <properties>
    <property name="draw" type="int" value="0"/>
    <property name="entityType" type="int" value="4"/>

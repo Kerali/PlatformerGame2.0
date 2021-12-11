@@ -454,6 +454,10 @@ bool Map::CreateEntities()
 			{
 				app->entities->AddEntity(pos, Entity::Type::BAT);
 			}
+			else if (data.maplayers[i]->properties.GetProperty("entityType", 0) == 4)
+			{
+				app->entities->AddEntity(pos, Entity::Type::PIG);
+			}
 		}
 	}
 
@@ -462,6 +466,7 @@ bool Map::CreateEntities()
 
 void Map::CreateWalkabilityMap()
 {
+	delete[] walkabilityMap;
 	walkabilityMap = new uchar[data.width * data.height];
 	std::fill_n(walkabilityMap, data.width * data.height, 1);
 	List<Collider*>* colliders = &app->collisions->staticColliders;

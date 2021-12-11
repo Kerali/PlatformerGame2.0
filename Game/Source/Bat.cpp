@@ -41,15 +41,14 @@ Bat::Bat(Module* parent, fPoint position, SDL_Texture* texture, Type type, int s
 	state = State::IDLE;
 }
 
+void Bat::CleanUp()
+{
+	delete& path;
+}
+
 bool Bat::Start()
 {
 	return true;
-}
-
-void Bat::CleanUp()
-{
-	collider->pendingToDelete = true;
-	delete& path;
 }
 
 bool Bat::Update(float dt)
@@ -68,7 +67,7 @@ bool Bat::Update(float dt)
 	{
 		lastPlayerPosition = playerPos;
 
-		int n = app->pathfinding->CreatePath(gridPos, playerPos, false, 0, 14);
+		int n = app->pathfinding->CreatePath(gridPos, playerPos, false, 0, 1);
 		if (n == -1)
 		{
 			hasPath = false;
@@ -88,7 +87,10 @@ bool Bat::Update(float dt)
 				break;
 			}
 			path.Clear();
-			path = *newPath;
+			for (int i = 0; i < newPath->Count(); i++)
+			{
+				path.PushBack((*newPath)[i]);
+			}
 			if (j < path.Count())
 				pathIndex = j;
 			else

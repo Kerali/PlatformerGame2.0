@@ -18,13 +18,12 @@ struct Collider
 		ITEMHEALTH,
 		CHECKPOINT,
 		DEATH,
-		BAT
+		BAT,
+		PIG
 	};
 
 	//Methods
 	Collider(SDL_Rect rectangle, Type type, Module* listener = nullptr);
-
-	~Collider();
 
 	void SetPos(int x, int y);
 

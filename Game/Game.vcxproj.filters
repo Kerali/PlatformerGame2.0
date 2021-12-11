@@ -28,6 +28,7 @@
     <ClCompile Include="Source\Bat.cpp" />
     <ClCompile Include="Source\Fruit.cpp" />
     <ClCompile Include="Source\Heart.cpp" />
+    <ClCompile Include="Source\Pig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -77,6 +78,7 @@
     <ClInclude Include="Source\Bat.h" />
     <ClInclude Include="Source\Fruit.h" />
     <ClInclude Include="Source\Heart.h" />
+    <ClInclude Include="Source\Pig.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

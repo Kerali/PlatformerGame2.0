@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Render.h"
 #include "Log.h"
+#include "Player.h"
 
 Collisions::Collisions() : Module()
 {
@@ -58,7 +59,6 @@ bool Collisions::PreUpdate()
 
 bool Collisions::Update(float dt)
 {
-
 	bool ret = true;
 
 	for (int i = 0; i < dynamicColliders.count(); i++) {
@@ -76,7 +76,7 @@ bool Collisions::Update(float dt)
 				}
 			}
 		}
-		for (int j = 0; j < dynamicColliders.count(); j++)
+		for (int j = i; j < dynamicColliders.count(); j++)
 		{
 			if (i == j)
 				continue;
@@ -144,6 +144,16 @@ bool Collisions::PostUpdate()
 // Called before quitting
 bool Collisions::CleanUp()
 {
+	for (int i = 0; i < staticColliders.count(); i++)
+	{
+		delete staticColliders[i];
+	}
+
+	for (int i = 0; i < dynamicColliders.count(); i++)
+	{
+		if (dynamicColliders[i] != app->player->collider)
+			delete dynamicColliders[i];
+	}
 	staticColliders.clear();
 	dynamicColliders.clear();
 

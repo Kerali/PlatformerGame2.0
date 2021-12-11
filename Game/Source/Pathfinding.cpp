@@ -231,6 +231,16 @@ int PathNode::CalculateF(const iPoint& destination)
 	return g + h;
 }
 
+iPoint PathFinding::GetGroundTile(iPoint& pos)
+{
+	while (IsWalkable(pos))
+	{
+		pos.y++;
+	}
+
+	return iPoint(pos.x, pos.y - 1);
+}
+
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------

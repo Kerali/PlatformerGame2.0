@@ -7,6 +7,7 @@
 #include "Bat.h"
 #include "Fruit.h"
 #include "Heart.h"
+#include "Pig.h"
 
 #include "Player.h"
 
@@ -26,6 +27,7 @@ bool Entities::Awake(pugi::xml_node& config)
 bool Entities::Start()
 {
 	batTexture = app->tex->Load("Assets/enemies/bat/bat.png");
+	pigTexture = app->tex->Load("Assets/enemies/pig/pig.png");
 	fruitTexture = app->tex->Load("Assets/Items/item_spritesheet.png");
 	heartTexture = app->tex->Load("Assets/Items/heart_anim.png");
 
@@ -102,6 +104,10 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 		break;
 	case Entity::Type::HEART:
 		e = (Entity*)(new Heart((Module*)this, position, heartTexture, type));
+		entityList.add(e);
+		break;
+	case Entity::Type::PIG:
+		e = (Entity*)(new Pig((Module*)this, position, pigTexture, type, 80, 2));
 		entityList.add(e);
 		break;
 	}

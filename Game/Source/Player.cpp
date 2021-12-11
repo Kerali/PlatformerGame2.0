@@ -224,11 +224,15 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 
 		break;
 
+	case(Collider::Type::PIG):
+		app->ui->score += 5000;
+		break;
+
 	default:
 		break;
 	}
 
-	if (b->type != Collider::Type::BAT && b->type != Collider::Type::ITEMHEALTH && b->type != Collider::Type::ITEMSCORE && b->type != Collider::Type::CHECKPOINT)
+	if (b->type != Collider::Type::BAT && b->type != Collider::Type::PIG && b->type != Collider::Type::ITEMHEALTH && b->type != Collider::Type::ITEMSCORE && b->type != Collider::Type::CHECKPOINT)
 	{
 		int deltaX = a->rect.x - b->rect.x;
 		int deltaY = a->rect.y - b->rect.y;
@@ -566,6 +570,7 @@ void Player::Reload()
 		health = 3;
 		app->ui->score = 0;
 	}
+	delete collider;
 	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x, (int)position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
 	initialPosition = position;
 	gravityOn = true;

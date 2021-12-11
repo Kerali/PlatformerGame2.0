@@ -48,6 +48,8 @@ public:
 
 	void DrawPath(const DynArray<iPoint>* path, int r, int g, int b);
 
+	iPoint GetGroundTile(iPoint& pos);
+
 private:
 
 	// size of the map
