@@ -69,9 +69,7 @@ bool Map::PostUpdate()
 void Map::Draw()
 {
 	if (mapLoaded == false) return;
-	// L04: TODO 5: Prepare the loop to draw all tilesets + DrawTexture()
-	
-	// L04: TODO 9: Complete the draw function
+
 	for (int i = 0; i < data.maplayers.count(); i++)
 	{
 		if (data.maplayers[i]->properties.GetProperty("draw", 1) == 0) continue;
