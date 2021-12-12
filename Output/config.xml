@@ -8,7 +8,7 @@
   </app>
 
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
   </renderer>
 
   <window>
@@ -35,6 +35,10 @@
     <ui fontPath="Assets/ui/white.png" livesTexturePath = "Assets/ui/lives.png"/>
   </ui>
    <entities>
+   <batTexture>Assets/enemies/bat/bat.png</batTexture>
+  	<pigTexture>Assets/enemies/pig/pig.png</pigTexture>
+  	<fruitTexture>Assets/Items/item_spritesheet.png</fruitTexture>
+  	<heartTexture>Assets/Items/heart_anim.png</heartTexture>
   	<entities enemySpeed="80" pigHealth="3" enemyGravity="1000" enemyJumpForce="350"/>
   </entities>
 </config>

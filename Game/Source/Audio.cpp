@@ -191,7 +191,7 @@ void Audio::VolumeUp()
 }
 
 bool Audio::Load(pugi::xml_node& savedGame) {
-	Mix_VolumeMusic(Mix_Volume(-1, savedGame.attribute("audio").as_int()));
+	//Mix_VolumeMusic(Mix_Volume(-1, savedGame.attribute("audio").as_int()));
 	return true;
 }
 

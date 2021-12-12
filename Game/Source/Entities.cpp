@@ -28,6 +28,11 @@ bool Entities::Awake(pugi::xml_node& config)
 	enemyGravity = entities.attribute("enemyGravity").as_int();
 	enemyJumpForce = entities.attribute("enemyJumpForce").as_int();
 
+	batTexturePath = config.child("batTexture").child_value();
+	pigTexturePath = config.child("pigTexture").child_value();
+	fruitTexturePath = config.child("fruitTexture").child_value();
+	heartTexturePath = config.child("heartTexture").child_value();
+
 	return true;
 }
 
@@ -105,6 +110,11 @@ bool Entities::Start()
 	pigTexture = app->tex->Load("Assets/enemies/pig/pig.png");
 	fruitTexture = app->tex->Load("Assets/Items/item_spritesheet.png");
 	heartTexture = app->tex->Load("Assets/Items/heart_anim.png");
+
+	batTexture = app->tex->Load(batTexturePath);
+	pigTexture = app->tex->Load(pigTexturePath);
+	fruitTexture = app->tex->Load(fruitTexturePath);
+	heartTexture = app->tex->Load(heartTexturePath);
 
 	srand(time(NULL));
 

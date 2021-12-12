@@ -53,6 +53,11 @@ private:
 	SDL_Texture* pigTexture;
 	SDL_Texture* fruitTexture;
 	SDL_Texture* heartTexture;
+
+	const char* batTexturePath;
+	const char* fruitTexturePath;
+	const char* heartTexturePath;
+	const char* pigTexturePath;
 };
 
 #endif // __ENTITIES_H__ 
