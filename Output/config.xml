@@ -4,7 +4,7 @@
   <app framerate_cap="60">
     <title>PlatformerGame</title>
     <organization>UPC</organization>
-	<savefile path="savegame.xml"/>
+	<savefile path="save_game.xml"/>
   </app>
 
   <renderer>

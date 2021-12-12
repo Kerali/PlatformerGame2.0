@@ -106,11 +106,6 @@ bool Entities::Save(pugi::xml_node& savedGame)
 
 bool Entities::Start()
 {
-	batTexture = app->tex->Load("Assets/enemies/bat/bat.png");
-	pigTexture = app->tex->Load("Assets/enemies/pig/pig.png");
-	fruitTexture = app->tex->Load("Assets/Items/item_spritesheet.png");
-	heartTexture = app->tex->Load("Assets/Items/heart_anim.png");
-
 	batTexture = app->tex->Load(batTexturePath);
 	pigTexture = app->tex->Load(pigTexturePath);
 	fruitTexture = app->tex->Load(fruitTexturePath);

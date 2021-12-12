@@ -20,7 +20,7 @@
   <image source="rock_face.png" width="96" height="48"/>
  </tileset>
  <tileset firstgid="353" name="colliderColors" tilewidth="16" tileheight="16" tilecount="6" columns="6">
-  <image source="../Textures/Colliders/collider_colors.png" width="96" height="16"/>
+  <image source="../colliders/collider_colors.png" width="96" height="16"/>
  </tileset>
  <tileset firstgid="359" name="checkpoint flag" tilewidth="16" tileheight="16" tilecount="8" columns="4">
   <image source="checkpoint_flag.png" width="64" height="32"/>
