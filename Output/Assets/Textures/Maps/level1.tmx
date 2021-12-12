@@ -29,7 +29,7 @@
   <image source="sign.png" width="16" height="16"/>
  </tileset>
  <tileset firstgid="368" name="deez_nuts" tilewidth="16" tileheight="16" tilecount="4" columns="2">
-  <image source="../Textures/Items/deez_nuts.png" width="32" height="32"/>
+  <image source="../Items/deez_nuts.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="372" name="platform" tilewidth="16" tileheight="16" tilecount="2" columns="2">
   <image source="platform.png" width="32" height="16"/>

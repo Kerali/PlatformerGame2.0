@@ -19,26 +19,26 @@
     <fullscreen_window value="false"/>
   </window>
  <player>
-  	<texture>Assets/textures/Main Characters/Virtual Guy/SpriteSheet.png</texture>
+  	<texture>Assets/Textures/Character/sprite_sheet.png</texture>
   	<movement gravity="1000" jumpForce="300" speed="220" maxJumps="2"/>
-	<audio jump="Assets/Audio/fx/jump.wav" doubleJump="Assets/Audio/fx/double_jump.wav" gameOver="Assets/Audio/fx/game_over.wav" gameStart="Assets/audio/fx/game_start.wav" fruit="Assets/audio/fx/pick_up_fruit.wav" heart="assets/audio/fx/pick_up_heart.wav" checkpoint="Assets/audio/fx/checkpoint.wav"/>
+	<audio jump="Assets/Audio/Fx/jump.wav" doubleJump="Assets/Audio/Fx/double_jump.wav" gameOver="Assets/Audio/Fx/game_over.wav" gameStart="Assets/Audio/Fx/game_start.wav" fruit="Assets/Audio/Fx/pick_up_fruit.wav" heart="Assets/Audio/Fx/pick_up_heart.wav" checkpoint="Assets/Audio/Fx/checkpoint.wav"/>
   </player>
   <!-- L03: Added maps folder as config option -->
   <map>
-    <folder>Assets/maps/</folder>
+    <folder>Assets/Textures/Maps/</folder>
   </map>
   <scene>
-    <music path="Assets/Audio/music/music.ogg"/>
+    <music path="Assets/Audio/Music/music.ogg"/>
     <texture screen="Assets/Textures/Screens/screens_finished.png"/>
   </scene>
   <ui>
-    <ui fontPath="Assets/ui/white.png" livesTexturePath = "Assets/ui/lives.png"/>
+    <ui fontPath="Assets/Textures/UI/white.png" livesTexturePath = "Assets/Textures/UI/lives.png"/>
   </ui>
    <entities>
-   <batTexture>Assets/enemies/bat/bat.png</batTexture>
-  	<pigTexture>Assets/enemies/pig/pig.png</pigTexture>
-  	<fruitTexture>Assets/Items/item_spritesheet.png</fruitTexture>
-  	<heartTexture>Assets/Items/heart_anim.png</heartTexture>
+   <batTexture>Assets/Textures/Enemies/Bat/bat.png</batTexture>
+  	<pigTexture>Assets/Textures/Enemies/Pig/pig.png</pigTexture>
+  	<fruitTexture>Assets/Textures/Items/item_spritesheet.png</fruitTexture>
+  	<heartTexture>Assets/Textures/Items/heart_anim.png</heartTexture>
   	<entities enemySpeed="80" pigHealth="3" enemyGravity="1000" enemyJumpForce="350"/>
   </entities>
 </config>
