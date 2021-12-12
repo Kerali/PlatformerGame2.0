@@ -47,7 +47,7 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&);
 
-	void LoadLevel(SString name);
+	void LoadLevel(SString name, bool loadEntities = true);
 
 	void ChangeGameplayState(GameplayState newState);
 	void FadeToNewState(GameplayState newState);

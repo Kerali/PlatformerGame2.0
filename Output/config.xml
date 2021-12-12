@@ -34,4 +34,7 @@
   <ui>
     <ui fontPath="Assets/ui/white.png" livesTexturePath = "Assets/ui/lives.png"/>
   </ui>
+   <entities>
+  	<entities enemySpeed="80" pigHealth="3" enemyGravity="1000" enemyJumpForce="350"/>
+  </entities>
 </config>

@@ -413,12 +413,19 @@ bool App::Load()
 			LOG("player not loading");
 		}
 
+		pugi::xml_node en = saveGame.child("entities");
+		if (en == NULL)
+		{
+			LOG("entities not loading");
+		}
+
 		app->audio->Load(au);
 		app->input->Load(inp);
 		app->render->Load(rend);
 		app->scene->Load(sce);
 		app->win->Load(wi);
 		app->player->Load(pl);
+		app->entities->Load(en);
 
 	}
 
@@ -447,6 +454,9 @@ bool App::Save()
 
 	pugi::xml_node player = newSave.append_child("player");
 	app->player->Save(player);
+
+	pugi::xml_node entities = newSave.append_child("entities");
+	app->entities->Save(entities);
 
 	newSave.save_file(saveFileName);
 

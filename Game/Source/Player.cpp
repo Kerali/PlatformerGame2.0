@@ -154,6 +154,8 @@ bool Player::Load(pugi::xml_node& savedGame)
 	availableJumps = savedGame.attribute("availableJumps").as_int(2);
 	position.x = savedGame.attribute("x").as_int(176);
 	position.y = savedGame.attribute("y").as_int(976);
+	health = savedGame.attribute("health").as_int(3);
+	app->ui->score = savedGame.attribute("score").as_int(0);
 
 	return true;
 }
@@ -171,6 +173,12 @@ bool Player::Save(pugi::xml_node& savedGame)
 
 	pugi::xml_attribute y = savedGame.append_attribute("y");
 	y.set_value(position.y);
+
+	pugi::xml_attribute s = savedGame.append_attribute("score");
+	s.set_value(app->ui->score);
+
+	pugi::xml_attribute h = savedGame.append_attribute("health");
+	h.set_value(health);
 
 	return true;
 }
@@ -226,7 +234,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 		xDiff = batCenter.x - center.x;
 		yDiff = batCenter.y - center.y;
 
-		if (abs(yDiff) <= abs(xDiff) || yDiff < 0 || app->player->verticalVelocity < 0.0f)
+		if (abs(yDiff) <= abs(xDiff) || yDiff < 0)
 		{
 			ChangeState(playerState, DYING);
 		}
@@ -240,7 +248,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 		xDiff = batCenter.x - center.x;
 		yDiff = batCenter.y - center.y;
 
-		if (abs(yDiff) <= abs(xDiff) || yDiff < 0 || app->player->verticalVelocity < 0.0f)
+		if (abs(yDiff) <= abs(xDiff) || yDiff < 0)
 		{
 			ChangeState(playerState, DYING);
 		}

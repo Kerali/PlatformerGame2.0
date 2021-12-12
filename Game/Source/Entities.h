@@ -37,7 +37,15 @@ public:
 
 	void ResetEntities();
 
+	bool Load(pugi::xml_node& savedGame);
+	bool Save(pugi::xml_node& savedGame);
+
 private:
+	int enemySpeed = 0;
+	int pigHealth = 0;
+	int enemyGravity = 0;
+	int enemyJumpForce = 0;
+
 	List<Entity*> entityList;
 
 	// Textures

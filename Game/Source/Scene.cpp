@@ -156,7 +156,7 @@ bool Scene::Update(float dt)
 bool Scene::Load(pugi::xml_node& savedGame)
 {
 	FadeToNewState(PLAYING);
-	LoadLevel(savedGame.attribute("currentLevel").as_string("level1.tmx"));
+	LoadLevel(savedGame.attribute("currentLevel").as_string("level1.tmx"), false);
 
 	return true;
 }
@@ -208,11 +208,11 @@ void Scene::ChangeGameplayState(GameplayState newState)
 	}
 }
 
-void Scene::LoadLevel(SString name)
+void Scene::LoadLevel(SString name, bool loadEntities)
 {
 	app->player->isDead = false;
 	currentLevel = name;
-	app->map->Load(name.GetString());
+	app->map->Load(name.GetString(), loadEntities);
 	app->player->Reload();
 }
 

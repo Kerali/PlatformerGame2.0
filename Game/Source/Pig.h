@@ -37,6 +37,8 @@ public:
 
 	void Reset();
 
+	int health;
+
 private:
 	int GetJumpFrameCount(int deltaY);
 
@@ -71,7 +73,6 @@ private:
 	int initialHealth;
 
 	int speed;
-	int health;
 	int gravity;
 	int jumpForce;
 
