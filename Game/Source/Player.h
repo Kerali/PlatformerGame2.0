@@ -111,12 +111,14 @@ private:
 	uint gameOverFx = 0;
 	uint pickUpFruitFx = 0;
 	uint checkpointFx = 0;
+	uint pickUpHeartFx = 0;
 
 	const char* jumpFxPath;
 	const char* doubleJumpFxPath;
 	const char* gameOverFxPath;
 	const char* pickUpFruitFxPath;
 	const char* checkpointFxPath;
+	const char* pickUpHeartFxPath;
 	
 };
 

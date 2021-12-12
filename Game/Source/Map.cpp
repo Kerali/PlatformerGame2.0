@@ -16,6 +16,7 @@
 Map::Map() : Module(), mapLoaded(false)
 {
 	name.create("map");
+	walkabilityMap = nullptr;
 }
 
 // Destructor
@@ -467,7 +468,12 @@ bool Map::CreateEntities()
 
 void Map::CreateWalkabilityMap()
 {
-	delete[] walkabilityMap;
+	if (walkabilityMap != nullptr)
+	{
+		delete[] walkabilityMap;
+		walkabilityMap = nullptr;
+	}
+	
 	walkabilityMap = new uchar[data.width * data.height];
 	std::fill_n(walkabilityMap, data.width * data.height, 1);
 	List<Collider*>* colliders = &app->collisions->staticColliders;

@@ -5,6 +5,7 @@
 #include "Pathfinding.h"
 #include "Map.h"
 #include "Debug.h"
+#include "ModuleUI.h"
 #include "Log.h"
 #include "Collisions.h"
 #include "Audio.h"
@@ -224,6 +225,7 @@ void Bat::Collision(Collider* other)
 
 		if (abs(yDiff) > abs(xDiff) && yDiff > 0 && app->player->verticalVelocity < 0.0f)
 		{
+			app->ui->score += 5000;
 			app->audio->PlayFx(app->player->doubleJumpFx, 0);
 			state = State::DYING;
 			collider->pendingToDelete = true;

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Pathfinding.h"
 #include "Map.h"
+#include "ModuleUI.h"
 #include "Debug.h"
 #include "Log.h"
 #include "Collisions.h"
@@ -315,6 +316,8 @@ void Pig::Collision(Collider* other)
 			}
 			else if (health == 0)
 			{
+				app->ui->score += 10000;
+				app->audio->PlayFx(app->player->doubleJumpFx, 0);
 				collider->pendingToDelete = true;
 				state = State::DYING;
 			}

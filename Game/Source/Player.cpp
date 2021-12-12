@@ -43,6 +43,7 @@ bool Player::Awake(pugi::xml_node& config)
 	gameStartFxPath = audio.attribute("gameStart").as_string();
 	pickUpFruitFxPath = audio.attribute("fruit").as_string();
 	checkpointFxPath = audio.attribute("checkpoint").as_string();
+	pickUpHeartFxPath = audio.attribute("heart").as_string();
 
 
 	return ret;
@@ -66,6 +67,7 @@ bool Player::Start()
 	gameStartFx = app->audio->LoadFx(gameStartFxPath);
 	pickUpFruitFx = app->audio->LoadFx(pickUpFruitFxPath);
 	checkpointFx = app->audio->LoadFx(checkpointFxPath);
+	pickUpHeartFx = app->audio->LoadFx(pickUpHeartFxPath);
 
 	currentAnim = &idleRightAnim;
 
@@ -219,6 +221,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 
 	case(Collider::Type::ITEMHEALTH):
 		health++;
+		app->audio->PlayFx(pickUpHeartFx, 0);
 		b->pendingToDelete = true;
 		break;
 
