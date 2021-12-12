@@ -21,8 +21,19 @@ Prepare to get into a new world while you control Tani, an astronaut who is visi
  - Menu screens including logo, title and ending.
  - Player animations.
  - Player double jump.
+ - Flying enemies that can pathfind to the player.
+ - Walking enemies that can pathfind, jump and drop to the player.
  - Debug keys to visualize collisions and set god-mode for player.
- 
+ - All enemies have a detection range.
+ - FPS capped at 60.
+ - All movement AND animations use delta time.
+ - The player can destroy enemies by jumping onto them.
+ - Collectible hearts to recover lives.
+ - Collectible fruits to increase score.
+ - Simple UI to display lives, score and debug status.
+ - Checkpoints with autosave when passing them.
+ - Audio feedback for nearly all interactions.
+
 ## Controls
 
  - Walk left: A.
@@ -37,7 +48,7 @@ Prepare to get into a new world while you control Tani, an astronaut who is visi
  - F9: View colliders.
  - F10: God Mode.
  - God Mode movement: WASD.
-
+  - F11: Enable / Disable FPS cap to 30.
 ## Developers
 
  - Víctor Jara - Developer and Artist
