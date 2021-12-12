@@ -80,9 +80,14 @@ public:
 
 	bool gravityOn = false;
 
+	uint gameStartFx = 0;
+	const char* gameStartFxPath;
+
 	Collider* collider;
 
 	float jumpForce;
+
+	uint doubleJumpFx = 0;
 
 private:
 
@@ -102,17 +107,17 @@ private:
 
 	const char* texturePath;
 
-private:
 	uint jumpFx = 0;
-	uint doubleJumpFx = 0;
 	uint gameOverFx = 0;
+	uint pickUpFruitFx = 0;
+	uint checkpointFx = 0;
 
 	const char* jumpFxPath;
 	const char* doubleJumpFxPath;
 	const char* gameOverFxPath;
-public:
-	uint gameStartFx = 0;
-	const char* gameStartFxPath;
+	const char* pickUpFruitFxPath;
+	const char* checkpointFxPath;
+	
 };
 
 

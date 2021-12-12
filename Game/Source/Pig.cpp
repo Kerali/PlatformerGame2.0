@@ -297,7 +297,29 @@ void Pig::Collision(Collider* other)
 {
 	if (other == app->player->collider)
 	{
+		iPoint center = iPoint(collider->rect.x + (collider->rect.w / 2), collider->rect.y + (collider->rect.h / 2));
+		iPoint playerCenter = iPoint(other->rect.x + (other->rect.w / 2), other->rect.y + (other->rect.h / 2));
 
+		int xDiff = center.x - playerCenter.x;
+		int yDiff = center.y - playerCenter.y;
+
+		if (abs(yDiff) > abs(xDiff) && yDiff > 0 && app->player->verticalVelocity < 0.0f)
+		{
+			app->audio->PlayFx(app->player->doubleJumpFx, 0);
+			health--;
+			if (health > 0)
+			{
+				state = State::HIT;
+				hitLeftAnimation.Reset();
+				hitRightAnimation.Reset();
+			}
+			else if (health == 0)
+			{
+				collider->pendingToDelete = true;
+				state = State::DYING;
+			}
+			app->player->verticalVelocity = app->player->jumpForce;
+		}
 	}
 
 	if (other->type == Collider::Type::STATIC || other->type == Collider::Type::DEATH)
@@ -334,28 +356,6 @@ void Pig::Collision(Collider* other)
 			}
 		}
 		collider->SetPos((int)position.x, (int)position.y - 12);
-	}
-}
-
-int Pig::GetJumpFrameCount(int deltaY)
-{
-	if (deltaY <= 0)
-		return 0;
-	else
-	{
-		switch (deltaY)
-		{
-		case 1:
-			return 1;
-		case 2:
-			return 2;
-		case 3:
-			return 5;
-		case 4:
-			return 8;
-		default:
-			return 14;
-		}
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "Debug.h"
 #include "Log.h"
 #include "Collisions.h"
+#include "Audio.h"
 
 #include <math.h>
 
@@ -223,6 +224,7 @@ void Bat::Collision(Collider* other)
 
 		if (abs(yDiff) > abs(xDiff) && yDiff > 0 && app->player->verticalVelocity < 0.0f)
 		{
+			app->audio->PlayFx(app->player->doubleJumpFx, 0);
 			state = State::DYING;
 			collider->pendingToDelete = true;
 			app->player->verticalVelocity = app->player->jumpForce;

@@ -6,6 +6,7 @@
 #include "ModuleUI.h"
 #include "Player.h"
 #include "Scene.h"
+#include "Audio.h"
 
 #include <string.h>
 #include <stdio.h>

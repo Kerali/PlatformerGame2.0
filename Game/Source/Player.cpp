@@ -41,6 +41,9 @@ bool Player::Awake(pugi::xml_node& config)
 	doubleJumpFxPath = audio.attribute("doubleJump").as_string();
 	gameOverFxPath = audio.attribute("gameOver").as_string();
 	gameStartFxPath = audio.attribute("gameStart").as_string();
+	pickUpFruitFxPath = audio.attribute("fruit").as_string();
+	checkpointFxPath = audio.attribute("checkpoint").as_string();
+
 
 	return ret;
 }
@@ -61,6 +64,8 @@ bool Player::Start()
 	doubleJumpFx = app->audio->LoadFx(doubleJumpFxPath);
 	gameOverFx = app->audio->LoadFx(gameOverFxPath);
 	gameStartFx = app->audio->LoadFx(gameStartFxPath);
+	pickUpFruitFx = app->audio->LoadFx(pickUpFruitFxPath);
+	checkpointFx = app->audio->LoadFx(checkpointFxPath);
 
 	currentAnim = &idleRightAnim;
 
@@ -200,6 +205,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 
 	case(Collider::Type::ITEMSCORE):
 		app->ui->score += 1000;
+		app->audio->PlayFx(pickUpFruitFx, 0);
 		b->pendingToDelete = true;
 		break;
 
@@ -210,6 +216,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 
 	case(Collider::Type::CHECKPOINT):
 		app->player->initialPosition = app->player->position;
+		app->audio->PlayFx(checkpointFx, 0);
 		break;
 
 	case(Collider::Type::BAT):
