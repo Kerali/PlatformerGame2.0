@@ -12,6 +12,7 @@
 #include "ModuleUI.h"
 #include "Pathfinding.h"
 #include "Entities.h"
+#include "GuiManager.h"
 
 #include "Map.h"
 #include "Debug.h"
@@ -39,6 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	ui = new ModuleUI();
 	pathfinding = new PathFinding();
 	entities = new Entities();
+	guimanager = new GuiManager();
 
 	// Ordered for awake/Start/Update
 	// Reverse order of CleanUp
@@ -47,10 +49,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(ui);
 	AddModule(debug);
+	AddModule(guimanager);
 	AddModule(collisions);
 	AddModule(player);
-	AddModule(ui);
 	AddModule(pathfinding);
 	AddModule(entities);
 	AddModule(scene);
