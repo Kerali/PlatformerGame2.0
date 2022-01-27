@@ -34,6 +34,9 @@
   <ui>
     <ui fontPath="Assets/Textures/UI/white.png" livesTexturePath = "Assets/Textures/UI/lives.png" optionsMenu="Assets/Textures/Ui/options_menu.png" settingsMenu="Assets/Textures/Ui/settings_menu.png" menuArrow="Assets/Textures/Ui/settings_arrow.png"/>
   </ui>
+  <guimanager>
+    <guimanager checkbox="Assets/Textures/Ui/checkbox.png" menuArrow="Assets/Textures/Ui/settings_arrow.png" slider="Assets/Textures/Ui/slider.png" />
+  </guimanager>
    <entities>
    <batTexture>Assets/Textures/Enemies/Bat/bat.png</batTexture>
   	<pigTexture>Assets/Textures/Enemies/Pig/pig.png</pigTexture>

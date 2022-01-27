@@ -52,9 +52,11 @@ public:
 
 	const char* arrowMenuPath;
 	const char* checkBoxPath;
+	const char* sliderPath;
 
 	SDL_Texture* arrowMenuTex;
 	SDL_Texture* checkBoxTex;
+	SDL_Texture* sliderTex;
 };
 
 #endif // __GUIMANAGER_H__

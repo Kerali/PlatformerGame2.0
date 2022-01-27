@@ -97,31 +97,6 @@ bool Scene::Update(float dt)
 
 	if (gameplayState == PLAYING)
 	{
-		//botones para el options
-	/*	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		{
-			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 204, 69, 73, 35 }), 1);
-			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 197, 105, 87, 35 }), 2);
-			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 177, 141, 127, 35 }), 3);
-			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 212, 177, 56, 35 }), 4);
-		}*/
-
-		//borrar temporal
-		if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-		{
-			app->guimanager->DestroyGuiControl(app->guimanager->controls[0]);
-			app->guimanager->DestroyGuiControl(app->guimanager->controls[0]);
-			app->guimanager->DestroyGuiControl(app->guimanager->controls[0]);
-			app->guimanager->DestroyGuiControl(app->guimanager->controls[0]);
-		}
-
-		//botones para el settings
-		if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
-		{
-			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 275, 166, 20, 20 }), 1);
-			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 238, 189, 20, 20 }), 2);
-		}
-
 		if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		{
 			app->RequestLoad();
@@ -216,12 +191,13 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		{
 		case 1:
 			app->guimanager->DestroyAllGuiControls();
-			app->guimanager->DestroyAllGuiControls();
 			app->ui->uiToRender = 0;
 			break;
 
 		case 2:
 			app->guimanager->DestroyAllGuiControls();
+			app->guimanager->CreateGuiControl(GuiControlType::SLIDER, 0, 0, SDL_Rect({ 188, 93, 116, 23 }), 1);
+			app->guimanager->CreateGuiControl(GuiControlType::SLIDER, 0, 0, SDL_Rect({ 188, 141, 116, 23 }), 1);
 			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 275, 166, 20, 20 }), 1);
 			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 238, 189, 20, 20 }), 2);
 			app->ui->uiToRender = 2;

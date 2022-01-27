@@ -10,7 +10,7 @@ class GuiSlider : public GuiControl
 {
 public:
 
-    GuiSlider(uint32 id, SDL_Rect bounds, const char* text);
+    GuiSlider(uint32 id, SDL_Rect bounds, SDL_Texture* tex);
     virtual ~GuiSlider();
 
     bool Update(Input* input, float dt);
@@ -20,8 +20,9 @@ private:
 
     // GuiSlider specific properties
     // Maybe some animation properties for state change?
-    SDL_Rect slider;
+    int sliderPosx;
     int value;
+    int unit;
 
     int minValue;
     int maxValue;
