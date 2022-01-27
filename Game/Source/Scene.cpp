@@ -97,10 +97,29 @@ bool Scene::Update(float dt)
 
 	if (gameplayState == PLAYING)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
+		//botones para el options
+	/*	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
-			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 204,69,73,35 }), 1);
-			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 204,89,20,20 }), 1);
+			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 204, 69, 73, 35 }), 1);
+			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 197, 105, 87, 35 }), 2);
+			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 177, 141, 127, 35 }), 3);
+			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 212, 177, 56, 35 }), 4);
+		}*/
+
+		//borrar temporal
+		if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		{
+			app->guimanager->DestroyGuiControl(app->guimanager->controls[0]);
+			app->guimanager->DestroyGuiControl(app->guimanager->controls[0]);
+			app->guimanager->DestroyGuiControl(app->guimanager->controls[0]);
+			app->guimanager->DestroyGuiControl(app->guimanager->controls[0]);
+		}
+
+		//botones para el settings
+		if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+		{
+			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 275, 166, 20, 20 }), 1);
+			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 238, 189, 20, 20 }), 2);
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
@@ -190,6 +209,65 @@ void Scene::FadeToNewState(GameplayState newState)
 
 bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
+	switch (control->type)
+	{
+	case GuiControlType::BUTTON:
+		switch (control->id)
+		{
+		case 1:
+			app->guimanager->DestroyAllGuiControls();
+			app->guimanager->DestroyAllGuiControls();
+			app->ui->uiToRender = 0;
+			break;
+
+		case 2:
+			app->guimanager->DestroyAllGuiControls();
+			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 275, 166, 20, 20 }), 1);
+			app->guimanager->CreateGuiControl(GuiControlType::CHECKBOX, 0, 0, SDL_Rect({ 238, 189, 20, 20 }), 2);
+			app->ui->uiToRender = 2;
+			break;
+
+		case 3:
+			//lo q se tenga q hacer antes de cambiar
+			//gameplayState = TITLE_SCREEN;
+			break;
+
+		case 4:
+			exit = true;
+			break;
+
+		default:
+			break;
+		}
+		break;
+
+	case GuiControlType::CHECKBOX:
+		switch (control->id)
+		{
+		case 1:
+			//music
+			break;
+
+		case 2:
+			//fx
+			break;
+
+		case 3:
+			//do fullscreen
+			break;
+
+		case 4:
+			app->render->vSync = !app->render->vSync;
+			break;
+
+		default:
+			break;
+		}
+		break;
+
+	default: 
+		break;
+	}
 	return true;
 }
 
@@ -238,8 +316,8 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	/*if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;*/
+	if (exit)
+		ret = false;
 
 	SDL_Rect rect = screenDisplayAnim->GetCurrentFrame();
 

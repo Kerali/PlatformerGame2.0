@@ -17,6 +17,7 @@ public:
 	{
 		TITLE_SCREEN,
 		PLAYING,
+		PAUSE,
 		GAME_OVER_SCREEN,
 		LOGO_SCREEN
 	};
@@ -76,6 +77,8 @@ private:
 
 	const char* musicPath;
 	const char* screenTexturePath;
+
+	bool exit = false;
 };
 
 #endif // __SCENE_H__

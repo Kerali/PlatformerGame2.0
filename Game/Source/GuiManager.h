@@ -34,6 +34,8 @@ public:
 	GuiControl* CreateGuiControl(GuiControlType type, int x, int y, SDL_Rect bounds, int id);
 	void DestroyGuiControl(GuiControl* entity);
 
+	void DestroyAllGuiControls();
+
 	void AddGuiControl(GuiControl* entity);
 
 	void UpdateAll(float dt, bool doLogic);

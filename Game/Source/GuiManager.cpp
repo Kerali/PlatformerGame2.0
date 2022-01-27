@@ -98,6 +98,16 @@ void GuiManager::DestroyGuiControl(GuiControl* entity)
 	controls.del(c);
 }
 
+void GuiManager::DestroyAllGuiControls()
+{
+	int u = controls.count();
+
+	for (int i = 0; i < u; i++)
+	{
+		controls.del(controls.At(0));
+	}
+}
+
 void GuiManager::AddGuiControl(GuiControl* entity)
 {
 	if (entity != nullptr) controls.add(entity);

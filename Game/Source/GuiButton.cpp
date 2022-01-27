@@ -42,7 +42,7 @@ bool GuiButton::Update(Input* input, float dt)
 
 bool GuiButton::Draw(Render* render)
 {
-    int yOffset = 3;
+    int yOffset = 4;
 
     // Draw the right button depending on state
     switch (state)
