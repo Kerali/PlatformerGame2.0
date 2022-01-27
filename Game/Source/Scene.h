@@ -7,7 +7,7 @@
 struct SDL_Texture;
 struct Animation;
 
-
+class GuiControl;
 
 class Scene : public Module
 {
@@ -51,6 +51,8 @@ public:
 
 	void ChangeGameplayState(GameplayState newState);
 	void FadeToNewState(GameplayState newState);
+
+	virtual bool OnGuiMouseClickEvent(GuiControl* control);
 
 public:
 	SString currentLevel;

@@ -180,6 +180,11 @@ void Scene::FadeToNewState(GameplayState newState)
 	fading = true;
 }
 
+bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+{
+	return true;
+}
+
 void Scene::ChangeGameplayState(GameplayState newState)
 {
 	if (gameplayState == newState) return;
