@@ -73,8 +73,8 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int x, int y, SDL_
 		control->SetObserver(app->scene);
 		break;
 	case GuiControlType::CHECKBOX:
-		/*control = new GuiCheckBox(id, bounds, "EXIT");
-			control->SetObserver(app->scene);*/
+		control = new GuiCheckBox(id, bounds, checkBoxTex);
+		control->SetObserver(app->scene);
 		break;
 	case GuiControlType::SLIDER:
 		/*control = new GuiSlider(id, bounds, "EXIT");

@@ -64,8 +64,6 @@ bool GuiButton::Draw(Render* render)
         break;
 
     case GuiControlState::SELECTED:
-        render->DrawTexture(texture, bounds.x, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 9,0,9,7 }), 0, 0, 0, 0, false);
-        render->DrawTexture(texture, bounds.x + bounds.w - 9, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 27,0,9,7 }), 0, 0, 0, 0, false);
         break;
 
     default:

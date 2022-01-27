@@ -1,9 +1,9 @@
 #include "GuiCheckBox.h"
 
-GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::CHECKBOX, id)
+GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::CHECKBOX, id)
 {
     this->bounds = bounds;
-    this->text = text;
+    this->texture = tex;
 }
 
 GuiCheckBox::~GuiCheckBox()
@@ -50,16 +50,25 @@ bool GuiCheckBox::Draw(Render* render)
         if (checked) render->DrawRectangle(bounds, 100, 100, 100, 255);
         else render->DrawRectangle(bounds, 100, 100, 100, 255);
         break;
+
     case GuiControlState::NORMAL:
-        if (checked) render->DrawRectangle(bounds, 0, 255, 0, 255);
-        else render->DrawRectangle(bounds, 0, 255, 0, 255);
+        if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0,0,20,20 }), 0, 0, 0, 0, false);
+        else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 60,0,20,20 }), 0, 0, 0, 0, false);
         break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 0, 255);
+
+    case GuiControlState::FOCUSED:
+        if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 20,0,20,20 }), 0, 0, 0, 0, false);
+        else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 80,0,20,20 }), 0, 0, 0, 0, false);
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, 0, 255, 255, 255);
+
+    case GuiControlState::PRESSED:
+        if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 40,0,20,20 }), 0, 0, 0, 0, false);
+        else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 100,0,20,20 }), 0, 0, 0, 0, false);
         break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255);
+
+    case GuiControlState::SELECTED:
         break;
+
     default:
         break;
     }
