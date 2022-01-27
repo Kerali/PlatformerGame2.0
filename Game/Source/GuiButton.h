@@ -6,11 +6,13 @@
 #include "Point.h"
 #include "SString.h"
 
+struct SDL_Texture;
+
 class GuiButton : public GuiControl
 {
 public:
 
-    GuiButton(uint32 id, SDL_Rect bounds, const char* text);
+    GuiButton(uint32 id, SDL_Rect bounds, SDL_Texture* tex);
     virtual ~GuiButton();
 
     bool Update(Input* input, float dt);

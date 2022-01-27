@@ -99,7 +99,7 @@ bool Scene::Update(float dt)
 	{
 		if (app->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
 		{
-			app->guimanager->CreateGuiControl(GuiControlType::BUTTON);
+			app->guimanager->CreateGuiControl(GuiControlType::BUTTON, 0, 0, SDL_Rect({ 204,69,73,35 }), 1);
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)

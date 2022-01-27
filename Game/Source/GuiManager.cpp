@@ -4,6 +4,7 @@
 #include "GuiButton.h"
 #include "GuiCheckBox.h"
 #include "GuiSlider.h"
+#include "Textures.h"
 
 GuiManager::GuiManager() : Module()
 {
@@ -16,11 +17,19 @@ GuiManager::~GuiManager()
 
 bool GuiManager::Awake(pugi::xml_node& config)
 {
+	pugi::xml_node guimanagerPathN = config.child("guimanager");
+
+	checkBoxPath = guimanagerPathN.attribute("checkbox").as_string();
+	arrowMenuPath = guimanagerPathN.attribute("menuArrow").as_string();
+
 	return true;
 }
 
 bool GuiManager::Start()
 {
+	checkBoxTex = app->tex->Load(checkBoxPath);
+	arrowMenuTex = app->tex->Load(arrowMenuPath);
+
 	return true;
 }
 
@@ -53,20 +62,23 @@ bool GuiManager::CleanUp()
 	return true;
 }
 
-GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
+GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int x, int y, SDL_Rect bounds, int id)
 {
 	GuiControl* control = nullptr;
 
 	switch (type)
 	{
 	case GuiControlType::BUTTON:
-		control = new GuiButton(id, { 0, 0, 20, 20 }, "EXIT");
+		control = new GuiButton(id, bounds, arrowMenuTex);
+		control->SetObserver(app->scene);
 		break;
 	case GuiControlType::CHECKBOX:
-		control = new GuiCheckBox(id, { 1280 / 2 - 300 / 2, 200, 20, 20 }, "EXIT");
+		/*control = new GuiCheckBox(id, bounds, "EXIT");
+			control->SetObserver(app->scene);*/
 		break;
 	case GuiControlType::SLIDER:
-		control = new GuiSlider(id, { 1280 / 2 - 300 / 2, 200, 20, 20 }, "EXIT");
+		/*control = new GuiSlider(id, bounds, "EXIT");
+			control->SetObserver(app->scene);*/
 		break;
 
 	default: break;

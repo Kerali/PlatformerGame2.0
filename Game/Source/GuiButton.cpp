@@ -1,9 +1,9 @@
 #include "GuiButton.h"
 
-GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+GuiButton::GuiButton(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::BUTTON, id)
 {
     this->bounds = bounds;
-    this->text = text;
+    this->texture = tex;
 }
 
 GuiButton::~GuiButton()
@@ -42,19 +42,32 @@ bool GuiButton::Update(Input* input, float dt)
 
 bool GuiButton::Draw(Render* render)
 {
+    int yOffset = 3;
+
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED: render->DrawRectangle(bounds, 255, 255, 0, 255, true, false);
+    case GuiControlState::DISABLED:
         break;
-    case GuiControlState::NORMAL: render->DrawRectangle(bounds, 255, 255, 0, 255, true, false);
+
+    case GuiControlState::NORMAL:
         break;
-    case GuiControlState::FOCUSED: render->DrawRectangle(bounds, 255, 255, 0, 255, true, false);
+
+    case GuiControlState::FOCUSED:
+        render->DrawTexture(texture, bounds.x, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 0,0,9,7 }), 0, 0, 0, 0, false);
+        render->DrawTexture(texture, bounds.x + bounds.w - 9, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 18,0,9,7 }), 0, 0, 0, 0, false);
         break;
-    case GuiControlState::PRESSED: render->DrawRectangle(bounds, 0, 255, 255, 255, true, false);
+
+    case GuiControlState::PRESSED:
+        render->DrawTexture(texture, bounds.x, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 9,0,9,7 }), 0, 0, 0, 0, false);
+        render->DrawTexture(texture, bounds.x + bounds.w - 9, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 27,0,9,7 }), 0, 0, 0, 0, false);
         break;
-    case GuiControlState::SELECTED: render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+
+    case GuiControlState::SELECTED:
+        render->DrawTexture(texture, bounds.x, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 9,0,9,7 }), 0, 0, 0, 0, false);
+        render->DrawTexture(texture, bounds.x + bounds.w - 9, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 27,0,9,7 }), 0, 0, 0, 0, false);
         break;
+
     default:
         break;
     }
