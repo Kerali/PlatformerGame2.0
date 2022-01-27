@@ -32,7 +32,7 @@
     <texture screen="Assets/Textures/Screens/screens_finished.png"/>
   </scene>
   <ui>
-    <ui fontPath="Assets/Textures/UI/white.png" livesTexturePath = "Assets/Textures/UI/lives.png"/>
+    <ui fontPath="Assets/Textures/UI/white.png" livesTexturePath = "Assets/Textures/UI/lives.png" optionsMenu="Assets/Textures/Ui/options_menu.png" settingsMenu="Assets/Textures/Ui/settings_menu.png" menuArrow="Assets/Textures/Ui/settings_arrow.png"/>
   </ui>
    <entities>
    <batTexture>Assets/Textures/Enemies/Bat/bat.png</batTexture>

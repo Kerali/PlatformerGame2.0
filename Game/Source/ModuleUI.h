@@ -45,9 +45,16 @@ public:
 	int lifes;
 	int currentLevel;
 
+	int uiToRender;
+
 	int font = -1;
 
 	const char* fontPath;
+
+	const char* optionsMenuPath;
+	const char* settingsMenuPath;
+
+	const char* menuArrowPath;
 
 	const char* livesTexturePath;
 
@@ -63,6 +70,10 @@ public:
 	SDL_Texture* livesTexture = nullptr;
 	SDL_Rect livesRect;
 	SDL_Rect extraLivesRect;
+
+	SDL_Texture* optionsMenuTex = nullptr;
+	SDL_Texture* settingsMenuTex = nullptr;
+	SDL_Texture* menuArrowTex = nullptr;
 
 	// Loads a font file from a texture
 	// Returns a font index from the fonts array

@@ -7,6 +7,8 @@
 #include "Scene.h"
 #include "Map.h"
 #include "Player.h"
+#include "Audio.h"
+#include "ModuleUI.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -197,6 +199,7 @@ void Scene::ChangeGameplayState(GameplayState newState)
 			app->map->CleanUp();
 			app->render->camera.x = 0;
 			app->render->camera.y = 0;
+			app->ui->uiToRender = 0;
 			break;
 		case GAME_OVER_SCREEN:
 			screenDisplayAnim = &gameOverAnim;
@@ -204,6 +207,7 @@ void Scene::ChangeGameplayState(GameplayState newState)
 			app->map->CleanUp();
 			app->render->camera.x = 0;
 			app->render->camera.y = 0;
+			app->ui->uiToRender = 0;
 			break;
 	}
 }
@@ -221,8 +225,8 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	/*if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		ret = false;*/
 
 	SDL_Rect rect = screenDisplayAnim->GetCurrentFrame();
 

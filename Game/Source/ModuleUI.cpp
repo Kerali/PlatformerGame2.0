@@ -6,6 +6,8 @@
 #include "ModuleUI.h"
 #include "Player.h"
 #include "Scene.h"
+#include "Input.h"
+#include "Collisions.h"
 #include "Audio.h"
 
 #include <string.h>
@@ -31,6 +33,11 @@ bool ModuleUI::Awake(pugi::xml_node& config)
 
 	livesTexturePath = uiPathN.attribute("livesTexturePath").as_string();
 
+	optionsMenuPath = uiPathN.attribute("optionsMenu").as_string();
+	settingsMenuPath = uiPathN.attribute("settingsMenu").as_string();
+
+	menuArrowPath = uiPathN.attribute("menuArrow").as_string();
+
 	score = 0;
 
 	currentLevel = 1;
@@ -48,6 +55,11 @@ bool ModuleUI::Start()
 
 	box = SDL_Rect({ 0, 0, app->render->camera.w, 30 });
 
+	optionsMenuTex = app->tex->Load(optionsMenuPath);
+	settingsMenuTex = app->tex->Load(settingsMenuPath);
+
+	menuArrowTex = app->tex->Load(menuArrowPath);
+
 	livesTexture = app->tex->Load(livesTexturePath);
 	livesRect = SDL_Rect({ 0,0,12,10 });
 	extraLivesRect = SDL_Rect({ 12,0,12,10 });
@@ -58,6 +70,22 @@ bool ModuleUI::Start()
 // Update: draw background
 bool ModuleUI::Update(float dt)
 {
+	switch (uiToRender)
+	{
+	case 1:
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && app->scene->gameplayState == Scene::GameplayState::PLAYING) uiToRender = 0;
+		//GUI buttons for options menu
+		break;
+	case 2:
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && app->scene->gameplayState == Scene::GameplayState::PLAYING) uiToRender = 1;
+		//GUI buttons for settings menu
+		break;
+
+	default:
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && app->scene->gameplayState == Scene::GameplayState::PLAYING) uiToRender = 1;
+		break;
+	}
+
 	return true;
 }
 
@@ -114,6 +142,20 @@ bool ModuleUI::PostUpdate()
 	BlitText(uiposx + 320, 5, font, "SCORE", false);
 	IntToDynamicString(scoreText, score);
 	BlitText(uiposx + 375, 5, font, scoreText, false);
+
+	switch (uiToRender)
+	{
+	case 1:
+		app->render->DrawTexture(optionsMenuTex, 0, 0, NULL, 0, 0, 0, 0, false);
+		break;
+
+	case 2:
+		app->render->DrawTexture(settingsMenuTex, 0, 0, NULL, 0, 0, 0, 0, false);
+		break;
+
+	default:
+		break;
+	}
 
 	return true;
 }
