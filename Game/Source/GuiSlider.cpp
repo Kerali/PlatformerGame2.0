@@ -1,4 +1,6 @@
 #include "GuiSlider.h"
+#include "App.h"
+#include "Scene.h"
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::SLIDER, id)
 {
@@ -56,32 +58,34 @@ bool GuiSlider::Update(Input* input, float dt)
 bool GuiSlider::Draw(Render* render)
 {
     // Draw the right button depending on state
-    switch (state)
+    if (app->scene->fading == false)
     {
-    case GuiControlState::DISABLED:
-        break;
+        switch (state)
+        {
+        case GuiControlState::DISABLED:
+            break;
 
-    case GuiControlState::NORMAL:
-        render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0, 0, 116, 23 }), 0, 0, 0, 0, false);
-        render->DrawTexture(texture, sliderPosx, bounds.y, &SDL_Rect({ 116, 0, 16, 23 }), 0, 0, 0, 0, false);
-        break;
+        case GuiControlState::NORMAL:
+            render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0, 0, 116, 23 }), 0, 0, 0, 0, false);
+            render->DrawTexture(texture, sliderPosx, bounds.y, &SDL_Rect({ 116, 0, 16, 23 }), 0, 0, 0, 0, false);
+            break;
 
-    case GuiControlState::FOCUSED:
-        render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0, 23, 116, 23 }), 0, 0, 0, 0, false);
-        render->DrawTexture(texture, sliderPosx, bounds.y, &SDL_Rect({ 116, 0, 16, 23 }), 0, 0, 0, 0, false);
-        break;
+        case GuiControlState::FOCUSED:
+            render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0, 23, 116, 23 }), 0, 0, 0, 0, false);
+            render->DrawTexture(texture, sliderPosx, bounds.y, &SDL_Rect({ 116, 0, 16, 23 }), 0, 0, 0, 0, false);
+            break;
 
-    case GuiControlState::PRESSED:
-        render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0, 23, 116, 23 }), 0, 0, 0, 0, false);
-        render->DrawTexture(texture, sliderPosx, bounds.y, &SDL_Rect({ 116, 23 , 16, 23 }), 0, 0, 0, 0, false);
-        break;
+        case GuiControlState::PRESSED:
+            render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0, 23, 116, 23 }), 0, 0, 0, 0, false);
+            render->DrawTexture(texture, sliderPosx, bounds.y, &SDL_Rect({ 116, 23 , 16, 23 }), 0, 0, 0, 0, false);
+            break;
 
-    case GuiControlState::SELECTED:
-        break;
+        case GuiControlState::SELECTED:
+            break;
 
-    default:
-        break;
-    }
-
+        default:
+            break;
+        }
+    } 
     return false;
 }

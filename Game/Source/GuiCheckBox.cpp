@@ -1,4 +1,6 @@
 #include "GuiCheckBox.h"
+#include "App.h"
+#include "Scene.h"
 
 GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::CHECKBOX, id)
 {
@@ -44,34 +46,34 @@ bool GuiCheckBox::Update(Input* input, float dt)
 bool GuiCheckBox::Draw(Render* render)
 {
     // Draw the right button depending on state
-    switch (state)
+    if (app->scene->fading == false)
     {
-    case GuiControlState::DISABLED:
-        if (checked) render->DrawRectangle(bounds, 100, 100, 100, 255);
-        else render->DrawRectangle(bounds, 100, 100, 100, 255);
-        break;
+        switch (state)
+        {
+        case GuiControlState::DISABLED:
+            break;
 
-    case GuiControlState::NORMAL:
-        if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0,0,20,20 }), 0, 0, 0, 0, false);
-        else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 60,0,20,20 }), 0, 0, 0, 0, false);
-        break;
+        case GuiControlState::NORMAL:
+            if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0,0,20,20 }), 0, 0, 0, 0, false);
+            else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 60,0,20,20 }), 0, 0, 0, 0, false);
+            break;
 
-    case GuiControlState::FOCUSED:
-        if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 20,0,20,20 }), 0, 0, 0, 0, false);
-        else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 80,0,20,20 }), 0, 0, 0, 0, false);
-        break;
+        case GuiControlState::FOCUSED:
+            if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 20,0,20,20 }), 0, 0, 0, 0, false);
+            else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 80,0,20,20 }), 0, 0, 0, 0, false);
+            break;
 
-    case GuiControlState::PRESSED:
-        if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 40,0,20,20 }), 0, 0, 0, 0, false);
-        else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 100,0,20,20 }), 0, 0, 0, 0, false);
-        break;
+        case GuiControlState::PRESSED:
+            if (!checked) render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 40,0,20,20 }), 0, 0, 0, 0, false);
+            else render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 100,0,20,20 }), 0, 0, 0, 0, false);
+            break;
 
-    case GuiControlState::SELECTED:
-        break;
+        case GuiControlState::SELECTED:
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
-
     return false;
 }
