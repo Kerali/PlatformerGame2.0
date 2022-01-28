@@ -1,6 +1,8 @@
 #include "GuiSlider.h"
 #include "App.h"
 #include "Scene.h"
+#include "GuiManager.h"
+#include "Audio.h"
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::SLIDER, id)
 {
@@ -71,6 +73,14 @@ bool GuiSlider::Draw(Render* render)
             break;
 
         case GuiControlState::FOCUSED:
+            if (app->guimanager->lastId != id) playFxOnce = true;
+
+            if (playFxOnce)
+            {
+                app->audio->PlayFx(app->guimanager->hoverButtonFx, 0);
+                playFxOnce = false;
+                app->guimanager->lastId = id;
+            }
             render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0, 23, 116, 23 }), 0, 0, 0, 0, false);
             render->DrawTexture(texture, sliderPosx, bounds.y, &SDL_Rect({ 116, 0, 16, 23 }), 0, 0, 0, 0, false);
             break;

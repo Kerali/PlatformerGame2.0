@@ -18,6 +18,8 @@ public:
     bool Update(Input* input, float dt);
     bool Draw(Render* render);
 
+    bool playFxOnce = true;
+
 private:
 
     // Gui Button specific properties

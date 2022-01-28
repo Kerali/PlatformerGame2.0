@@ -57,6 +57,16 @@ public:
 	SDL_Texture* arrowMenuTex;
 	SDL_Texture* checkBoxTex;
 	SDL_Texture* sliderTex;
+
+	const char* hoverButtonFxPath;
+	const char* pressButtonFxPath;
+	const char* checkboxFxPath;
+
+	uint hoverButtonFx = 0;
+	uint pressButtonFx = 0;
+	uint checkboxFx;
+
+	int lastId = 0;
 };
 
 #endif // __GUIMANAGER_H__

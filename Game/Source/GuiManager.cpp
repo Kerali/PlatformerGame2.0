@@ -5,6 +5,7 @@
 #include "GuiCheckBox.h"
 #include "GuiSlider.h"
 #include "Textures.h"
+#include "Audio.h"
 
 GuiManager::GuiManager() : Module()
 {
@@ -23,6 +24,12 @@ bool GuiManager::Awake(pugi::xml_node& config)
 	arrowMenuPath = guimanagerPathN.attribute("menuArrow").as_string();
 	sliderPath = guimanagerPathN.attribute("slider").as_string();
 
+	pugi::xml_node audio = config.child("audio");
+
+	pressButtonFxPath = audio.attribute("pressButton").as_string();
+	hoverButtonFxPath = audio.attribute("hoverButton").as_string();
+	checkboxFxPath = audio.attribute("checkboxButton").as_string();
+
 	return true;
 }
 
@@ -31,6 +38,10 @@ bool GuiManager::Start()
 	checkBoxTex = app->tex->Load(checkBoxPath);
 	arrowMenuTex = app->tex->Load(arrowMenuPath);
 	sliderTex = app->tex->Load(sliderPath);
+
+	hoverButtonFx = app->audio->LoadFx(hoverButtonFxPath);
+	pressButtonFx = app->audio->LoadFx(pressButtonFxPath);
+	checkboxFx = app->audio->LoadFx(checkboxFxPath);
 	
 
 	return true;
