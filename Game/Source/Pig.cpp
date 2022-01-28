@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "Collisions.h"
 #include "Audio.h"
+#include "Entities.h"
 
 #include <math.h>
 
@@ -149,8 +150,8 @@ bool Pig::Update(float dt)
 void Pig::UpdatePathfinding(float dt)
 {
 	iPoint playerPos;
-	playerPos.x = (app->player->collider->rect.x) / app->map->data.tileWidth;
-	playerPos.y = (app->player->collider->rect.y) / app->map->data.tileHeight;
+	playerPos.x = (app->entities->GetPlayer()->collider->rect.x) / app->map->data.tileWidth;
+	playerPos.y = (app->entities->GetPlayer()->collider->rect.y) / app->map->data.tileHeight;
 
 	iPoint gridPos;
 	gridPos.x = position.x / app->map->data.tileWidth;
@@ -163,7 +164,7 @@ void Pig::UpdatePathfinding(float dt)
 
 	int finalSpeed = (health > 2) ? speed : (int)((float)speed * 1.5f);
 
-	if ((changedPosition || groundPos != lastPlayerPosition) && playerPos.DistanceTo(gridPos) <= 12 && state != State::DYING && !app->player->godMode && !jumping)
+	if ((changedPosition || groundPos != lastPlayerPosition) && playerPos.DistanceTo(gridPos) <= 12 && state != State::DYING && !app->entities->GetPlayer()->godMode && !jumping)
 	{
 		lastPlayerPosition = groundPos;
 
@@ -294,9 +295,9 @@ bool Pig::Draw()
 	return true;
 }
 
-void Pig::Collision(Collider* other)
+void Pig::Collision(Collider* other, float dt)
 {
-	if (other == app->player->collider)
+	if (other == app->entities->GetPlayer()->collider)
 	{
 		iPoint center = iPoint(collider->rect.x + (collider->rect.w / 2), collider->rect.y + (collider->rect.h / 2));
 		iPoint playerCenter = iPoint(other->rect.x + (other->rect.w / 2), other->rect.y + (other->rect.h / 2));
@@ -304,9 +305,9 @@ void Pig::Collision(Collider* other)
 		int xDiff = center.x - playerCenter.x;
 		int yDiff = center.y - playerCenter.y;
 
-		if (abs(yDiff) > abs(xDiff) && yDiff > 0 && app->player->verticalVelocity < 0.0f)
+		if (abs(yDiff) > abs(xDiff) && yDiff > 0 && app->entities->GetPlayer()->verticalVelocity < 0.0f)
 		{
-			app->audio->PlayFx(app->player->doubleJumpFx, 0);
+			app->audio->PlayFx(app->entities->GetPlayer()->doubleJumpFx, 0);
 			health--;
 			if (health > 0)
 			{
@@ -317,11 +318,11 @@ void Pig::Collision(Collider* other)
 			else if (health == 0)
 			{
 				app->ui->score += 10000;
-				app->audio->PlayFx(app->player->doubleJumpFx, 0);
+				app->audio->PlayFx(app->entities->GetPlayer()->doubleJumpFx, 0);
 				collider->pendingToDelete = true;
 				state = State::DYING;
 			}
-			app->player->verticalVelocity = app->player->jumpForce;
+			app->entities->GetPlayer()->verticalVelocity = app->entities->GetPlayer()->jumpForce;
 		}
 	}
 

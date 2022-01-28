@@ -33,6 +33,10 @@ bool Entities::Awake(pugi::xml_node& config)
 	fruitTexturePath = config.child("fruitTexture").child_value();
 	heartTexturePath = config.child("heartTexture").child_value();
 
+	playerConfig = config.child("player");
+	placeholderPlayer = new Player((Module*)this, fPoint(-1000.0f, -1000.0f), Entity::Type::PLAYER);
+	placeholderPlayer->Awake(playerConfig);
+
 	return true;
 }
 
@@ -113,6 +117,8 @@ bool Entities::Start()
 
 	srand(time(NULL));
 
+	placeholderPlayer->Start();
+
 	return true;
 }
 
@@ -158,7 +164,8 @@ bool Entities::CleanUp()
 	{
 		ListItem<Entity*>* e = entityList.At(i);
 
-		delete e->data;
+		if (e->data->type != Entity::Type::PLAYER)
+			delete e->data;
 	}
 
 	entityList.clear();
@@ -190,6 +197,11 @@ void Entities::AddEntity(fPoint position, Entity::Type type)
 		e = (Entity*)(new Pig((Module*)this, position, pigTexture, type, enemySpeed, pigHealth, enemyGravity, enemyJumpForce));
 		entityList.add(e);
 		break;
+	case Entity::Type::PLAYER:
+		placeholderPlayer->position = position;
+		e = (Entity*)(placeholderPlayer);
+		entityList.add(e);
+		break;
 	}
 }
 
@@ -201,12 +213,7 @@ void Entities::OnCollision(Collider* a, Collider* b, float dt)
 
 		if (e->data->collider == a && b != nullptr)
 		{
-			e->data->Collision(b);
-		}
-
-		if (e->data->collider == b && a != nullptr)
-		{
-			e->data->Collision(a);
+			e->data->Collision(b, dt);
 		}
 	}
 }
@@ -219,4 +226,19 @@ void Entities::ResetEntities()
 
 		e->data->Reset();
 	}
+}
+
+Player* Entities::GetPlayer()
+{
+	for (int i = 0; i < entityList.count(); i++)
+	{
+		ListItem<Entity*>* e = entityList.At(i);
+
+		if (e->data->type == Entity::Type::PLAYER)
+		{
+			return (Player*)(e->data);
+		}
+	}
+
+	return placeholderPlayer;
 }

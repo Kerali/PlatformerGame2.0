@@ -1,6 +1,7 @@
 #include "Heart.h"
 #include "Render.h"
 #include "Player.h"
+#include "Entities.h"
 
 Heart::Heart(Module* parent, fPoint position, SDL_Texture* texture, Type type) : Entity(parent, position, texture, type)
 {
@@ -52,9 +53,9 @@ bool Heart::Draw()
 	return true;
 }
 
-void Heart::Collision(Collider* other)
+void Heart::Collision(Collider* other, float dt)
 {
-	if (other == app->player->collider)
+	if (other == app->entities->GetPlayer()->collider)
 	{
 		state = State::DISAPPEAR;
 		collider->pendingToDelete = true;

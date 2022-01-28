@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "Collisions.h"
 #include "Audio.h"
+#include "Entities.h"
 
 #include <math.h>
 
@@ -59,14 +60,14 @@ bool Bat::Update(float dt)
 	currentAnimation->Update(dt);
 
 	iPoint playerPos;
-	playerPos.x = app->player->position.x / app->map->data.tileWidth;
-	playerPos.y = app->player->position.y / app->map->data.tileHeight;
+	playerPos.x = app->entities->GetPlayer()->position.x / app->map->data.tileWidth;
+	playerPos.y = app->entities->GetPlayer()->position.y / app->map->data.tileHeight;
 
 	iPoint gridPos;
 	gridPos.x = position.x / app->map->data.tileWidth;
 	gridPos.y = position.y / app->map->data.tileHeight;
 
-	if (playerPos != lastPlayerPosition && playerPos.DistanceTo(gridPos) <= 12 && state != State::DYING)
+	if (playerPos != lastPlayerPosition && playerPos.DistanceTo(gridPos) <= 12 && state != State::DYING && !app->entities->GetPlayer()->godMode)
 	{
 		lastPlayerPosition = playerPos;
 
@@ -113,6 +114,8 @@ bool Bat::Update(float dt)
 	case State::FLYING:
 
 		//currentAnimation = &flyingLeftAnimation;
+		if (app->entities->GetPlayer()->godMode)
+			break;
 
 		if (pathIndex >= path.Count())
 			break;
@@ -213,9 +216,9 @@ bool Bat::Draw()
 	return true;
 }
 
-void Bat::Collision(Collider* other)
+void Bat::Collision(Collider* other, float dt)
 {
-	if (other == app->player->collider)
+	if (other == app->entities->GetPlayer()->collider)
 	{
 		iPoint center = iPoint(collider->rect.x + (collider->rect.w / 2), collider->rect.y + (collider->rect.h / 2));
 		iPoint playerCenter = iPoint(other->rect.x + (other->rect.w / 2), other->rect.y + (other->rect.h / 2));
@@ -223,13 +226,13 @@ void Bat::Collision(Collider* other)
 		int xDiff = center.x - playerCenter.x;
 		int yDiff = center.y - playerCenter.y;
 
-		if (abs(yDiff) > abs(xDiff) && yDiff > 0 && app->player->verticalVelocity < 0.0f)
+		if (abs(yDiff) > abs(xDiff) && yDiff > 0 && app->entities->GetPlayer()->verticalVelocity < 0.0f)
 		{
 			app->ui->score += 5000;
-			app->audio->PlayFx(app->player->doubleJumpFx, 0);
+			app->audio->PlayFx(app->entities->GetPlayer()->doubleJumpFx, 0);
 			state = State::DYING;
 			collider->pendingToDelete = true;
-			app->player->verticalVelocity = app->player->jumpForce;
+			app->entities->GetPlayer()->verticalVelocity = app->entities->GetPlayer()->jumpForce;
 		}
 	}
 }

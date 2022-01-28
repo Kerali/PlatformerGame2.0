@@ -16,9 +16,9 @@
 #include "../Log.h"
 #include <math.h>
 
-Player::Player()
+Player::Player(Module* parent, fPoint position, Type type) : Entity(parent, position, texture, type)
 {
-	name.create("player");
+
 }
 
 bool Player::Awake(pugi::xml_node& config)
@@ -62,7 +62,7 @@ bool Player::Start()
 
 	texture = app->tex->Load(texturePath);
 
-	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x, (int)position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
+	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x + 3, (int)position.y + 10, 16, 16 }), Collider::Type::DYNAMIC, parent);
 
 	jumpFx = app->audio->LoadFx(jumpFxPath);
 	doubleJumpFx = app->audio->LoadFx(doubleJumpFxPath);
@@ -139,7 +139,7 @@ bool Player::Update(float dt)
 	return true;
 }
 
-bool Player::PostUpdate()
+bool Player::Draw()
 {
 	SDL_Rect rect = currentAnim->GetCurrentFrame();
 
@@ -188,16 +188,9 @@ bool Player::Save(pugi::xml_node& savedGame)
 	return true;
 }
 
-void Player::OnCollision(Collider* a, Collider* b, float dt)
+void Player::Collision(Collider* b, float dt)
 {
 	if (godMode) return;
-
-	if (b == collider)
-	{
-		Collider* c = a;
-		a = b;
-		b = c;
-	}
 
 	iPoint center;
 	iPoint batCenter;
@@ -229,7 +222,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 		break;
 
 	case(Collider::Type::CHECKPOINT):
-		app->player->initialPosition = app->player->position;
+		app->entities->GetPlayer()->initialPosition = app->entities->GetPlayer()->position;
 		app->audio->PlayFx(checkpointFx, 0);
 		break;
 
@@ -270,17 +263,17 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 
 	if (b->type != Collider::Type::ENDLEVEL && b->type != Collider::Type::BAT && b->type != Collider::Type::PIG && b->type != Collider::Type::ITEMHEALTH && b->type != Collider::Type::ITEMSCORE && b->type != Collider::Type::CHECKPOINT)
 	{
-		int deltaX = a->rect.x - b->rect.x;
-		int deltaY = a->rect.y - b->rect.y;
+		int deltaX = collider->rect.x - b->rect.x;
+		int deltaY = collider->rect.y - b->rect.y;
 		if (std::abs(deltaX) > std::abs(deltaY))
 		{
 			if (deltaX > 0)
 			{
-				position.x += b->rect.x + b->rect.w - a->rect.x;
+				position.x += b->rect.x + b->rect.w - collider->rect.x;
 			}
 			else
 			{
-				position.x -= a->rect.x + a->rect.w - b->rect.x;
+				position.x -= collider->rect.x + collider->rect.w - b->rect.x;
 			}
 		}
 		else
@@ -288,7 +281,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 			if (deltaY > 0)
 			{
 				verticalVelocity = 0.0f;
-				position.y += b->rect.y + b->rect.h - a->rect.y;
+				position.y += b->rect.y + b->rect.h - collider->rect.y;
 			}
 			else
 			{
@@ -299,7 +292,7 @@ void Player::OnCollision(Collider* a, Collider* b, float dt)
 					{
 						ChangeState(playerState, IDLE);
 					}
-					position.y -= a->rect.y + a->rect.h - b->rect.y;
+					position.y -= collider->rect.y + collider->rect.h - b->rect.y;
 					availableJumps = maxJumps;
 				}
 			}
@@ -607,8 +600,9 @@ void Player::Reload()
 		health = 3;
 		app->ui->score = 0;
 	}
-	delete collider;
-	collider = app->collisions->AddCollider(SDL_Rect({ (int)position.x, (int)position.y, 22, 26 }), Collider::Type::DYNAMIC, this);
+	if (collider != nullptr)
+		app->collisions->RemoveCollider(collider);
+	collider = app->collisions->AddCollider(SDL_Rect({ (int)(position.x + 3.0f), (int)(position.y + 10.0f), 16, 16 }), Collider::Type::DYNAMIC, parent);
 	initialPosition = position;
 	gravityOn = true;
 	initialWaitCount = 0.0f;

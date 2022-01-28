@@ -18,11 +18,7 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
- <player>
-  	<texture>Assets/Textures/Character/sprite_sheet.png</texture>
-  	<movement gravity="1000" jumpForce="300" speed="220" maxJumps="2"/>
-	<audio jump="Assets/Audio/Fx/jump.wav" doubleJump="Assets/Audio/Fx/double_jump.wav" gameOver="Assets/Audio/Fx/game_over.wav" gameStart="Assets/Audio/Fx/game_start.wav" fruit="Assets/Audio/Fx/pick_up_fruit.wav" heart="Assets/Audio/Fx/pick_up_heart.wav" checkpoint="Assets/Audio/Fx/checkpoint.wav"/>
-  </player>
+ 
   <!-- L03: Added maps folder as config option -->
   <map>
     <folder>Assets/Textures/Maps/</folder>
@@ -44,5 +40,10 @@
   	<fruitTexture>Assets/Textures/Items/item_spritesheet.png</fruitTexture>
   	<heartTexture>Assets/Textures/Items/heart_anim.png</heartTexture>
   	<entities enemySpeed="80" pigHealth="3" enemyGravity="1000" enemyJumpForce="350"/>
+	<player>
+  	<texture>Assets/Textures/Character/sprite_sheet.png</texture>
+  	<movement gravity="1000" jumpForce="300" speed="220" maxJumps="2"/>
+	<audio jump="Assets/Audio/Fx/jump.wav" doubleJump="Assets/Audio/Fx/double_jump.wav" gameOver="Assets/Audio/Fx/game_over.wav" gameStart="Assets/Audio/Fx/game_start.wav" fruit="Assets/Audio/Fx/pick_up_fruit.wav" heart="Assets/Audio/Fx/pick_up_heart.wav" checkpoint="Assets/Audio/Fx/checkpoint.wav"/>
+  </player>
   </entities>
 </config>

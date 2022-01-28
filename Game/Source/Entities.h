@@ -7,6 +7,8 @@
 #include "Entity.h"
 #include "List.h"
 
+class Player;
+
 class Entities : public Module
 {
 public:
@@ -40,7 +42,12 @@ public:
 	bool Load(pugi::xml_node& savedGame);
 	bool Save(pugi::xml_node& savedGame);
 
+	Player* GetPlayer();
+
 private:
+	pugi::xml_node playerConfig;
+	Player* placeholderPlayer;
+
 	int enemySpeed = 0;
 	int pigHealth = 0;
 	int enemyGravity = 0;

@@ -10,6 +10,7 @@
 #include "Collisions.h"
 #include "Audio.h"
 #include "GuiManager.h"
+#include "Entities.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -135,7 +136,7 @@ bool ModuleUI::PostUpdate()
 	BlitText(uiposx + 155, 5, font, shortNumberText, false);
 	*/
 
-	for (int i = 0; i < app->player->health; i++)
+	for (int i = 0; i < app->entities->GetPlayer()->health; i++)
 	{
 		if (i < 3)
 		{
@@ -147,29 +148,6 @@ bool ModuleUI::PostUpdate()
 
 		}
 	}
-
-	//switch (app->player->health)
-	//{
-	//case(1):
-	//	oneLifeLeft = &SDL_Rect({ 0, 0, 8,7 });
-	//	app->render->DrawTexture(livesTexture, uiposx + 155, 5, oneLifeLeft, 0, 0, 0, 0, false);
-	//	break;
-	//case(2):
-	//	twoLivesLeft = &SDL_Rect({ 0, 0, 20,7 });
-	//	app->render->DrawTexture(livesTexture, 0, 0, twoLivesLeft, 0, 0, 0, 0, false);
-	//	break;
-	//case(3):
-	//	threeLivesLeft = &SDL_Rect({ 0, 0, 28,7 });
-	//	app->render->DrawTexture(livesTexture, uiposx + 155, 5, threeLivesLeft, 0, 0, 0, 0, false);
-	//	break;
-	//case(4):
-	//	fourLivesLeft = &SDL_Rect({ 0, 0, 38,7 });
-	//	app->render->DrawTexture(livesTexture, 0, 0, fourLivesLeft, 0, 0, 0, 0, false);
-	//	break;
-	//default:
-
-	//	break;
-	//}
 
 	BlitText(uiposx + 320, 5, font, "SCORE", false);
 	IntToDynamicString(scoreText, score);

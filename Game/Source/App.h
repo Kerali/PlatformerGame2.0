@@ -18,7 +18,6 @@ class Scene;
 class Map;
 class Debug;
 class Collisions;
-class Player;
 class ModuleUI;
 class PathFinding;
 class Entities;
@@ -92,7 +91,6 @@ public:
 	Map* map;
 	Debug* debug;
 	Collisions* collisions;
-	Player* player;
 	ModuleUI* ui;
 	PathFinding* pathfinding;
 	Entities* entities;

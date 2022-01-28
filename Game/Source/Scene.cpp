@@ -10,6 +10,7 @@
 #include "Audio.h"
 #include "ModuleUI.h"
 #include "GuiManager.h"
+#include "Entities.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -309,8 +310,8 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 				break;
 
 			case 5:
-				app->player->saveOnce1 = true;
-				app->player->saveOnce2 = true;
+				app->entities->GetPlayer()->saveOnce1 = true;
+				app->entities->GetPlayer()->saveOnce2 = true;
 				app->RequestSave();
 				LOG("SAVE REQUESTED");
 				exit = true;
@@ -366,7 +367,7 @@ void Scene::ChangeGameplayState(GameplayState newState)
 			gameplayState = PLAYING;
 			currentLevel.create("level1.tmx");
 			app->map->Load("level1.tmx");
-			app->player->Reload();
+			app->entities->GetPlayer()->Reload();
 			break;
 		case TITLE_SCREEN:
 			screenDisplayAnim = &titleScreenAnim;
@@ -402,10 +403,10 @@ void Scene::ChangeGameplayState(GameplayState newState)
 
 void Scene::LoadLevel(SString name, bool loadEntities)
 {
-	app->player->isDead = false;
+	app->entities->GetPlayer()->isDead = false;
 	currentLevel = name;
 	app->map->Load(name.GetString(), loadEntities);
-	app->player->Reload();
+	app->entities->GetPlayer()->Reload();
 }
 
 // Called each loop iteration

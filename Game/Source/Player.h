@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Animation.h"
 #include "Point.h"
+#include "Entity.h"
 
 struct Animation;
 struct Collider;
@@ -22,7 +23,7 @@ enum PlayerState
 	DYING
 };
 
-class Player : public Module
+class Player : public Entity
 {
 private:
 	SDL_Texture* texture = nullptr;
@@ -36,12 +37,12 @@ public:
 	bool isDead;
 
 public:
-	Player();
+	Player(Module* parent, fPoint position, Type type);
 	bool Awake(pugi::xml_node&);
 	bool Start();
 	bool Update(float dt);
-	bool PostUpdate();
-	void OnCollision(Collider* a, Collider* b, float dt);
+	bool Draw();
+	void Collision(Collider* other, float dt) override;
 
 	void UpdateState(float dt);
 	void UpdateLogic(float dt);
@@ -82,8 +83,6 @@ public:
 
 	uint gameStartFx = 0;
 	const char* gameStartFxPath;
-
-	Collider* collider;
 
 	float jumpForce;
 

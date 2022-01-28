@@ -27,7 +27,7 @@ public:
 
 	bool Draw();
 
-	void Collision(Collider* other);
+	void Collision(Collider* other, float dt) override;
 
 	void CleanUp();
 

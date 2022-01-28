@@ -36,7 +36,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	map = new Map();
 	debug = new Debug();
 	collisions = new Collisions();
-	player = new Player();
 	ui = new ModuleUI();
 	pathfinding = new PathFinding();
 	entities = new Entities();
@@ -53,7 +52,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(debug);
 	AddModule(guimanager);
 	AddModule(collisions);
-	AddModule(player);
 	AddModule(pathfinding);
 	AddModule(entities);
 	AddModule(scene);
@@ -428,7 +426,6 @@ bool App::Load()
 		app->render->Load(rend);
 		app->scene->Load(sce);
 		app->win->Load(wi);
-		app->player->Load(pl);
 		app->entities->Load(en);
 
 	}
@@ -455,9 +452,6 @@ bool App::Save()
 
 	pugi::xml_node scene = newSave.append_child("scene");
 	app->scene->Save(scene);
-
-	pugi::xml_node player = newSave.append_child("player");
-	app->player->Save(player);
 
 	pugi::xml_node entities = newSave.append_child("entities");
 	app->entities->Save(entities);

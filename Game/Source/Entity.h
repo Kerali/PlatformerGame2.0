@@ -19,7 +19,8 @@ public:
 		FRUIT,
 		HEART,
 		BAT,
-		PIG
+		PIG,
+		PLAYER
 	};
 
 	Entity(Module* parent, fPoint position, SDL_Texture* texture, Type type) : parent(parent), position(position), texture(texture), type(type)
@@ -45,7 +46,7 @@ public:
 		return true;
 	}
 
-	virtual void Collision(Collider* other)
+	virtual void Collision(Collider* other, float dt)
 	{
 
 	}

@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Log.h"
 #include "Player.h"
+#include "Entities.h"
 
 Collisions::Collisions() : Module()
 {
@@ -151,7 +152,7 @@ bool Collisions::CleanUp()
 
 	for (int i = 0; i < dynamicColliders.count(); i++)
 	{
-		if (dynamicColliders[i] != app->player->collider)
+		if (dynamicColliders[i] != app->entities->GetPlayer()->collider)
 			delete dynamicColliders[i];
 	}
 	staticColliders.clear();

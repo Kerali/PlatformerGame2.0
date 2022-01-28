@@ -217,8 +217,6 @@ bool Map::Load(const char* filename, bool loadEntities)
 	}
 
 	CreateColliders();
-	app->player->position.x = data.properties.GetProperty("playerX", 0)*data.tileWidth;
-	app->player->position.y = data.properties.GetProperty("playerY", 0)*data.tileHeight;
 
 	if (loadEntities)
 		CreateEntities();
@@ -459,6 +457,10 @@ bool Map::CreateEntities()
 			else if (data.maplayers[i]->properties.GetProperty("entityType", 0) == 4)
 			{
 				app->entities->AddEntity(pos, Entity::Type::PIG);
+			}
+			else if (data.maplayers[i]->properties.GetProperty("entityType", 0) == 5)
+			{
+				app->entities->AddEntity(pos, Entity::Type::PLAYER);
 			}
 		}
 	}

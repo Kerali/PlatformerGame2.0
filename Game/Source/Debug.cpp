@@ -92,17 +92,17 @@ void Debug::ToggleColliders()
 
 void Debug::GodMode()
 {
-	if (app->player->godMode == false)
+	if (app->entities->GetPlayer()->godMode == false)
 	{
-		app->player->ChangeState(app->player->playerState, IDLE);
-		app->player->godMode = true;
-		storeGravity = app->player->gravity;
-		app->player->gravity = 0;
-		app->player->verticalVelocity = 0.0f;
+		app->entities->GetPlayer()->ChangeState(app->entities->GetPlayer()->playerState, IDLE);
+		app->entities->GetPlayer()->godMode = true;
+		storeGravity = app->entities->GetPlayer()->gravity;
+		app->entities->GetPlayer()->gravity = 0;
+		app->entities->GetPlayer()->verticalVelocity = 0.0f;
 	}
-	else if (app->player->godMode == true)
+	else if (app->entities->GetPlayer()->godMode == true)
 	{
-		app->player->gravity = storeGravity;
-		app->player->godMode = false;
+		app->entities->GetPlayer()->gravity = storeGravity;
+		app->entities->GetPlayer()->godMode = false;
 	}
 }
