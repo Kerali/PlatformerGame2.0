@@ -1,7 +1,10 @@
 #include "GuiButton.h"
+#include "App.h"
+#include "Scene.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::BUTTON, id)
 {
+    this->id = id;
     this->bounds = bounds;
     this->texture = tex;
 }
@@ -45,30 +48,140 @@ bool GuiButton::Draw(Render* render)
     int yOffset = 4;
 
     // Draw the right button depending on state
-    switch (state)
+    if (app->scene->gameplayState == app->scene->GameplayState::TITLE_SCREEN)
     {
-    case GuiControlState::DISABLED:
-        break;
+        switch (id)
+        {
+        case 1:
+            switch (state)
+            {
+            case GuiControlState::DISABLED:
+                break;
+            case GuiControlState::NORMAL:
+                app->scene->continueButtonAnim.loop = false;
+                break;
+            case GuiControlState::FOCUSED:
+                app->scene->continueButtonAnim.loop = true;
+                break;
+            case GuiControlState::PRESSED:
+                break;
+            case GuiControlState::SELECTED:
+                break;
+            default:
+                break;
+            }
+            break;
 
-    case GuiControlState::NORMAL:
-        break;
+        case 2:
+            switch (state)
+            {
+            case GuiControlState::DISABLED:
+                break;
+            case GuiControlState::NORMAL:
+                app->scene->newGameButtonAnim.loop = false;
+                break;
+            case GuiControlState::FOCUSED:
+                app->scene->newGameButtonAnim.loop = true;
+                break;
+            case GuiControlState::PRESSED:
+                break;
+            case GuiControlState::SELECTED:
+                break;
+            default:
+                break;
+            }
+            break;
 
-    case GuiControlState::FOCUSED:
-        render->DrawTexture(texture, bounds.x, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 0,0,9,7 }), 0, 0, 0, 0, false);
-        render->DrawTexture(texture, bounds.x + bounds.w - 9, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 18,0,9,7 }), 0, 0, 0, 0, false);
-        break;
+        case 3:
+            switch (state)
+            {
+            case GuiControlState::DISABLED:
+                break;
+            case GuiControlState::NORMAL:
+                app->scene->settingsButtonAnim.loop = false;
+                break;
+            case GuiControlState::FOCUSED:
+                app->scene->settingsButtonAnim.loop = true;
+                break;
+            case GuiControlState::PRESSED:
+                break;
+            case GuiControlState::SELECTED:
+                break;
+            default:
+                break;
+            }
+            break;
 
-    case GuiControlState::PRESSED:
-        render->DrawTexture(texture, bounds.x, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 9,0,9,7 }), 0, 0, 0, 0, false);
-        render->DrawTexture(texture, bounds.x + bounds.w - 9, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 27,0,9,7 }), 0, 0, 0, 0, false);
-        break;
+        case 4:
+            switch (state)
+            {
+            case GuiControlState::DISABLED:
+                break;
+            case GuiControlState::NORMAL:
+                app->scene->creditsButtonAnim.loop = false;
+                break;
+            case GuiControlState::FOCUSED:
+                app->scene->creditsButtonAnim.loop = true;
+                break;
+            case GuiControlState::PRESSED:
+                break;
+            case GuiControlState::SELECTED:
+                break;
+            default:
+                break;
+            }
+            break;
 
-    case GuiControlState::SELECTED:
-        break;
+        case 5:
+            switch (state)
+            {
+            case GuiControlState::DISABLED:
+                break;
+            case GuiControlState::NORMAL:
+                app->scene->exitButtonAnim.loop = false;
+                break;
+            case GuiControlState::FOCUSED:
+                app->scene->exitButtonAnim.loop = true;
+                break;
+            case GuiControlState::PRESSED:
+                break;
+            case GuiControlState::SELECTED:
+                break;
+            default:
+                break;
+            }
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
+    else if (app->scene->gameplayState == app->scene->GameplayState::PLAYING)
+    {
+        switch (state)
+        {
+        case GuiControlState::DISABLED:
+            break;
 
+        case GuiControlState::NORMAL:
+            break;
+
+        case GuiControlState::FOCUSED:
+            render->DrawTexture(texture, bounds.x, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 0,0,9,7 }), 0, 0, 0, 0, false);
+            render->DrawTexture(texture, bounds.x + bounds.w - 9, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 18,0,9,7 }), 0, 0, 0, 0, false);
+            break;
+
+        case GuiControlState::PRESSED:
+            render->DrawTexture(texture, bounds.x, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 9,0,9,7 }), 0, 0, 0, 0, false);
+            render->DrawTexture(texture, bounds.x + bounds.w - 9, bounds.y - yOffset + bounds.h / 2, &SDL_Rect({ 27,0,9,7 }), 0, 0, 0, 0, false);
+            break;
+
+        case GuiControlState::SELECTED:
+            break;
+
+        default:
+            break;
+        }
+    }
     return false;
 }

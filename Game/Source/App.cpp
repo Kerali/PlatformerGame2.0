@@ -57,6 +57,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(entities);
 	AddModule(scene);
+	AddModule(guimanager);
 
 	// Render last to swap buffer
 	AddModule(render);
