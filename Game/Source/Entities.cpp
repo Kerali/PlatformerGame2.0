@@ -11,6 +11,8 @@
 
 #include "Player.h"
 
+#include "ModuleUI.h"
+
 #include <stdlib.h>
 #include <time.h>
 
@@ -55,6 +57,7 @@ bool Entities::Load(pugi::xml_node& savedGame)
 		int r;
 		Entity* en;
 		int dir = 1;
+		int h;
 		switch (type)
 		{
 		case 0:
@@ -71,9 +74,22 @@ bool Entities::Load(pugi::xml_node& savedGame)
 			entityList.add(en);
 			break;
 		case 3:
-			int h = e.attribute("health").as_int();
+			h = e.attribute("health").as_int();
 			en = (Entity*)(new Pig((Module*)this, position, pigTexture, Entity::Type::PIG, enemySpeed, h, enemyGravity, enemyJumpForce));
 			entityList.add(en);
+			break;
+		case 4:
+			placeholderPlayer->position = position;
+			int verticalVelocity = e.attribute("verticalVelocity").as_int();
+			placeholderPlayer->verticalVelocity = verticalVelocity;
+			int availableJumps = e.attribute("availableJumps").as_int();
+			placeholderPlayer->availableJumps = availableJumps;
+			int score = e.attribute("score").as_int();
+			app->ui->score = score;
+			int health = e.attribute("health").as_int();
+			placeholderPlayer->health = health;
+			entityList.add(placeholderPlayer);
+			placeholderPlayer->Reload();
 			break;
 		}
 	}
@@ -102,6 +118,18 @@ bool Entities::Save(pugi::xml_node& savedGame)
 			p = (Pig*)e;
 			h = eNode.append_attribute("health");
 			h.set_value(p->health);
+			break;
+		
+		case Entity::Type::PLAYER:
+			Player* p = (Player*)e;
+			pugi::xml_attribute vert = eNode.append_attribute("verticalVelocity");
+			vert.set_value(p->verticalVelocity);
+			pugi::xml_attribute availableJumps = eNode.append_attribute("availableJumps");
+			availableJumps.set_value(p->availableJumps);
+			pugi::xml_attribute score = eNode.append_attribute("score");
+			score.set_value(app->ui->score);
+			pugi::xml_attribute health = eNode.append_attribute("health");
+			health.set_value(p->health);
 			break;
 		}
 	}

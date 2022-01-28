@@ -69,8 +69,6 @@ public:
 	Animation doubleJumpRightAnim;
 	Animation doubleJumpLeftAnim;
 
-	Point<float> position;
-
 	bool godMode = false;
 	float gravity;
 	float verticalVelocity = 0.0f;
@@ -91,6 +89,8 @@ public:
 	bool saveOnce1;
 	bool saveOnce2;
 
+	int availableJumps = 2;
+
 private:
 
 	float initialWaitCount = 0.0f;
@@ -100,7 +100,6 @@ private:
 	float maxVerticalVelocity = 350.0f;
 
 	int maxJumps = 2;
-	int availableJumps = 2;
 
 	bool canMoveRight = true;
 	bool canMoveLeft = true;

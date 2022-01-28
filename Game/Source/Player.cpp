@@ -153,41 +153,6 @@ bool Player::Draw()
 	return true;
 }
 
-bool Player::Load(pugi::xml_node& savedGame)
-{
-	verticalVelocity = savedGame.attribute("verticalVelocity").as_float(0.0f);
-	availableJumps = savedGame.attribute("availableJumps").as_int(2);
-	position.x = savedGame.attribute("x").as_int(176);
-	position.y = savedGame.attribute("y").as_int(976);
-	health = savedGame.attribute("health").as_int(3);
-	app->ui->score = savedGame.attribute("score").as_int(0);
-
-	return true;
-}
-
-bool Player::Save(pugi::xml_node& savedGame)
-{
-	pugi::xml_attribute vertical = savedGame.append_attribute("verticalVelocity");
-	vertical.set_value(verticalVelocity);
-
-	pugi::xml_attribute jumps = savedGame.append_attribute("availableJumps");
-	jumps.set_value(availableJumps);
-
-	pugi::xml_attribute x = savedGame.append_attribute("x");
-	x.set_value(position.x);
-
-	pugi::xml_attribute y = savedGame.append_attribute("y");
-	y.set_value(position.y);
-
-	pugi::xml_attribute s = savedGame.append_attribute("score");
-	s.set_value(app->ui->score);
-
-	pugi::xml_attribute h = savedGame.append_attribute("health");
-	h.set_value(health);
-
-	return true;
-}
-
 void Player::Collision(Collider* b, float dt)
 {
 	if (godMode) return;
