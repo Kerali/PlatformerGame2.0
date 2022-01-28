@@ -55,6 +55,9 @@ bool Player::Start()
 
 	health = 3;
 
+	saveOnce1 = true;
+	saveOnce2 = true;
+
 	LOG("Loading Player textures");
 
 	texture = app->tex->Load(texturePath);

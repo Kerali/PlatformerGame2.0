@@ -89,6 +89,9 @@ public:
 
 	uint doubleJumpFx = 0;
 
+	bool saveOnce1;
+	bool saveOnce2;
+
 private:
 
 	float initialWaitCount = 0.0f;

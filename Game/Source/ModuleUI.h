@@ -53,6 +53,7 @@ public:
 
 	const char* optionsMenuPath;
 	const char* settingsMenuPath;
+	const char* saveMenuPath;
 
 	const char* menuArrowPath;
 
@@ -73,6 +74,7 @@ public:
 
 	SDL_Texture* optionsMenuTex = nullptr;
 	SDL_Texture* settingsMenuTex = nullptr;
+	SDL_Texture* saveMenuTex = nullptr;
 	SDL_Texture* menuArrowTex = nullptr;
 
 	// Loads a font file from a texture
