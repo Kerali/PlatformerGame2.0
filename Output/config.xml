@@ -36,6 +36,7 @@
   </ui>
   <guimanager>
     <guimanager checkbox="Assets/Textures/Ui/checkbox.png" menuArrow="Assets/Textures/Ui/settings_arrow.png" slider="Assets/Textures/Ui/slider.png" />
+	<audio hoverButton="Assets/Audio/Fx/hover_button.wav" pressButton="Assets/Audio/Fx/pressed_button.wav" checkboxButton="Assets/Audio/Fx/checkbox_button.wav" />
   </guimanager>
    <entities>
    <batTexture>Assets/Textures/Enemies/Bat/bat.png</batTexture>
