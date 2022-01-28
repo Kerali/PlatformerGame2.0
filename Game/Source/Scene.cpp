@@ -116,15 +116,19 @@ bool Scene::Update(float dt)
 	{
 		FadeToNewState(PLAYING);
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && gameplayState == GAME_OVER_SCREEN)
+
+	if (gameplayState == TITLE_SCREEN && continueButtonPressed == true)
 	{
-		FadeToNewState(PLAYING);
+		app->scene->FadeToNewState(Scene::GameplayState::PLAYING);
+		LOG("LOAD REQUESTED");
 	}
 
 	if (gameplayState == PLAYING)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN || continueButtonPressed == true)
 		{
+			continueButtonPressed = false;
+			app->scene->FadeToNewState(Scene::GameplayState::PLAYING);
 			app->RequestLoad();
 			LOG("LOAD REQUESTED");
 		}
