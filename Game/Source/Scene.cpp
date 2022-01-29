@@ -66,8 +66,8 @@ bool Scene::Start()
 	titleScreenAnim.PushBack({ 0,360,480,360 });
 	titleScreenAnim.PushBack({ 480,360,480,360 });
 
-	titleMenuAnim.PushBack({ 0,0,480,270 });
-	titleMenuAnim.PushBack({ 480,0,480,270 });
+	titleMenuAnim.PushBack({ 0,0,480,360 });
+	titleMenuAnim.PushBack({ 480,0,480,360 });
 
 	gameOverAnim.PushBack({ 0,720,480,360 });
 	gameOverAnim.PushBack({ 480,720,480,360 });
