@@ -166,7 +166,7 @@ bool Scene::Update(float dt)
 
 	if (gameplayState == PLAYING)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN || continueButtonPressed == true)
+		if ((app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN && !continueButtonDisabled) || continueButtonPressed == true)
 		{
 			continueButtonPressed = false;
 			app->scene->FadeToNewState(Scene::GameplayState::PLAYING);

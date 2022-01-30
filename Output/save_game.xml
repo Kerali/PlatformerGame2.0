@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <renderer>
-	<camera x="-1504" y="-1594" />
+	<camera x="-956" y="-1592" />
 </renderer>
 <audio volume="128" />
 <scene currentLevel="level1.tmx" />
@@ -35,14 +35,16 @@
 		<entity x="1200" y="896" type="0" />
 		<entity x="1488" y="896" type="0" />
 		<entity x="1680" y="896" type="0" />
+		<entity x="848" y="912" type="0" />
 		<entity x="1472" y="912" type="0" />
 		<entity x="1696" y="912" type="0" />
 		<entity x="2496" y="912" type="0" />
 		<entity x="2512" y="912" type="0" />
-		<entity x="992.420166" y="977.432495" type="4" verticalVelocity="-33" availableJumps="2" score="90000" health="2" />
+		<entity x="718.839783" y="976.527466" type="4" verticalVelocity="0" availableJumps="2" score="49000" health="3" />
 		<entity x="1696" y="544" type="2" />
-		<entity x="1376" y="513.433777" type="3" health="3" />
-		<entity x="1120" y="785.433777" type="3" health="3" />
+		<entity x="1376" y="512.05719" type="3" health="3" />
+		<entity x="1120" y="784.05719" type="3" health="3" />
+		<entity x="1088" y="976.05719" type="3" health="3" />
 		<entity x="1584" y="480" type="1" />
 		<entity x="1056" y="928" type="1" />
 	</entities>
