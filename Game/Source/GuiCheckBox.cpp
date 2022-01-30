@@ -47,6 +47,11 @@ bool GuiCheckBox::Update(Input* input, float dt)
 
 bool GuiCheckBox::Draw(Render* render)
 {
+    if (id == 1 && app->guimanager->fullscreenChecked)
+        checked = true;
+    if (id == 2 && app->guimanager->VsyncChecked)
+        checked = true;
+
     // Draw the right button depending on state
     if (app->scene->fading == false)
     {
@@ -80,7 +85,16 @@ bool GuiCheckBox::Draw(Render* render)
 
         case GuiControlState::SELECTED:
             app->audio->PlayFx(app->guimanager->checkboxFx, 0);
-            checked = !checked;
+            if (id == 1)
+            {
+                app->guimanager->fullscreenChecked = !app->guimanager->fullscreenChecked;
+                checked = !checked;
+            }
+            else if (id == 2)
+            {
+                app->guimanager->VsyncChecked = !app->guimanager->VsyncChecked;
+                checked = !checked;
+            }
             NotifyObserver();
             break;
 
