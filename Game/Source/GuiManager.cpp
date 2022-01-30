@@ -142,6 +142,8 @@ void GuiManager::DrawAll()
 {
 	for (int i = 0; i < controls.count(); i++)
 	{
+		if (showDebug)
+			controls[i]->DrawDebug(app->render);
 		controls[i]->Draw(app->render);
 	}
 }

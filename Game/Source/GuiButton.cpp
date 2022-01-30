@@ -4,6 +4,7 @@
 #include "GuiManager.h"
 #include "Audio.h"
 #include "Player.h"
+#include "Window.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -245,4 +246,32 @@ bool GuiButton::Draw(Render* render)
         }
     }
     return false;
+}
+
+bool GuiButton::DrawDebug(Render* render)
+{
+    int scale = app->win->GetScale();
+
+    SDL_Rect drawBounds = SDL_Rect({ bounds.x * scale, bounds.y * scale, bounds.w * scale, bounds.h * scale });
+
+    switch (state)
+    {
+    case GuiControlState::DISABLED:
+        render->DrawRectangle(drawBounds, 255, 0, 0, 128, true, false);
+        break;
+    case GuiControlState::FOCUSED:
+        render->DrawRectangle(drawBounds, 0, 255, 0, 128, true, false);
+        break;
+    case GuiControlState::NORMAL:
+        render->DrawRectangle(drawBounds, 0, 0, 255, 128, true, false);
+        break;
+    case GuiControlState::PRESSED:
+        render->DrawRectangle(drawBounds, 255, 255, 0, 128, true, false);
+        break;
+    case GuiControlState::SELECTED:
+        render->DrawRectangle(drawBounds, 0, 255, 255, 128, true, false);
+        break;
+    }
+
+    return true;
 }

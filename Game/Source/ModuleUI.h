@@ -59,6 +59,8 @@ public:
 
 	const char* livesTexturePath;
 
+	bool showDebug = false;
+
 	char scoreText[DYNAMIC_TEXT_LEN + 1] = { "0000000000" };
 	char shortNumberText[2] = { "0" };
 	char lifeText[2] = { "0" };

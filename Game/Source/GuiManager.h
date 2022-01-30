@@ -50,6 +50,8 @@ public:
 	float updateMsCycle = 0.0f;
 	bool doLogic = false;
 
+	bool showDebug = false;
+
 	const char* arrowMenuPath;
 	const char* checkBoxPath;
 	const char* sliderPath;

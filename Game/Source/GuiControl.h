@@ -75,6 +75,10 @@ public:
         observer->OnGuiMouseClickEvent(this);
     }
 
+    virtual bool DrawDebug(Render* render)
+    {
+        return true;
+    }
 public:
 
     uint32 id;
