@@ -134,8 +134,7 @@ bool Scene::Update(float dt)
 		app->scene->FadeToNewState(Scene::GameplayState::PLAYING);
 		LOG("LOAD REQUESTED");
 	}
-
-	if (gameplayState == TITLE_MENU)
+	else if (gameplayState == TITLE_MENU)
 	{
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
@@ -143,11 +142,8 @@ bool Scene::Update(float dt)
 			FadeToNewState(TITLE_SCREEN);
 		}
 	}
-
-	if (gameplayState == CREDITS_SCREEN)
+	else if (gameplayState == CREDITS_SCREEN)
 	{
-
-
 
 		if (creditsPosY < 360)
 		{
@@ -161,6 +157,11 @@ bool Scene::Update(float dt)
 				FadeToNewState(TITLE_SCREEN);
 			}
 		}
+	}
+	else if (gameplayState == GAME_OVER_SCREEN)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			FadeToNewState(TITLE_SCREEN);
 	}
 
 	if (gameplayState == PLAYING)
@@ -292,6 +293,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 
 			case 4:
 				app->guimanager->DestroyAllGuiControls();
+				FadeToNewState(CREDITS_SCREEN);
 				break;
 
 			case 5:
@@ -483,7 +485,13 @@ bool Scene::PostUpdate()
 	}
 	else if (gameplayState == TITLE_SCREEN)
 	{
-		SDL_Rect continueRect = continueButtonAnim.GetCurrentFrame();
+		SDL_Rect continueRect;
+
+		if (continueButtonDisabled)
+			continueRect = SDL_Rect({ 0,120,100,20 });
+		else
+			continueRect = continueButtonAnim.GetCurrentFrame();
+
 		app->render->DrawTexture(continueButtonTex, buttonsPosX, buttonsPosY, &continueRect, 0, 0, 0, 0, false);
 
 		SDL_Rect newGameRect = newGameButtonAnim.GetCurrentFrame();

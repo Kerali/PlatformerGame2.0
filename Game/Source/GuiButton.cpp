@@ -18,6 +18,9 @@ GuiButton::~GuiButton()
 
 bool GuiButton::Update(Input* input, float dt)
 {
+    if (app->scene->continueButtonDisabled && id == 1 && app->scene->gameplayState == app->scene->GameplayState::TITLE_SCREEN)
+        state = GuiControlState::DISABLED;
+
     if (state != GuiControlState::DISABLED)
     {
         int mouseX, mouseY;

@@ -70,6 +70,7 @@ public:
 	Animation exitButtonAnim;
 
 	bool continueButtonPressed = false;
+	bool continueButtonDisabled = true;
 	bool exit = false;
 	bool fading = false;
 
