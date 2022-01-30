@@ -35,7 +35,6 @@ bool GuiCheckBox::Update(Input* input, float dt)
             // If mouse button pressed -> Generate event!
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
             {
-                checked = !checked;
                 state = GuiControlState::SELECTED;
             }
         }
@@ -80,6 +79,7 @@ bool GuiCheckBox::Draw(Render* render)
 
         case GuiControlState::SELECTED:
             app->audio->PlayFx(app->guimanager->checkboxFx, 0);
+            checked = !checked;
             NotifyObserver();
             break;
 

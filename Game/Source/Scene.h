@@ -20,7 +20,8 @@ public:
 		PLAYING,
 		PAUSE,
 		GAME_OVER_SCREEN,
-		LOGO_SCREEN
+		LOGO_SCREEN,
+		CREDITS_SCREEN
 	};
 
 	Scene();
@@ -80,9 +81,14 @@ private:
 	SDL_Texture* settingsButtonTex = nullptr;
 	SDL_Texture* creditsButtonTex = nullptr;
 	SDL_Texture* exitButtonTex = nullptr;
+	SDL_Texture* creditsTex = nullptr;
 
 	int buttonsPosX = 183;
 	int buttonsPosY = 125;
+	int creditsPosY = 0;
+	int creditsSpeed = 70;
+	float creditCooldown = 0.0f;
+	float maxcreditCooldown = 2.5f;
 
 	Animation* screenDisplayAnim;
 	Animation titleScreenAnim;
@@ -90,6 +96,7 @@ private:
 	Animation gameOverAnim;
 	Animation logoScreenAnim;
 	Animation turnOffAnim;
+	Animation creditsAnim;
 
 	float currentFade = 0.0f;
 	GameplayState targetState = gameplayState;
@@ -99,6 +106,7 @@ private:
 	const char* screenTexturePath;
 	const char* titleMenuPath;
 	const char* titleButtonsPath;
+	const char* creditsPath;
 
 };
 
