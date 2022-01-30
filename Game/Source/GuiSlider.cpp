@@ -47,13 +47,13 @@ bool GuiSlider::Update(Input* input, float dt)
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
             {
                 state = GuiControlState::PRESSED;
-                sliderPosx = ((value * unit) + bounds.x) - unit;
+                sliderPosx = ((value * unit) + bounds.x) - unit - 5;
             }
 
             // If mouse button pressed -> Generate event!
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
             {
-                NotifyObserver();
+                state = GuiControlState::SELECTED;
             }
         }
         else state = GuiControlState::NORMAL;
@@ -95,6 +95,11 @@ bool GuiSlider::Draw(Render* render)
             break;
 
         case GuiControlState::SELECTED:
+            if (id == 2)
+                app->audio->PlayFx(app->guimanager->pressButtonFx, 0);
+            render->DrawTexture(texture, bounds.x, bounds.y, &SDL_Rect({ 0, 23, 116, 23 }), 0, 0, 0, 0, false);
+            render->DrawTexture(texture, sliderPosx, bounds.y, &SDL_Rect({ 116, 23 , 16, 23 }), 0, 0, 0, 0, false);
+            NotifyObserver();
             break;
 
         default:

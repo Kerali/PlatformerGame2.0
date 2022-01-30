@@ -118,6 +118,7 @@ void GuiManager::DestroyAllGuiControls()
 
 	for (int i = 0; i < u; i++)
 	{
+		delete controls.At(0)->data;
 		controls.del(controls.At(0));
 	}
 }
