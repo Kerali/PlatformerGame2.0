@@ -52,7 +52,7 @@ bool ModuleUI::Start()
 {
 	bool ret = true;
 
-	char lookupTable[] = { "0123456789.,\"!'-�ABCDEFGHIJKLMNOPQRSTUVWXYZ.    " };
+	char lookupTable[] = { "0123456789.,\"!'-�ABCDEFGHIJKLMNOPQRSTUVWXYZ.:    " };
 
 	font = Load(fontPath, lookupTable, 3);
 

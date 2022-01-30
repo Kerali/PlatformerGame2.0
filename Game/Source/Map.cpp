@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Pathfinding.h"
 #include "Entities.h"
+#include "ModuleUI.h"
 
 #include "Defs.h"
 #include "Log.h"
