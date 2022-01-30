@@ -33,6 +33,11 @@ Prepare to get into a new world while you control Tani, an astronaut who is visi
  - Simple UI to display lives, score and debug status.
  - Checkpoints with autosave when passing them.
  - Audio feedback for nearly all interactions.
+ - Entity system that handles the player, enemies and items.
+ - GUI system with responsive buttons, checkboxes and sliders.
+ - Credits screen.
+ - Pause menu.
+ - GUI debugging.
 
 ## Controls
 
@@ -45,10 +50,13 @@ Prepare to get into a new world while you control Tani, an astronaut who is visi
  - F3: Restart current level.
  - F5: Save current game state.
  - F6: Load previous game state.
+ - F8: Show GUI bounds and state.
  - F9: View colliders.
  - F10: God Mode.
  - God Mode movement: WASD.
-  - F11: Enable / Disable FPS cap to 30.
+ - F11: Enable / Disable FPS cap to 30.
+ - ESC: Pause game and move to the previous menu.
+ - ENTER: Move from logo screen to menu.
 ## Developers
 
  - Víctor Jara - Developer and Artist
