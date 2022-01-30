@@ -8,8 +8,19 @@
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Texture* tex) : GuiControl(GuiControlType::SLIDER, id)
 {
     this->bounds = bounds;
+    this->unit = bounds.w / 100.0f;
     this->texture = tex;
-    sliderPosx = bounds.x + bounds.w - 9;
+    if (id == 1)
+    {
+        value = app->guimanager->musicVolume;
+    }
+    else if (id == 2)
+    {
+        value = app->guimanager->fxVolume;
+    }
+
+    value = round(value);
+    sliderPosx = ((value * unit) + bounds.x) - unit;
 }
 
 GuiSlider::~GuiSlider()
@@ -29,21 +40,14 @@ bool GuiSlider::Update(Input* input, float dt)
         {
             state = GuiControlState::FOCUSED;
 
-            // TODO.
-            unit = bounds.w / 100;
+            unit = bounds.w / 100.0f;
             value = (mouseX - bounds.x) / unit;
             value = round(value);
 
             if (input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
             {
                 state = GuiControlState::PRESSED;
-                for (int i = 1; i <= 100; i++)
-                {
-                    if (i == value)
-                    {
-                        sliderPosx = ((i * unit) + bounds.x) - unit;
-                    }
-                }
+                sliderPosx = ((value * unit) + bounds.x) - unit;
             }
 
             // If mouse button pressed -> Generate event!
@@ -54,7 +58,6 @@ bool GuiSlider::Update(Input* input, float dt)
         }
         else state = GuiControlState::NORMAL;
     }
-
     return false;
 }
 

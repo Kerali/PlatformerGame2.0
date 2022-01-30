@@ -49,7 +49,7 @@ bool GuiCheckBox::Draw(Render* render)
 {
     if (id == 1 && app->guimanager->fullscreenChecked)
         checked = true;
-    if (id == 2 && app->guimanager->VsyncChecked)
+    if (id == 2 && app->guimanager->vsyncChecked)
         checked = true;
 
     // Draw the right button depending on state
@@ -92,7 +92,7 @@ bool GuiCheckBox::Draw(Render* render)
             }
             else if (id == 2)
             {
-                app->guimanager->VsyncChecked = !app->guimanager->VsyncChecked;
+                app->guimanager->vsyncChecked = !app->guimanager->vsyncChecked;
                 checked = !checked;
             }
             NotifyObserver();

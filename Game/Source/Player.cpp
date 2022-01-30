@@ -166,7 +166,7 @@ void Player::Collision(Collider* b, float dt)
 	switch (b->type)
 	{
 	case(Collider::Type::ENDLEVEL):
-		app->scene->FadeToNewState(Scene::GAME_OVER_SCREEN);
+		app->scene->FadeToNewState(app->scene->GameplayState::CREDITS_SCREEN);
 		return;
 		break;
 

@@ -21,7 +21,7 @@ private:
 
     // GuiCheckBox specific properties
     // Maybe some animation properties for state change?
-    bool checked;
+    bool checked = false;
 
     bool playFxOnce = true;
 };

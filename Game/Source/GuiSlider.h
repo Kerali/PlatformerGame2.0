@@ -17,13 +17,14 @@ public:
     bool Draw(Render* render);
     bool DrawDebug(Render* render);
 
+    float value;
+    int sliderPosx;
+    float unit;
+
 private:
 
     // GuiSlider specific properties
     // Maybe some animation properties for state change?
-    int sliderPosx;
-    int value;
-    int unit;
 
     int minValue;
     int maxValue;

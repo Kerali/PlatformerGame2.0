@@ -70,8 +70,11 @@ public:
 
 	int lastId = 0;
 
+	int fxVolume = 100;
+	int musicVolume = 100;
+
 	bool fullscreenChecked = false;
-	bool VsyncChecked = false;
+	bool vsyncChecked = false;
 };
 
 #endif // __GUIMANAGER_H__
