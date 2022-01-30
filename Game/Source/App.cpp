@@ -48,12 +48,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(entities);
 	AddModule(ui);
-	AddModule(debug);
-	AddModule(guimanager);
 	AddModule(collisions);
 	AddModule(pathfinding);
-	AddModule(entities);
+	AddModule(debug);
 	AddModule(scene);
 	AddModule(guimanager);
 

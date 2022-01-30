@@ -394,10 +394,7 @@ void Player::UpdateState(float dt)
 
 void Player::UpdateLogic(float dt)
 {
-	if (gravityOn == false)
-		initialWaitCount += dt;
-
-	if (initialWaitCount > initialWait)
+	if (gravityOn == false)		
 		gravityOn = true;
 
 	if (!godMode && gravityOn && playerState != DYING) verticalVelocity -= gravity * dt;
